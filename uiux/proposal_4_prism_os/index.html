@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Prism OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: 'rgba(255, 255, 255, 0.1)',
+                        glassHigh: 'rgba(255, 255, 255, 0.2)',
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+                        'glow': '0 0 20px rgba(255,255,255,0.2)',
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        body {
+            background: #0f172a;
+            /* Fallback */
+        }
+
+        /* Aurora Background */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body class="text-white h-screen overflow-hidden antialiased font-sans flex flex-col">
+
+    <!-- Aurora Background -->
+    <div class="aurora-bg">
+        <div class="orb bg-purple-600 w-[500px] h-[500px] top-[-100px] left-[-100px] animate-blob"></div>
+        <div class="orb bg-blue-600 w-[400px] h-[400px] bottom-[-50px] right-[-50px] animate-blob animation-delay-2000">
+        </div>
+        <div class="orb bg-cyan-500 w-[300px] h-[300px] top-[20%] left-[40%] animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Header (Floating Island) -->
+    <header class="p-6 flex justify-center z-10">
+        <div class="glass-panel rounded-full px-8 py-3 flex items-center gap-8 animate-float">
+            <div class="text-xl font-light tracking-wide">Galileo<span class="font-semibold">Arena</span></div>
+            <nav class="flex gap-1 bg-black/20 rounded-full p-1">
+                <button class="px-4 py-1.5 rounded-full bg-white/20 text-sm font-medium shadow-sm">Debate</button>
+                <button
+                    class="px-4 py-1.5 rounded-full text-white/50 text-sm font-medium hover:bg-white/10 transition">Datasets</button>
+                <button
+                    class="px-4 py-1.5 rounded-full text-white/50 text-sm font-medium hover:bg-white/10 transition">Analytics</button>
+            </nav>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-500 shadow-glow"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-8 pb-8 flex gap-6 overflow-hidden">
+
+        <!-- Synopsis Card (Left) -->
+        <aside
+            class="w-80 glass-panel rounded-3xl p-6 flex flex-col gap-6 transform hover:scale-[1.02] transition duration-500">
+            <div>
+                <div class="text-xs font-semibold text-cyan-300 tracking-wider mb-2 uppercase">Current Topic</div>
+                <h1 class="text-2xl font-light leading-snug">Does remote work hinder junior growth?</h1>
+            </div>
+
+            <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-white/60">Pressure</span>
+                    <span class="text-orange-300">High (8/10)</span>
+                </div>
+                <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <div
+                        class="bg-gradient-to-r from-orange-400 to-red-500 w-[80%] h-full rounded-full shadow-[0_0_10px_rgba(251,146,60,0.5)]">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                <div class="text-xs font-semibold text-white/40 mb-3 uppercase">Live Metrics</div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="glass-button rounded-xl p-3 text-center">
+                        <div class="text-lg font-medium">92%</div>
+                        <div class="text-[10px] text-white/50">Confidence</div>
+                    </div>
+                    <div class="glass-button rounded-xl p-3 text-center">
+                        <div class="text-lg font-medium">142ms</div>
+                        <div class="text-[10px] text-white/50">Latency</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Debate Stream (Center) -->
+        <section class="flex-1 glass-panel rounded-3xl p-8 relative overflow-hidden flex flex-col">
+            <!-- Scroll fade masks -->
+            <div
+                class="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[rgba(255,255,255,0.05)] to-transparent z-10">
+            </div>
+
+            <div class="flex-1 overflow-y-auto space-y-8 pr-2 relative z-0 hide-scrollbar">
+
+                <!-- Orthodox -->
+                <div class="flex gap-4 items-start group">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-xs font-bold shadow-glow mt-1 flex-shrink-0">
+                        O
+                    </div>
+                    <div
+                        class="bg-white/10 border border-white/5 p-5 rounded-2xl rounded-tl-none max-w-2xl backdrop-blur-sm group-hover:bg-white/15 transition">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <span class="text-cyan-300 font-medium text-sm">Orthodox Agent</span>
+                            <span class="text-[10px] text-white/30">Just now</span>
+                        </div>
+                        <p class="text-lg font-light leading-relaxed text-white/90">
+                            Osmotic communication is the hidden curriculum of the office. Without it, juniors act in a
+                            vacuum.
+                            <button
+                                class="inline-flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded-lg text-xs ml-1 transition text-cyan-200 border border-cyan-500/30">
+                                <span>Ref: HBR Study</span>
+                            </button>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Heretic -->
+                <div class="flex gap-4 items-start flex-row-reverse group">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-xs font-bold shadow-glow mt-1 flex-shrink-0">
+                        H
+                    </div>
+                    <div
+                        class="bg-white/10 border border-white/5 p-5 rounded-2xl rounded-tr-none max-w-2xl backdrop-blur-sm text-right group-hover:bg-white/15 transition">
+                        <div class="flex justify-between items-baseline mb-2 flex-row-reverse">
+                            <span class="text-pink-300 font-medium text-sm">Heretic Agent</span>
+                            <span class="text-[10px] text-white/30">12s ago</span>
+                        </div>
+                        <p class="text-lg font-light leading-relaxed text-white/90">
+                            You confuse proximity with productivity. Modern documentation creates a <span
+                                class="text-pink-200 decoration-pink-500/50 underline break-words">permanent knowledge
+                                base</span>, unlike fading conversations.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Judge -->
+                <div class="flex justify-center my-8">
+                    <div class="glass-button px-6 py-2 rounded-full flex items-center gap-3 animate-pulse">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_#34d399]"></div>
+                        <span class="text-sm font-medium tracking-wide">Judge is analyzing arguments...</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Input Area (Simulated) -->
+            <div class="mt-4 relative">
+                <input type="text" placeholder="System intervention..."
+                    class="w-full bg-black/20 border border-white/10 rounded-2xl py-4 px-6 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:bg-black/30 transition backdrop-blur-md">
+                <button
+                    class="absolute right-2 top-2 bottom-2 aspect-square bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Right Panel (Evidence) -->
+        <aside class="w-72 flex flex-col gap-4">
+            <!-- Evidence Stack -->
+            <div class="glass-panel rounded-3xl p-5 flex-1 relative overflow-hidden group">
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition duration-700">
+                </div>
+                <h3 class="text-xs font-semibold text-white/40 mb-4 uppercase tracking-wider relative z-10">Valid
+                    Evidence</h3>
+
+                <div class="space-y-3 relative z-10">
+                    <div
+                        class="bg-white/5 border border-white/5 p-3 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                            <span class="text-[10px] text-cyan-200">HBR.org</span>
+                        </div>
+                        <p class="text-xs text-white/70 line-clamp-2">"Osmotic Communication in Software Teams" - 2023
+                            Analysis.</p>
+                    </div>
+
+                    <div
+                        class="bg-white/5 border border-white/5 p-3 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                            <span class="text-[10px] text-pink-200">GitLab</span>
+                        </div>
+                        <p class="text-xs text-white/70 line-clamp-2">Remote Playbook: 15% reduction in repetitive
+                            queries.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mini Map / Graph Placeholder -->
+            <div class="h-48 glass-panel rounded-3xl p-1 relative overflow-hidden flex items-center justify-center">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div
+                    class="relative w-32 h-32 rounded-full border border-white/10 flex items-center justify-center animate-[spin_10s_linear_infinite]">
+                    <div class="absolute w-full h-full rounded-full border-t border-cyan-500/50"></div>
+                </div>
+                <div
+                    class="absolute w-24 h-24 rounded-full border border-white/10 flex items-center justify-center animate-[spin_15s_linear_infinite_reverse]">
+                    <div class="absolute w-full h-full rounded-full border-b border-purple-500/50"></div>
+                </div>
+                <div class="absolute text-center">
+                    <div class="text-2xl font-light">Score</div>
+                    <div class="text-xs text-white/50">Calculating</div>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+</body>
+
+</html>

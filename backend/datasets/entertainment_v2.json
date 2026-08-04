@@ -1,0 +1,48 @@
+{
+  "id": "media",
+  "version": "1.2",
+  "description": "Media subnet test cases.",
+  "meta": {"domain": "entertainment", "topic": "media", "year_range": "2025-2026"},
+  "cases": [
+    {
+      "case_id": "SN16",
+      "topic": "Media",
+      "claim": "SN16",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN16-E1", "summary": "Media subnet entry SN16.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN17",
+      "topic": "Media",
+      "claim": "SN17",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN17-E1", "summary": "Media subnet entry SN17.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN21",
+      "topic": "Media",
+      "claim": "SN21",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN21-E1", "summary": "Media subnet entry SN21.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN59",
+      "topic": "Media",
+      "claim": "SN59",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN59-E1", "summary": "Media subnet entry SN59.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    }
+  ]
+}

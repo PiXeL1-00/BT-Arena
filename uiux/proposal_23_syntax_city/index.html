@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Syntax City</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                        terminal: ['VT323', 'monospace'],
+                    },
+                    colors: {
+                        'retro-bg': '#2d2038',
+                        'retro-floor': '#483b54',
+                        'retro-blue': '#5dadec',
+                        'retro-red': '#ff6c6b',
+                        'retro-green': '#98c379',
+                    },
+                    boxShadow: {
+                        'pixel': '4px 4px 0px rgba(0,0,0,0.5)',
+                        'pixel-sm': '2px 2px 0px rgba(0,0,0,0.5)',
+                    },
+                    animation: {
+                        'bounce-pixel': 'bounce-pixel 1s infinite steps(2)',
+                    },
+                    keyframes: {
+                        'bounce-pixel': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-4px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .image-rendering-pixel {
+            image-rendering: pixelated;
+        }
+
+        .pixel-border {
+            box-shadow:
+                -4px 0 0 0 white,
+                4px 0 0 0 white,
+                0 -4px 0 0 white,
+                0 4px 0 0 white;
+            margin: 4px;
+        }
+    </style>
+</head>
+
+<body class="bg-retro-bg text-white font-terminal h-screen flex flex-col items-center justify-center overflow-hidden">
+
+    <!-- Game Container -->
+    <div class="w-[800px] h-[600px] bg-retro-floor relative border-4 border-slate-700 shadow-pixel overflow-hidden">
+
+        <!-- Floor Grid Pattern -->
+        <div class="absolute inset-0 opacity-20"
+            style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 40px 40px;">
+        </div>
+
+        <!-- The Judge (Mainframe on Wall) -->
+        <div
+            class="absolute top-10 left-1/2 transform -translate-x-1/2 w-64 h-48 bg-slate-800 border-4 border-black p-2 flex flex-col gap-2 shadow-pixel z-0">
+            <!-- Screen -->
+            <div
+                class="bg-black flex-1 border-2 border-slate-600 p-2 font-pixel text-[10px] text-green-400 overflow-hidden">
+                > SYSTEM_READY<br>
+                > MONITORING.<br>
+                > WAITING_FOR_INPUT<br>
+                <span class="animate-pulse">_</span>
+            </div>
+            <!-- LEDs -->
+            <div class="h-4 flex gap-2">
+                <div class="w-4 h-4 rounded-full bg-red-500 animate-pulse border-2 border-black"></div>
+                <div class="w-4 h-4 rounded-full bg-yellow-500 border-2 border-black"></div>
+                <div class="w-4 h-4 rounded-full bg-green-500 border-2 border-black"></div>
+            </div>
+        </div>
+
+        <!-- Character: Orthodox (Left) -->
+        <div class="absolute bottom-32 left-32 flex flex-col items-center z-10 group cursor-pointer">
+            <!-- Speech Bubble -->
+            <div
+                class="absolute -top-24 w-64 bg-white text-black p-4 text-xl leading-none border-4 border-black shadow-pixel-sm opacity-0 group-hover:opacity-100 transition-opacity duration-0 pointer-events-none">
+                REMOTE WORK REDUCES VELOCITY!
+                <!-- Tail -->
+                <div
+                    class="absolute -bottom-4 left-8 w-4 h-4 bg-white border-r-4 border-b-4 border-black transform rotate-45">
+                </div>
+            </div>
+
+            <!-- Sprite (CSS Art) -->
+            <div class="w-16 h-20 bg-retro-blue border-4 border-black relative animate-bounce-pixel">
+                <div class="absolute top-4 left-2 w-4 h-4 bg-black"></div> <!-- Eye -->
+                <div class="absolute top-4 right-2 w-4 h-4 bg-black"></div> <!-- Eye -->
+                <div class="absolute bottom-4 left-4 w-8 h-2 bg-black"></div> <!-- Mouth -->
+                <!-- Antenna -->
+                <div class="absolute -top-4 left-6 w-2 h-4 bg-black"></div>
+                <div class="absolute -top-6 left-5 w-4 h-2 bg-red-500 border-2 border-black animate-pulse"></div>
+            </div>
+            <div class="mt-2 font-pixel text-xs text-retro-blue bg-black px-2 py-1">ORTHO_BOT</div>
+        </div>
+
+        <!-- Character: Heretic (Right) -->
+        <div class="absolute bottom-32 right-32 flex flex-col items-center z-10 group cursor-pointer">
+            <!-- Speech Bubble -->
+            <div
+                class="absolute -top-32 w-64 bg-white text-black p-4 text-xl leading-none border-4 border-black shadow-pixel-sm opacity-100 transition-opacity duration-0">
+                OBJECTION! ASYNC IS THE FUTURE.
+                <div
+                    class="absolute -bottom-4 right-8 w-4 h-4 bg-white border-r-4 border-b-4 border-black transform rotate-45">
+                </div>
+            </div>
+
+            <div class="w-16 h-20 bg-retro-red border-4 border-black relative animate-bounce-pixel"
+                style="animation-delay: 0.5s">
+                <div class="absolute top-4 left-4 w-8 h-4 bg-black"></div> <!-- Visor -->
+                <div class="absolute bottom-4 left-4 w-8 h-2 bg-black"></div> <!-- Mouth -->
+                <!-- Spikes -->
+                <div class="absolute -left-2 top-0 w-2 h-4 bg-retro-red border-2 border-black"></div>
+                <div class="absolute -right-2 top-0 w-2 h-4 bg-retro-red border-2 border-black"></div>
+            </div>
+            <div class="mt-2 font-pixel text-xs text-retro-red bg-black px-2 py-1">HERETIC_V2</div>
+        </div>
+
+        <!-- Character: Skeptic (Center) -->
+        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-20 hover:scale-110 transition">
+            <div class="w-12 h-12 bg-yellow-400 border-4 border-black rounded-full relative animate-spin-slow">
+                <div
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-black rounded-full">
+                </div>
+            </div>
+            <div class="mt-4 font-pixel text-[8px] text-yellow-400 bg-black px-1 text-center">SEARCHING...</div>
+        </div>
+
+        <!-- UI Overlay (Inventory) -->
+        <div
+            class="absolute bottom-0 left-0 right-0 h-16 bg-slate-800 border-t-4 border-black p-2 flex gap-4 items-center px-4">
+            <div class="font-pixel text-[10px] text-gray-400">INVENTORY:</div>
+            <!-- Item: Evidence -->
+            <div
+                class="w-10 h-10 bg-slate-700 border-2 border-white flex items-center justify-center cursor-pointer hover:bg-slate-600">
+                <div class="text-2xl">📜</div>
+                <span
+                    class="absolute bottom-1 right-2 font-pixel text-[8px] bg-red-500 px-1 border border-black text-white">1</span>
+            </div>
+            <!-- Item: Evidence -->
+            <div
+                class="w-10 h-10 bg-slate-700 border-2 border-white flex items-center justify-center cursor-pointer hover:bg-slate-600">
+                <div class="text-2xl">💾</div>
+                <span
+                    class="absolute bottom-1 right-2 font-pixel text-[8px] bg-blue-500 px-1 border border-black text-white">3</span>
+            </div>
+
+            <div class="ml-auto font-terminal text-2xl text-green-400">SCORE: 00920</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Proposal 15: Elemental Court</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400&display=swap');
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Raleway', sans-serif;
+            color: #fff;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+            box-sizing: border-box;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        header {
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            margin: 0;
+            background: linear-gradient(to right, #FF4500, #8A2BE2, #00BFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+            letter-spacing: 5px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: #ccc;
+            margin-top: 10px;
+        }
+
+        #element-controls {
+            pointer-events: auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .element-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .element-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .btn-fire::after {
+            background: radial-gradient(#FF4500, transparent);
+        }
+
+        .btn-ice::after {
+            background: radial-gradient(#00BFFF, transparent);
+        }
+
+        .btn-void::after {
+            background: radial-gradient(#8A2BE2, transparent);
+        }
+
+        .element-btn:hover {
+            transform: scale(1.2);
+            border-color: #fff;
+        }
+
+        .element-btn:hover::after {
+            opacity: 1;
+        }
+
+        #balance-scale {
+            position: absolute;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #balance-fill {
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, #00BFFF, #FF4500);
+            position: absolute;
+            bottom: 0;
+            transition: height 0.5s ease-out;
+        }
+
+        .tooltip {
+            position: absolute;
+            font-size: 0.8rem;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%) translateX(100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #balance-scale:hover+.tooltip {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="overlay">
+        <header>
+            <h1>The Elemental Court</h1>
+            <div class="subtitle">Where Chaos Meets Consensus</div>
+        </header>
+
+        <div id="balance-scale">
+            <div id="balance-fill"></div>
+        </div>
+        <div class="tooltip">Thermal Equilibrium</div>
+
+        <div id="element-controls">
+            <button class="element-btn btn-fire" onclick="inject('fire')"></button>
+            <button class="element-btn btn-void" onclick="inject('void')"></button>
+            <button class="element-btn btn-ice" onclick="inject('ice')"></button>
+        </div>
+    </div>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // --- THREE JS SETUP ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 40;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio); // Sharpness
+        document.body.appendChild(renderer.domElement);
+
+        // --- PARTICLE SYSTEMS ---
+
+        // Helper to create particle cloud
+        function createCloud(color, count, spread) {
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(count * 3);
+            const velocities = []; // Custom attribute
+
+            for (let i = 0; i < count; i++) {
+                const r = spread * Math.pow(Math.random(), 0.5); // Spread logic
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+
+                positions[i * 3] = r * Math.sin(phi) * Math.cos(theta); // x
+                positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta); // y
+                positions[i * 3 + 2] = r * Math.cos(phi); // z
+
+                velocities.push({
+                    x: (Math.random() - 0.5) * 0.1,
+                    y: (Math.random() - 0.5) * 0.1,
+                    z: (Math.random() - 0.5) * 0.1
+                });
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const material = new THREE.PointsMaterial({
+                color: color,
+                size: 0.5,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+                sizeAttenuation: true
+            });
+
+            const points = new THREE.Points(geometry, material);
+            points.userData = { velocities: velocities };
+            return points;
+        }
+
+        // Fire (Left Argument)
+        const fireCloud = createCloud(0xFF4500, 2000, 15);
+        fireCloud.position.x = -15;
+        scene.add(fireCloud);
+
+        // Ice (Right Argument)
+        const iceCloud = createCloud(0x00BFFF, 2000, 15);
+        iceCloud.position.x = 15;
+        scene.add(iceCloud);
+
+        // The Singularity (Judge)
+        const voidGeo = new THREE.SphereGeometry(3, 32, 32);
+        const voidMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const singularity = new THREE.Mesh(voidGeo, voidMat);
+
+        // Accretion Disk
+        const diskGeo = new THREE.RingGeometry(3.5, 6, 32);
+        const diskMat = new THREE.MeshBasicMaterial({
+            color: 0x8A2BE2,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.5
+        });
+        const disk = new THREE.Mesh(diskGeo, diskMat);
+        disk.rotation.x = Math.PI / 2;
+        singularity.add(disk);
+        scene.add(singularity);
+
+        // --- ANIMATION ---
+
+        let time = 0;
+        let activeInjection = null;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.01;
+
+            // Rotate Singularity
+            singularity.rotation.y -= 0.05;
+            singularity.rotation.z += 0.01;
+
+            // Accretion wobble
+            disk.rotation.x = (Math.PI / 2) + Math.sin(time) * 0.2;
+
+            // Animate Particles
+            [fireCloud, iceCloud].forEach(cloud => {
+                const positions = cloud.geometry.attributes.position.array;
+                const vels = cloud.userData.velocities;
+
+                for (let i = 0; i < vels.length; i++) {
+                    // Orbit logic
+                    const x = positions[i * 3];
+                    const z = positions[i * 3 + 2];
+
+                    // Simple rotation around local center
+                    const speed = 0.02;
+                    const newX = x * Math.cos(speed) - z * Math.sin(speed);
+                    const newZ = x * Math.sin(speed) + z * Math.cos(speed);
+
+                    positions[i * 3] = newX;
+                    positions[i * 3 + 2] = newZ;
+
+                    // Pulse
+                    positions[i * 3 + 1] += Math.sin(time + x) * 0.05;
+                }
+                cloud.geometry.attributes.position.needsUpdate = true;
+                cloud.rotation.y += 0.005;
+            });
+
+            // Interaction: If injecting, pull clouds to center
+            if (activeInjection === 'void') {
+                fireCloud.position.x = THREE.MathUtils.lerp(fireCloud.position.x, -5, 0.05);
+                iceCloud.position.x = THREE.MathUtils.lerp(iceCloud.position.x, 5, 0.05);
+                singularity.scale.setScalar(1.5);
+            } else {
+                fireCloud.position.x = THREE.MathUtils.lerp(fireCloud.position.x, -15, 0.05);
+                iceCloud.position.x = THREE.MathUtils.lerp(iceCloud.position.x, 15, 0.05);
+                singularity.scale.setScalar(1.0);
+            }
+
+            if (activeInjection === 'fire') {
+                fireCloud.scale.setScalar(1.5);
+                iceCloud.scale.setScalar(0.8);
+            } else if (activeInjection === 'ice') {
+                fireCloud.scale.setScalar(0.8);
+                iceCloud.scale.setScalar(1.5);
+            } else {
+                fireCloud.scale.setScalar(1);
+                iceCloud.scale.setScalar(1);
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // --- LOGIC ---
+
+        function inject(type) {
+            activeInjection = type;
+
+            // Reset after delay
+            setTimeout(() => {
+                activeInjection = null;
+            }, 1000);
+
+            // Update UI bar
+            const bar = document.getElementById('balance-fill');
+            if (type === 'fire') {
+                bar.style.height = "80%";
+                bar.style.background = "linear-gradient(to top, #FF4500, #FF0000)";
+            } else if (type === 'ice') {
+                bar.style.height = "20%";
+                bar.style.background = "linear-gradient(to top, #00BFFF, #0000FF)";
+            } else {
+                bar.style.height = "50%";
+                bar.style.background = "linear-gradient(to top, #00BFFF, #FF4500)";
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    </script>
+</body>
+
+</html>

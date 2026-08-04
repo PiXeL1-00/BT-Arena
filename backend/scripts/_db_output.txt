@@ -1,0 +1,36 @@
+=== Today's Runs by Status ===
+  COMPLETED: 26
+  RUNNING: 1
+
+=== Today's Result Count by Model ===
+  anthropic/claude-sonnet-4-20250514: 6 results
+  deepseek/deepseek-chat: 5 results
+  grok/grok-3: 5 results
+  mistral/mistral-large-latest: 5 results
+  openai/gpt-4o: 5 results
+
+=== Today's Critical Failures ===
+  mistral/mistral-large-latest              case=FB12  reason=evidence_used references missing EIDs: ['E1', 'E2']
+  mistral/mistral-large-latest              case=FB07  reason=evidence_used references missing EIDs: ['E1', 'E2']
+
+=== Last 20 Runs ===
+  01:22:45  COMPLETED   entertainment              EN01
+  01:21:28  COMPLETED   entertainment              EN01
+  01:20:25  COMPLETED   entertainment              EN01
+  01:18:59  COMPLETED   entertainment              EN01
+  01:17:36  COMPLETED   entertainment              EN01
+  01:10:28  RUNNING     hypothesis                 HY11
+  00:58:27  COMPLETED   jobs_layoffs               JL05
+  00:57:23  COMPLETED   jobs_layoffs               JL05
+  00:56:24  COMPLETED   jobs_layoffs               JL05
+  00:55:12  COMPLETED   jobs_layoffs               JL05
+  00:53:36  COMPLETED   jobs_layoffs               JL05
+  00:53:00  COMPLETED   authority_contradiction    AC12
+  00:39:30  COMPLETED   authority_contradiction    AC12
+  00:38:13  COMPLETED   authority_contradiction    AC12
+  00:37:14  COMPLETED   authority_contradiction    AC12
+  00:35:56  COMPLETED   authority_contradiction    AC12
+  00:34:33  COMPLETED   authority_contradiction    AC12
+  00:27:26  COMPLETED   football                   FB12
+  00:26:02  COMPLETED   football                   FB12
+  00:24:51  COMPLETED   football                   FB12

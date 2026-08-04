@@ -1,0 +1,230 @@
+.ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: hsl(222 30% 6%);
+}
+
+/* Drifting radial blobs */
+.ambient::before,
+.ambient::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.35;
+    will-change: transform;
+}
+
+.ambient::before {
+    width: 50vw;
+    height: 50vw;
+    top: -15%;
+    left: -10%;
+    background: radial-gradient(circle, hsl(185 60% 40% / 0.22), transparent 70%);
+    animation: drift-a 28s ease-in-out infinite alternate;
+}
+
+.ambient::after {
+    width: 44vw;
+    height: 44vw;
+    bottom: -18%;
+    right: -8%;
+    background: radial-gradient(circle, hsl(35 80% 48% / 0.14), transparent 70%);
+    animation: drift-b 32s ease-in-out infinite alternate;
+}
+
+/* Third blob via a child */
+.blob {
+    position: absolute;
+    width: 38vw;
+    height: 38vw;
+    top: 40%;
+    left: 55%;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: 0.2;
+    background: radial-gradient(circle, hsl(217 60% 50% / 0.18), transparent 65%);
+    animation: drift-c 36s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+/* Film-grain noise overlay */
+.noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    pointer-events: none;
+}
+
+/* Vignette */
+.vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 40%, hsl(222 30% 3% / 0.5) 100%);
+    pointer-events: none;
+}
+
+/* Starfield — rendered above vignette/noise */
+.stars-sm,
+.stars-md,
+.stars-lg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.stars-sm {
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    box-shadow:
+        2vw 5vh 0 0 rgba(255, 255, 255, 0.6),
+        7vw 12vh 0 0 rgba(255, 255, 255, 0.5),
+        14vw 8vh 0 0 rgba(255, 255, 255, 0.7),
+        21vw 22vh 0 0 rgba(255, 255, 255, 0.4),
+        28vw 3vh 0 0 rgba(255, 255, 255, 0.6),
+        33vw 35vh 0 0 rgba(255, 255, 255, 0.5),
+        11vw 48vh 0 0 rgba(255, 255, 255, 0.6),
+        40vw 15vh 0 0 rgba(255, 255, 255, 0.4),
+        46vw 55vh 0 0 rgba(255, 255, 255, 0.7),
+        53vw 8vh 0 0 rgba(255, 255, 255, 0.5),
+        58vw 42vh 0 0 rgba(255, 255, 255, 0.6),
+        64vw 28vh 0 0 rgba(255, 255, 255, 0.4),
+        70vw 62vh 0 0 rgba(255, 255, 255, 0.5),
+        76vw 18vh 0 0 rgba(255, 255, 255, 0.7),
+        82vw 75vh 0 0 rgba(255, 255, 255, 0.4),
+        88vw 38vh 0 0 rgba(255, 255, 255, 0.6),
+        93vw 52vh 0 0 rgba(255, 255, 255, 0.5),
+        97vw 10vh 0 0 rgba(255, 255, 255, 0.4),
+        5vw 72vh 0 0 rgba(255, 255, 255, 0.6),
+        18vw 85vh 0 0 rgba(255, 255, 255, 0.5),
+        25vw 65vh 0 0 rgba(255, 255, 255, 0.7),
+        36vw 78vh 0 0 rgba(255, 255, 255, 0.4),
+        44vw 92vh 0 0 rgba(255, 255, 255, 0.5),
+        52vw 70vh 0 0 rgba(255, 255, 255, 0.6),
+        60vw 88vh 0 0 rgba(255, 255, 255, 0.4),
+        68vw 95vh 0 0 rgba(255, 255, 255, 0.5),
+        75vw 82vh 0 0 rgba(255, 255, 255, 0.7),
+        84vw 90vh 0 0 rgba(255, 255, 255, 0.4),
+        91vw 68vh 0 0 rgba(255, 255, 255, 0.6),
+        3vw 30vh 0 0 rgba(255, 255, 255, 0.5),
+        15vw 58vh 0 0 rgba(255, 255, 255, 0.4),
+        48vw 25vh 0 0 rgba(255, 255, 255, 0.6),
+        72vw 45vh 0 0 rgba(255, 255, 255, 0.5),
+        86vw 15vh 0 0 rgba(255, 255, 255, 0.7),
+        95vw 30vh 0 0 rgba(255, 255, 255, 0.4),
+        30vw 50vh 0 0 rgba(255, 255, 255, 0.5),
+        55vw 35vh 0 0 rgba(255, 255, 255, 0.6),
+        9vw 93vh 0 0 rgba(255, 255, 255, 0.4),
+        42vw 2vh 0 0 rgba(255, 255, 255, 0.7),
+        66vw 12vh 0 0 rgba(255, 255, 255, 0.5),
+        79vw 55vh 0 0 rgba(255, 255, 255, 0.6),
+        22vw 40vh 0 0 rgba(255, 255, 255, 0.4),
+        37vw 88vh 0 0 rgba(255, 255, 255, 0.5),
+        62vw 72vh 0 0 rgba(255, 255, 255, 0.7),
+        50vw 60vh 0 0 rgba(255, 255, 255, 0.4);
+    animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+.stars-md {
+    width: 1.5px;
+    height: 1.5px;
+    border-radius: 50%;
+    box-shadow:
+        10vw 10vh 0 0 rgba(255, 255, 255, 0.7),
+        24vw 25vh 0 0 rgba(255, 255, 255, 0.6),
+        38vw 42vh 0 0 rgba(255, 255, 255, 0.8),
+        52vw 18vh 0 0 rgba(255, 255, 255, 0.6),
+        66vw 58vh 0 0 rgba(255, 255, 255, 0.7),
+        80vw 32vh 0 0 rgba(255, 255, 255, 0.6),
+        4vw 65vh 0 0 rgba(255, 255, 255, 0.8),
+        18vw 80vh 0 0 rgba(255, 255, 255, 0.6),
+        34vw 5vh 0 0 rgba(255, 255, 255, 0.7),
+        48vw 72vh 0 0 rgba(255, 255, 255, 0.6),
+        62vw 48vh 0 0 rgba(255, 255, 255, 0.8),
+        76vw 85vh 0 0 rgba(255, 255, 255, 0.6),
+        90vw 22vh 0 0 rgba(255, 255, 255, 0.7),
+        8vw 38vh 0 0 rgba(255, 255, 255, 0.6),
+        44vw 90vh 0 0 rgba(255, 255, 255, 0.8),
+        56vw 30vh 0 0 rgba(255, 255, 255, 0.6),
+        70vw 8vh 0 0 rgba(255, 255, 255, 0.7),
+        84vw 62vh 0 0 rgba(255, 255, 255, 0.6),
+        28vw 55vh 0 0 rgba(255, 255, 255, 0.8),
+        94vw 45vh 0 0 rgba(255, 255, 255, 0.6),
+        16vw 95vh 0 0 rgba(255, 255, 255, 0.7),
+        42vw 35vh 0 0 rgba(255, 255, 255, 0.6),
+        73vw 72vh 0 0 rgba(255, 255, 255, 0.8),
+        58vw 15vh 0 0 rgba(255, 255, 255, 0.7),
+        32vw 68vh 0 0 rgba(255, 255, 255, 0.6);
+    animation: twinkle 8s ease-in-out 1s infinite alternate;
+}
+
+.stars-lg {
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    box-shadow:
+        15vw 20vh 0 0.5px rgba(200, 220, 255, 0.9),
+        35vw 12vh 0 0.5px rgba(255, 240, 210, 0.8),
+        55vw 45vh 0 0.5px rgba(200, 220, 255, 0.85),
+        75vw 25vh 0 0.5px rgba(255, 250, 230, 0.8),
+        92vw 60vh 0 0.5px rgba(200, 230, 255, 0.9),
+        8vw 55vh 0 0.5px rgba(255, 240, 220, 0.8),
+        45vw 80vh 0 0.5px rgba(200, 220, 255, 0.85),
+        68vw 38vh 0 0.5px rgba(255, 250, 240, 0.8),
+        25vw 75vh 0 0.5px rgba(200, 230, 255, 0.9),
+        85vw 48vh 0 0.5px rgba(255, 245, 225, 0.8),
+        50vw 5vh 0 0.5px rgba(200, 220, 255, 0.85),
+        3vw 88vh 0 0.5px rgba(255, 240, 210, 0.8);
+    animation: twinkle 10s ease-in-out 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes drift-a {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(8vw, 6vh) scale(1.15);
+    }
+}
+
+@keyframes drift-b {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(-6vw, -8vh) scale(1.1);
+    }
+}
+
+@keyframes drift-c {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(-4vw, 5vh) scale(1.2);
+    }
+}

@@ -1,0 +1,80 @@
+name: Build & Push to GHCR
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip_backend:
+        description: "Skip backend build"
+        type: boolean
+        default: false
+      skip_frontend:
+        description: "Skip frontend build"
+        type: boolean
+        default: false
+
+env:
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE: ghcr.io/${{ github.repository_owner }}/galileo-backend
+  FRONTEND_IMAGE: ghcr.io/${{ github.repository_owner }}/galileo-frontend
+
+jobs:
+  build-backend:
+    if: ${{ !inputs.skip_backend }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # ONNX models are gitignored. Download from release assets.
+      # Uncomment and configure once models are uploaded as a GitHub Release:
+      # - name: Download ONNX models
+      #   run: |
+      #     mkdir -p backend/models/nli backend/models/embed
+      #     gh release download v1.0-models -p "models.tar.gz" -D /tmp
+      #     tar -xzf /tmp/models.tar.gz -C backend/models/
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:latest
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+
+  build-frontend:
+    if: ${{ !inputs.skip_frontend }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:latest
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_ADMIN_API_KEY=${{ secrets.NEXT_PUBLIC_ADMIN_API_KEY }}

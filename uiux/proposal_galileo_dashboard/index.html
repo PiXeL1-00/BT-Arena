@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Dashboard Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: rgba(22, 27, 34, 0.6);
+            --bg-card-hover: rgba(30, 37, 46, 0.8);
+            --accent-blue: #2f81f7;
+            --accent-cyan: #22d3ee;
+            --accent-green: #3fb950;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+            --accent-red: #f85149;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 70px 1fr 320px;
+            min-height: 100vh;
+        }
+
+        /* === SIDEBAR === */
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            gap: 8px;
+        }
+
+        .sidebar-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        .sidebar-icon:hover {
+            background: var(--glass);
+            color: var(--text-primary);
+        }
+
+        .sidebar-icon.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .sidebar-spacer {
+            flex: 1;
+        }
+
+        /* === MAIN CONTENT === */
+        .main-content {
+            padding: 32px 40px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-secondary);
+            padding: 6px;
+            border-radius: 30px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            border: none;
+            background: transparent;
+        }
+
+        .nav-tab.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            min-width: 280px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 18px;
+        }
+
+        .icon-btn.primary {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .icon-btn.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            padding-top: 40px;
+        }
+
+        .hero-title h1 {
+            font-size: 52px;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-title h1 span {
+            color: var(--text-secondary);
+        }
+
+        .visualization-container {
+            position: relative;
+            height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #brain-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .viz-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .viz-overlay-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .viz-overlay-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .viz-overlay-text p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Grid */
+        .stats-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-section h3::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .stat-icon.blue {
+            background: rgba(47, 129, 247, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .stat-icon.green {
+            background: rgba(63, 185, 80, 0.15);
+            color: var(--accent-green);
+        }
+
+        .stat-icon.purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .stat-icon.orange {
+            background: rgba(249, 115, 22, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .stat-chart {
+            height: 60px;
+            position: relative;
+        }
+
+        .stat-badge {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent-blue);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Bottom Cards */
+        .bottom-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bottom-section h3::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+        }
+
+        .model-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .model-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .model-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-blue);
+        }
+
+        .model-card.active .model-tag {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .model-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            border: 1px solid var(--border);
+        }
+
+        .model-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .model-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* === RIGHT PANEL === */
+        .right-panel {
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            padding: 32px 24px;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 32px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .panel-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .panel-nav button {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .schedule-card {
+            background: var(--accent-blue);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .schedule-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .schedule-date {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .date-picker {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+        }
+
+        .date-picker span {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .date-nav {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .date-nav button {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .llm-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .llm-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .llm-item:hover {
+            background: var(--glass);
+        }
+
+        .llm-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border: 2px solid var(--border);
+        }
+
+        .llm-avatar.gpt {
+            background: linear-gradient(135deg, #10a37f, #0d8a6d);
+        }
+
+        .llm-avatar.claude {
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
+        .llm-avatar.gemini {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+        }
+
+        .llm-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .llm-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .llm-status {
+            margin-left: auto;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-green);
+        }
+
+        .llm-status.offline {
+            background: var(--text-muted);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #1a6ed8;
+            transform: translateY(-2px);
+        }
+
+        .leaderboard {
+            margin-top: 24px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leaderboard-rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .leaderboard-rank.gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e1e1e;
+        }
+
+        .leaderboard-rank.silver {
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            color: white;
+        }
+
+        .leaderboard-rank.bronze {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            color: white;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .leaderboard-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .leaderboard-score {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .waveform {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 30px;
+        }
+
+        .waveform span {
+            width: 3px;
+            background: var(--accent-cyan);
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+
+            0%,
+            100% {
+                height: 10px;
+                opacity: 0.5;
+            }
+
+            50% {
+                height: 25px;
+                opacity: 1;
+            }
+        }
+
+        .waveform span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .waveform span:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .waveform span:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .waveform span:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .waveform span:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+
+        .waveform span:nth-child(6) {
+            animation-delay: 0.5s;
+        }
+
+        .waveform span:nth-child(7) {
+            animation-delay: 0.4s;
+        }
+
+        .waveform span:nth-child(8) {
+            animation-delay: 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-icon active">🏠</div>
+            <div class="sidebar-icon">📊</div>
+            <div class="sidebar-icon">🎯</div>
+            <div class="sidebar-icon">⚖️</div>
+            <div class="sidebar-icon">📁</div>
+            <div class="sidebar-icon">⚙️</div>
+            <div class="sidebar-spacer"></div>
+            <div class="sidebar-icon">⏻</div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <span class="logo">G</span>
+                    <nav class="nav-tabs">
+                        <button class="nav-tab">Debates</button>
+                        <button class="nav-tab active">● Dashboard</button>
+                    </nav>
+                </div>
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Search debates, models...">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn primary">📞</button>
+                    <button class="icon-btn secondary">🔔</button>
+                    <div class="avatar">AV</div>
+                </div>
+            </header>
+
+            <div class="hero-section">
+                <div class="hero-title">
+                    <h1>Overview<br><span>Conditions</span></h1>
+                </div>
+                <div class="visualization-container">
+                    <div id="brain-canvas"></div>
+                    <div class="viz-overlay">
+                        <div class="viz-overlay-icon">🧠</div>
+                        <div class="viz-overlay-text">
+                            <h4>Consensus Score</h4>
+                            <p>87.5% Agreement</p>
+                        </div>
+                        <div class="waveform">
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="stats-section">
+                <h3>Model Performance</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon blue">📊</div>
+                            <span class="stat-label">Accuracy Score</span>
+                        </div>
+                        <div class="stat-value">92/100</div>
+                        <div class="stat-chart">
+                            <canvas id="chart1"></canvas>
+                            <div class="stat-badge">92</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon green">💭</div>
+                            <span class="stat-label">Reasoning Depth</span>
+                        </div>
+                        <div class="stat-value">85 pts</div>
+                        <div class="stat-chart">
+                            <canvas id="chart2"></canvas>
+                            <div class="stat-badge" style="background: var(--accent-green);">85</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon purple">🎯</div>
+                            <span class="stat-label">Evidence Quality</span>
+                        </div>
+                        <div class="stat-value">78-88</div>
+                        <div class="stat-chart">
+                            <canvas id="chart3"></canvas>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon orange">⚡</div>
+                            <span class="stat-label">Response Coherence</span>
+                        </div>
+                        <div class="stat-value">94/ml</div>
+                        <div class="stat-chart">
+                            <canvas id="chart4"></canvas>
+                            <div class="stat-badge" style="background: var(--accent-orange);">94</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bottom-section">
+                <h3>Active Debate Topics</h3>
+                <div class="model-cards">
+                    <div class="model-card">
+                        <div class="model-icon">🏛️</div>
+                        <div class="model-name">Policy Analysis</div>
+                        <span class="model-tag">In Progress</span>
+                    </div>
+                    <div class="model-card active">
+                        <div class="model-icon">🔬</div>
+                        <div class="model-name">Scientific Claims</div>
+                        <span class="model-tag">Active</span>
+                    </div>
+                    <div class="model-card">
+                        <div class="model-icon">💡</div>
+                        <div class="model-name">Logic Puzzles</div>
+                        <span class="model-tag">Queued</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <aside class="right-panel">
+            <section class="panel-section">
+                <div class="panel-header">
+                    <h3 class="panel-title">My Schedule</h3>
+                </div>
+                <div class="schedule-card">
+                    <div class="schedule-label">Next Debate</div>
+                    <div class="schedule-date">Fri, 24 Mar</div>
+                </div>
+                <div class="date-picker">
+                    <span>⬅</span>
+                    <span>20-March-23</span>
+                    <div class="date-nav">
+                        <button>←</button>
+                        <button>→</button>
+                    </div>
+                </div>
+
+                <div class="llm-list">
+                    <div class="llm-item">
+                        <div class="llm-avatar gpt">🤖</div>
+                        <div class="llm-info">
+                            <h4>GPT-4 Turbo</h4>
+                            <p>Orthodox Agent</p>
+                        </div>
+                        <div class="llm-status"></div>
+                    </div>
+                    <div class="llm-item">
+                        <div class="llm-avatar claude">🧡</div>
+                        <div class="llm-info">
+                            <h4>Claude 3 Opus</h4>
+                            <p>Heretic Agent</p>
+                        </div>
+                        <div class="llm-status"></div>
+                    </div>
+                    <div class="llm-item">
+                        <div class="llm-avatar gemini">✨</div>
+                        <div class="llm-info">
+                            <h4>Gemini Ultra</h4>
+                            <p>Judge</p>
+                        </div>
+                        <div class="llm-status offline"></div>
+                    </div>
+                </div>
+
+                <button class="action-btn">
+                    Start Debate Now
+                    <span>→</span>
+                </button>
+            </section>
+
+            <section class="panel-section leaderboard">
+                <div class="panel-header">
+                    <h3 class="panel-title">Leaderboard</h3>
+                    <div class="panel-nav">
+                        <button>←</button>
+                        <button>→</button>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="leaderboard-rank gold">1</div>
+                    <div class="leaderboard-info">
+                        <h4>GPT-4 Turbo</h4>
+                        <p>47 debates won</p>
+                    </div>
+                    <div class="leaderboard-score">94.2%</div>
+                </div>
+                <div class="leaderboard-item">
+                    <div class="leaderboard-rank silver">2</div>
+                    <div class="leaderboard-info">
+                        <h4>Claude 3 Opus</h4>
+                        <p>42 debates won</p>
+                    </div>
+                    <div class="leaderboard-score">91.8%</div>
+                </div>
+                <div class="leaderboard-item">
+                    <div class="leaderboard-rank bronze">3</div>
+                    <div class="leaderboard-info">
+                        <h4>Gemini Ultra</h4>
+                        <p>38 debates won</p>
+                    </div>
+                    <div class="leaderboard-score">89.5%</div>
+                </div>
+            </section>
+        </aside>
+    </div>
+
+    <script>
+        // === THREE.JS 3D BRAIN VISUALIZATION ===
+        const container = document.getElementById('brain-canvas');
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 10;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setClearColor(0x000000, 0);
+        container.appendChild(renderer.domElement);
+
+        // Create central brain/neural network
+        const brainGroup = new THREE.Group();
+
+        // Core sphere
+        const coreGeometry = new THREE.IcosahedronGeometry(2, 2);
+        const coreMaterial = new THREE.MeshBasicMaterial({
+            color: 0x2f81f7,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.6
+        });
+        const core = new THREE.Mesh(coreGeometry, coreMaterial);
+        brainGroup.add(core);
+
+        // Inner glow
+        const glowGeometry = new THREE.IcosahedronGeometry(2.2, 1);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x22d3ee,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.3
+        });
+        const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+        brainGroup.add(glow);
+
+        // Outer ring
+        const ringGeometry = new THREE.TorusGeometry(3.5, 0.05, 16, 100);
+        const ringMaterial = new THREE.MeshBasicMaterial({
+            color: 0xa855f7,
+            transparent: true,
+            opacity: 0.5
+        });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.rotation.x = Math.PI / 2;
+        brainGroup.add(ring);
+
+        // Second ring
+        const ring2 = new THREE.Mesh(
+            new THREE.TorusGeometry(4.5, 0.03, 16, 100),
+            new THREE.MeshBasicMaterial({ color: 0xf97316, transparent: true, opacity: 0.3 })
+        );
+        ring2.rotation.x = Math.PI / 3;
+        ring2.rotation.y = Math.PI / 4;
+        brainGroup.add(ring2);
+
+        // Floating data points
+        const pointsGeometry = new THREE.BufferGeometry();
+        const pointCount = 200;
+        const positions = new Float32Array(pointCount * 3);
+
+        for (let i = 0; i < pointCount; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            const r = 3 + Math.random() * 3;
+
+            positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+            positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+            positions[i * 3 + 2] = r * Math.cos(phi);
+        }
+
+        pointsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const pointsMaterial = new THREE.PointsMaterial({
+            color: 0x22d3ee,
+            size: 0.08,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const points = new THREE.Points(pointsGeometry, pointsMaterial);
+        brainGroup.add(points);
+
+        scene.add(brainGroup);
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+
+            brainGroup.rotation.y += 0.003;
+            core.rotation.x += 0.002;
+            glow.rotation.x -= 0.001;
+            ring.rotation.z += 0.002;
+            ring2.rotation.z -= 0.001;
+            points.rotation.y -= 0.001;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        // === CHART.JS MINI CHARTS ===
+        const chartConfig = {
+            type: 'line',
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { display: false }, y: { display: false } },
+                elements: { point: { radius: 0 }, line: { tension: 0.4, borderWidth: 2 } }
+            }
+        };
+
+        // Chart 1 - Bar
+        new Chart(document.getElementById('chart1'), {
+            type: 'bar',
+            data: {
+                labels: ['', '', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [60, 80, 70, 90, 75, 85, 92, 88],
+                    backgroundColor: 'rgba(47, 129, 247, 0.4)',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { display: false }, y: { display: false } }
+            }
+        });
+
+        // Chart 2 - Waveform
+        new Chart(document.getElementById('chart2'), {
+            ...chartConfig,
+            data: {
+                labels: ['', '', '', '', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [40, 55, 48, 65, 58, 75, 68, 85, 78, 85],
+                    borderColor: '#3fb950',
+                    fill: true,
+                    backgroundColor: 'rgba(63, 185, 80, 0.1)'
+                }]
+            }
+        });
+
+        // Chart 3 - Dual line
+        new Chart(document.getElementById('chart3'), {
+            ...chartConfig,
+            data: {
+                labels: ['', '', '', '', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [78, 80, 82, 79, 84, 81, 86, 83, 88, 85],
+                    borderColor: '#a855f7'
+                }, {
+                    data: [72, 74, 76, 73, 78, 75, 80, 77, 82, 79],
+                    borderColor: 'rgba(168, 85, 247, 0.4)'
+                }]
+            }
+        });
+
+        // Chart 4 - Waveform
+        new Chart(document.getElementById('chart4'), {
+            ...chartConfig,
+            data: {
+                labels: ['', '', '', '', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [85, 90, 88, 92, 89, 94, 91, 95, 93, 94],
+                    borderColor: '#f97316',
+                    fill: true,
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)'
+                }]
+            }
+        });
+    </script>
+</body>
+
+</html>

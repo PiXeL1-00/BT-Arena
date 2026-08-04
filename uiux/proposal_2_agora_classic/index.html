@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Agora Classic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Lato:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: '#F9F7F1',
+                        ink: '#1a1a1a',
+                        navy: '#1e3a8a',
+                        crimson: '#991b1b',
+                        gold: '#b45309',
+                    },
+                    fontFamily: {
+                        serif: ['Merriweather', 'serif'],
+                        display: ['Cinzel', 'serif'],
+                        sans: ['Lato', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'paper': '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-paper text-ink font-serif h-screen overflow-hidden flex flex-col antialiased">
+
+    <!-- Header -->
+    <header
+        class="h-20 border-b-2 border-stone-200 bg-white/50 backdrop-blur-sm flex items-center justify-center sticky top-0 z-10 shrink-0">
+        <div class="max-w-5xl w-full px-8 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-10 h-10 border-2 border-stone-800 rounded-full flex items-center justify-center font-display font-bold text-xl">
+                    G</div>
+                <h1 class="font-display text-2xl tracking-widest text-stone-900">GALILEO <span
+                        class="text-stone-500 font-normal">AGORA</span></h1>
+            </div>
+
+            <nav class="flex gap-8 font-sans text-sm font-bold tracking-wide text-stone-500">
+                <a href="#" class="text-stone-900 border-b-2 border-stone-900 pb-1">DEBATE HALL</a>
+                <a href="#" class="hover:text-stone-800 transition">ARCHIVES</a>
+                <a href="#" class="hover:text-stone-800 transition">METRICS</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex overflow-hidden">
+
+        <!-- Center Document -->
+        <div class="flex-1 overflow-y-auto relative scroll-smooth bg-paper">
+            <div class="max-w-4xl mx-auto py-12 px-12 min-h-full bg-white border-x border-stone-100 shadow-sm relative">
+
+                <!-- Topic Header -->
+                <div class="mb-12 text-center border-b-2 border-stone-100 pb-8">
+                    <span class="font-sans text-xs font-bold tracking-[0.2em] text-stone-400 uppercase mb-3 block">Case
+                        No. 88 // High Pressure</span>
+                    <h2 class="font-display text-3xl md:text-4xl leading-tight text-stone-900 mb-4">
+                        "Remote work negatively impacts<br><span class="italic text-crimson">junior developer
+                            growth</span>"
+                    </h2>
+                    <div class="flex justify-center gap-2 mt-4">
+                        <span class="px-3 py-1 bg-stone-100 rounded-full text-xs font-sans text-stone-600">Tech
+                            Culture</span>
+                        <span
+                            class="px-3 py-1 bg-stone-100 rounded-full text-xs font-sans text-stone-600">Employment</span>
+                    </div>
+                </div>
+
+                <!-- Debate Thread -->
+                <div class="space-y-12">
+
+                    <!-- Orthodox -->
+                    <article class="relative pl-8 border-l-4 border-navy/20">
+                        <div
+                            class="absolute -left-[34px] top-0 bg-paper border-2 border-navy text-navy w-12 h-12 rounded-full flex items-center justify-center z-10">
+                            <span class="font-display font-bold text-xl">O</span>
+                        </div>
+                        <header class="flex items-baseline justify-between mb-3 pl-4">
+                            <h3 class="font-display font-bold text-lg text-navy">The Orthodox View</h3>
+                            <span class="font-sans text-xs text-stone-400">14:02 PM</span>
+                        </header>
+                        <div
+                            class="prose prose-stone prose-lg max-w-none pl-4 text-stone-800 font-light leading-relaxed">
+                            <p>
+                                It is a fundamental truth of apprenticeship that <span
+                                    class="font-semibold text-navy">osmotic communication</span> is the primary vehicle
+                                for transfer of tacit knowledge. In a distributed environment, this channel is severed.
+                            </p>
+                            <p class="mt-4">
+                                Junior developers, lacking the confidence to interrupt seniors for "minor" questions,
+                                stagnate. The evidence is clear: teams reliant on asynchronous text communication show a
+                                marked decrease in rapid context acquisition. <sup
+                                    class="text-xs font-bold text-navy cursor-pointer">[1]</sup>
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Heretic -->
+                    <article class="relative pr-8 border-r-4 border-crimson/20 text-right">
+                        <div
+                            class="absolute -right-[34px] top-0 bg-paper border-2 border-crimson text-crimson w-12 h-12 rounded-full flex items-center justify-center z-10">
+                            <span class="font-display font-bold text-xl">H</span>
+                        </div>
+                        <header class="flex items-baseline justify-between mb-3 pr-4 flex-row-reverse">
+                            <h3 class="font-display font-bold text-lg text-crimson">The Heretic Rebuttal</h3>
+                            <span class="font-sans text-xs text-stone-400">14:03 PM</span>
+                        </header>
+                        <div
+                            class="prose prose-stone prose-lg max-w-none pr-4 text-stone-800 font-light leading-relaxed">
+                            <p>
+                                You cling to an antiquated model of mentorship. The open-plan office was never a temple
+                                of learning; it was a factory of distraction.
+                            </p>
+                            <p class="mt-4">
+                                Modern distributed architectures—utilizing pair programming tools and recorded
+                                huddles—create <em>permanent artifacts</em> of mentorship. Unlike a fleeting
+                                conversation, a recorded debugging session is a library asset. <sup
+                                    class="text-xs font-bold text-crimson cursor-pointer">[2]</sup>
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- The Judge -->
+                    <div class="my-16 flex items-center gap-4">
+                        <div class="h-px bg-stone-200 flex-1"></div>
+                        <div class="bg-stone-100 px-6 py-2 rounded-full border border-stone-200 shadow-sm">
+                            <span class="font-display text-stone-500 tracking-widest text-sm">JUDICIAL REVIEW</span>
+                        </div>
+                        <div class="h-px bg-stone-200 flex-1"></div>
+                    </div>
+
+                    <article class="bg-stone-50 p-8 border border-stone-200 rounded-sm shadow-sm relative">
+                        <div
+                            class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-ink text-white px-4 py-1 font-display text-sm tracking-widest shadow-lg">
+                            VERDICT RENDERED
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                            <div class="flex-1">
+                                <h4 class="font-display font-bold text-lg mb-2">Detailed Findings</h4>
+                                <p class="text-stone-700 italic border-l-2 border-stone-300 pl-4 py-1">
+                                    "While the Orthodox position correctly identifies the friction of remote initiation,
+                                    the Heretic provides superior evidence regarding the 'artifact value' of digital
+                                    mentorship."
+                                </p>
+                            </div>
+                            <div
+                                class="w-full md:w-64 border-t-2 md:border-t-0 md:border-l-2 border-stone-200 pt-4 md:pt-0 md:pl-6">
+                                <div class="mb-4">
+                                    <div
+                                        class="flex justify-between font-sans text-xs font-bold uppercase mb-1 text-stone-500">
+                                        Verdict</div>
+                                    <div class="text-2xl font-display font-bold text-stone-900">SUPPORTED</div>
+                                </div>
+                                <div class="mb-4">
+                                    <div
+                                        class="flex justify-between font-sans text-xs font-bold uppercase mb-1 text-stone-500">
+                                        Confidence</div>
+                                    <div class="w-full bg-stone-200 h-2 rounded-full overflow-hidden">
+                                        <div class="w-[92%] h-full bg-ink"></div>
+                                    </div>
+                                    <div class="text-right text-xs font-mono mt-1">92%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Annotations (Sticky) -->
+        <aside class="w-80 bg-paper border-l border-stone-200 hidden xl:block p-8 overflow-y-auto">
+            <h3 class="font-display text-sm font-bold border-b-2 border-stone-200 pb-2 mb-6 text-stone-400">CITATIONS
+            </h3>
+
+            <div class="space-y-6">
+                <div class="group cursor-pointer">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="font-bold text-navy bg-navy/10 px-2 py-0.5 rounded text-xs">[1]</span>
+                        <span class="font-sans text-[10px] uppercase tracking-wider text-stone-400">Harvard Business
+                            Review</span>
+                    </div>
+                    <p class="font-serif text-sm text-stone-600 leading-snug group-hover:text-stone-900 transition">
+                        "The loss of 'watercooler moments' correlates with a 30% drop in cross-departmental innovation."
+                    </p>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="font-bold text-crimson bg-crimson/10 px-2 py-0.5 rounded text-xs">[2]</span>
+                        <span class="font-sans text-[10px] uppercase tracking-wider text-stone-400">GitLab Report
+                            2024</span>
+                    </div>
+                    <p class="font-serif text-sm text-stone-600 leading-snug group-hover:text-stone-900 transition">
+                        Async-first documentation reduces repeated questions by 50% year-over-year.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="font-display text-sm font-bold border-b-2 border-stone-200 pb-2 mb-6 mt-12 text-stone-400">
+                ANALYSIS</h3>
+            <div class="p-4 bg-white border border-stone-200 shadow-sm">
+                <div class="font-sans text-xs font-bold text-stone-500 mb-2">SCORING</div>
+                <div class="flex justify-between items-end mb-2">
+                    <span class="font-display text-lg">Correctness</span>
+                    <span class="font-mono text-sm">48/50</span>
+                </div>
+                <div class="flex justify-between items-end mb-2">
+                    <span class="font-display text-lg">Grounding</span>
+                    <span class="font-mono text-sm">22/25</span>
+                </div>
+                <div class="mt-4 pt-4 border-t border-stone-100 flex justify-between">
+                    <span class="font-bold">TOTAL</span>
+                    <span class="font-bold text-xl">91/100</span>
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+</body>
+
+</html>

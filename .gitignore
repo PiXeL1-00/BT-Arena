@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+.venv/
+venv/
+.env
+
+# Node
+node_modules/
+.next/
+out/
+
+# IDE
+.vscode/
+.idea/
+.cursor/
+.agent/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+pgdata/
+
+# ML / ONNX models
+backend/models/
+
+# OpenClaw
+openclaw/
+
+# Misc
+*.log
+*.sql
+
+.env
+**/.env

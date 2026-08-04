@@ -1,0 +1,48 @@
+{
+  "id": "predictive_systems",
+  "version": "1.1",
+  "description": "Predictive systems subnet test cases.",
+  "meta": {"domain": "cross-domain", "topic": "predictive_systems", "galileo_requirement": "novel_testable_reasoning"},
+  "cases": [
+    {
+      "case_id": "SN6",
+      "topic": "Predictive Systems",
+      "claim": "SN6",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN6-E1", "summary": "Predictive systems subnet entry SN6.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN18",
+      "topic": "Predictive Systems",
+      "claim": "SN18",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN18-E1", "summary": "Predictive systems subnet entry SN18.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN41",
+      "topic": "Predictive Systems",
+      "claim": "SN41",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN41-E1", "summary": "Predictive systems subnet entry SN41.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN104",
+      "topic": "Predictive Systems",
+      "claim": "SN104",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN104-E1", "summary": "Predictive systems subnet entry SN104.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Proposal 16: Neural Weaver</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Space+Mono&display=swap');
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0a0a0a;
+            font-family: 'Rajdhani', sans-serif;
+            color: #fff;
+        }
+
+        #interface {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: grid;
+            grid-template-areas:
+                "header header header"
+                "stats main controls"
+                "footer footer footer";
+            grid-template-columns: 250px 1fr 250px;
+            grid-template-rows: 80px 1fr 60px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        header {
+            grid-area: header;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ff0055;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+
+        .status-badge {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid #00aaff;
+            color: #00aaff;
+            padding: 5px 15px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            border-radius: 4px;
+        }
+
+        #stats-panel {
+            grid-area: stats;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            pointer-events: auto;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-left: 2px solid #ff0055;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+        }
+
+        #controls {
+            grid-area: controls;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 20px;
+            pointer-events: auto;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 15px 30px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: right;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 0, 85, 0.2);
+            border-color: #ff0055;
+            padding-right: 40px;
+            letter-spacing: 2px;
+        }
+
+        #synapse-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s ease-out;
+            z-index: 100;
+        }
+
+        #verdict-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 6rem;
+            color: #fff;
+            text-shadow: 0 0 50px white;
+            opacity: 0;
+            transition: opacity 2s ease;
+            pointer-events: none;
+            z-index: 50;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="interface">
+        <header>
+            <h1>Neural Weaver</h1>
+            <div class="status-badge">Proposal 16 // Synaptic</div>
+        </header>
+
+        <div id="stats-panel">
+            <div class="stat-card">
+                <span class="stat-label">Firing Rate</span>
+                <span class="stat-value" id="rate-val">12 Hz</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Network Load</span>
+                <span class="stat-value" id="load-val">45%</span>
+            </div>
+        </div>
+
+        <div id="controls">
+            <button class="control-btn" onclick="stimulate()">Stimulate Network</button>
+            <button class="control-btn" onclick="synchronize()">Force Consensus</button>
+        </div>
+    </div>
+
+    <div id="synapse-flash"></div>
+    <div id="verdict-text">VERDICT<br>SYNCHRONIZED</div>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // --- SCENE SETUP ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a0a);
+        scene.fog = new THREE.FogExp2(0x0a0a0a, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 50;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // --- NEURAL NETWORK GENERATION ---
+
+        // 1. Neurons (Nodes)
+        const neuronGeo = new THREE.IcosahedronGeometry(0.5, 1);
+        const neuronMat = new THREE.MeshBasicMaterial({ color: 0x00aaff, transparent: true, opacity: 0.6 });
+        const activeMat = new THREE.MeshBasicMaterial({ color: 0xff0055, transparent: true, opacity: 1.0 });
+
+        const neurons = [];
+        const neuronCount = 150;
+
+        for (let i = 0; i < neuronCount; i++) {
+            const mesh = new THREE.Mesh(neuronGeo, neuronMat.clone());
+
+            // Sphere distribution
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = 20 + Math.random() * 20; // Radius between 20 and 40
+
+            mesh.position.x = r * Math.sin(phi) * Math.cos(theta);
+            mesh.position.y = r * Math.sin(phi) * Math.sin(theta);
+            mesh.position.z = r * Math.cos(phi);
+
+            mesh.userData = {
+                basePos: mesh.position.clone(),
+                pulseOffset: Math.random() * 10,
+                connections: []
+            };
+
+            scene.add(mesh);
+            neurons.push(mesh);
+        }
+
+        // 2. Synapses (Connections)
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x00aaff, transparent: true, opacity: 0.15 });
+        const lines = [];
+
+        // Connect nearby neurons
+        neurons.forEach((n1, i) => {
+            neurons.forEach((n2, j) => {
+                if (i >= j) return;
+                const dist = n1.position.distanceTo(n2.position);
+                if (dist < 10) {
+                    const geometry = new THREE.BufferGeometry().setFromPoints([n1.position, n2.position]);
+                    const line = new THREE.Line(geometry, lineMat);
+                    scene.add(line);
+                    lines.push({ mesh: line, n1: n1, n2: n2 });
+                    n1.userData.connections.push(line);
+                    n2.userData.connections.push(line);
+                }
+            });
+        });
+
+        // 3. The Core (Judge)
+        const coreGeo = new THREE.SphereGeometry(5, 32, 32);
+        const coreMat = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.9,
+            wireframe: true
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        scene.add(core);
+
+        // --- ANIMATION ---
+
+        let time = 0;
+        let stimulationLevel = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.02 + (stimulationLevel * 0.05);
+
+            // Core Pulse
+            const scale = 1 + Math.sin(time * 2) * 0.1 + stimulationLevel * 0.5;
+            core.scale.set(scale, scale, scale);
+            core.rotation.y += 0.01;
+            core.rotation.z += 0.005;
+
+            // Neuron Pulse & Drift
+            neurons.forEach(n => {
+                // Drift
+                n.position.x = n.userData.basePos.x + Math.sin(time + n.userData.pulseOffset) * 0.5;
+                n.position.y = n.userData.basePos.y + Math.cos(time + n.userData.pulseOffset) * 0.5;
+
+                // Color Logic
+                const pulse = Math.sin(time * 3 + n.userData.pulseOffset);
+                if (pulse > 0.8 || Math.random() < stimulationLevel * 0.1) {
+                    n.material.color.setHex(0xff0055); // Active
+                    n.scale.setScalar(1.5);
+                } else {
+                    n.material.color.setHex(0x00aaff); // Passive
+                    n.scale.setScalar(1);
+                }
+            });
+
+            // Update Lines
+            lines.forEach(l => {
+                const positions = l.mesh.geometry.attributes.position.array;
+                positions[0] = l.n1.position.x;
+                positions[1] = l.n1.position.y;
+                positions[2] = l.n1.position.z;
+                positions[3] = l.n2.position.x;
+                positions[4] = l.n2.position.y;
+                positions[5] = l.n2.position.z;
+                l.mesh.geometry.attributes.position.needsUpdate = true;
+
+                if (stimulationLevel > 0 && Math.random() < 0.1) {
+                    l.mesh.material.opacity = 0.8;
+                    l.mesh.material.color.setHex(0xffffff);
+                } else {
+                    l.mesh.material.opacity = 0.15;
+                    l.mesh.material.color.setHex(0x00aaff);
+                }
+            });
+
+            // Camera Orbit
+            const camSpeed = 0.002 + stimulationLevel * 0.01;
+            const x = camera.position.x;
+            const z = camera.position.z;
+            camera.position.x = x * Math.cos(camSpeed) - z * Math.sin(camSpeed);
+            camera.position.z = x * Math.sin(camSpeed) + z * Math.cos(camSpeed);
+            camera.lookAt(0, 0, 0);
+
+            // Cooldown stimulation
+            if (stimulationLevel > 0) stimulationLevel *= 0.98;
+
+            // Update UI
+            document.getElementById('rate-val').innerText = Math.floor(12 + stimulationLevel * 50) + " Hz";
+            document.getElementById('load-val').innerText = Math.floor(45 + stimulationLevel * 40) + "%";
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // --- INTERACTION ---
+
+        function stimulate() {
+            stimulationLevel = 1.0;
+            // Flash effect
+            const flash = document.getElementById('synapse-flash');
+            flash.style.opacity = 0.8;
+            setTimeout(() => { flash.style.opacity = 0; }, 100);
+        }
+
+        function synchronize() {
+            stimulationLevel = 0;
+
+            // Freeze effect
+            neurons.forEach(n => {
+                n.material.color.setHex(0xffffff);
+                n.scale.setScalar(0.5);
+            });
+            lines.forEach(l => {
+                l.mesh.material.opacity = 0.05;
+            });
+
+            core.material.color.setHex(0x00aaff);
+            core.scale.setScalar(5); // Big expand
+
+            const verdict = document.getElementById('verdict-text');
+            verdict.style.opacity = 1;
+
+            setTimeout(() => {
+                verdict.style.opacity = 0;
+                core.material.color.setHex(0xffffff);
+                core.scale.setScalar(1);
+            }, 3000);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>

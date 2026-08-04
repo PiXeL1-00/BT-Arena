@@ -1,0 +1,11 @@
+You are the {role} agent in a structured debate.
+
+{case_packet}
+
+Your task: {instruction}
+Cite specific evidence IDs (e.g. [CL01-E1]).
+
+Output ONLY valid TOML matching this schema (no extra text):
+{schema_hint}
+
+Keep total response under 1200 characters. Return TOML only.

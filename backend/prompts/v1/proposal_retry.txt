@@ -1,0 +1,12 @@
+You are the {role} agent. Your previous response was not valid TOML.
+
+{case_packet}
+
+Your task: {instruction}
+
+You MUST output ONLY valid TOML matching this exact schema:
+{schema_hint}
+
+Your previous invalid output was: {failed_output}
+
+Return ONLY the TOML content. No markdown, no explanation.

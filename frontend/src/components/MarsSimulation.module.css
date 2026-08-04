@@ -1,0 +1,459 @@
+/* ============================================================
+   Mars Mission Simulation — CSS Module
+   ============================================================ */
+
+/* ---------- Starfield background ---------- */
+.starfield {
+    position: relative;
+    overflow: hidden;
+}
+
+.starfield::before,
+.starfield::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.starfield::before {
+    background-image:
+        radial-gradient(1.5px 1.5px at 10% 15%, rgba(255, 255, 255, 0.7) 50%, transparent 50%),
+        radial-gradient(1px 1px at 25% 40%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
+        radial-gradient(1.2px 1.2px at 50% 10%, rgba(255, 255, 255, 0.6) 50%, transparent 50%),
+        radial-gradient(1px 1px at 70% 65%, rgba(255, 255, 255, 0.4) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 85% 25%, rgba(255, 255, 255, 0.65) 50%, transparent 50%),
+        radial-gradient(1px 1px at 15% 80%, rgba(255, 255, 255, 0.45) 50%, transparent 50%),
+        radial-gradient(1.3px 1.3px at 40% 55%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
+        radial-gradient(1px 1px at 60% 90%, rgba(255, 255, 255, 0.35) 50%, transparent 50%),
+        radial-gradient(1.2px 1.2px at 90% 50%, rgba(255, 255, 255, 0.55) 50%, transparent 50%),
+        radial-gradient(1px 1px at 35% 20%, rgba(255, 255, 255, 0.4) 50%, transparent 50%),
+        radial-gradient(0.8px 0.8px at 5% 50%, rgba(255, 255, 255, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 78% 12%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
+        radial-gradient(1.4px 1.4px at 55% 75%, rgba(255, 255, 255, 0.6) 50%, transparent 50%),
+        radial-gradient(0.9px 0.9px at 92% 82%, rgba(255, 255, 255, 0.35) 50%, transparent 50%);
+    animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+.starfield::after {
+    background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.4) 50%, transparent 50%),
+        radial-gradient(1.2px 1.2px at 45% 70%, rgba(255, 255, 255, 0.55) 50%, transparent 50%),
+        radial-gradient(1px 1px at 65% 20%, rgba(255, 255, 255, 0.35) 50%, transparent 50%),
+        radial-gradient(1.3px 1.3px at 80% 55%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
+        radial-gradient(1px 1px at 30% 85%, rgba(255, 255, 255, 0.45) 50%, transparent 50%),
+        radial-gradient(0.8px 0.8px at 12% 60%, rgba(255, 255, 255, 0.3) 50%, transparent 50%),
+        radial-gradient(1.1px 1.1px at 58% 42%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
+        radial-gradient(1px 1px at 95% 15%, rgba(255, 255, 255, 0.4) 50%, transparent 50%);
+    animation: twinkle 8s ease-in-out 2s infinite alternate-reverse;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ---------- Planets ---------- */
+.earth {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%,
+            #6db3f2 0%,
+            #3b82f6 30%,
+            #1e40af 60%,
+            #1e3a5f 85%,
+            #0f172a 100%);
+    box-shadow:
+        0 0 30px rgba(59, 130, 246, 0.5),
+        0 0 60px rgba(59, 130, 246, 0.25),
+        inset -8px -6px 20px rgba(0, 0, 0, 0.4);
+    position: relative;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.earth::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+    animation: planetGlow 4s ease-in-out infinite alternate;
+}
+
+.mars {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%,
+            #e8845a 0%,
+            #c1440e 35%,
+            #8b2500 65%,
+            #5a1a00 90%,
+            #2d0d00 100%);
+    box-shadow:
+        0 0 40px rgba(193, 68, 14, 0.6),
+        0 0 80px rgba(193, 68, 14, 0.25),
+        inset -10px -8px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.mars::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(193, 68, 14, 0.18) 0%, transparent 70%);
+    animation: planetGlow 5s ease-in-out 1s infinite alternate;
+}
+
+@keyframes planetGlow {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+}
+
+/* ---------- Trajectory Arc ---------- */
+.trajectoryArc {
+    stroke-dasharray: 12, 8;
+    animation: dashFlow 20s linear infinite;
+    filter: drop-shadow(0 0 4px rgba(103, 232, 249, 0.4));
+}
+
+@keyframes dashFlow {
+    to {
+        stroke-dashoffset: -200;
+    }
+}
+
+/* ---------- Particles along trajectory ---------- */
+.particle {
+    r: 2.5;
+    fill: #67e8f9;
+    filter: drop-shadow(0 0 4px rgba(103, 232, 249, 0.8));
+}
+
+.particle1 {
+    animation: particleFlow 6s linear infinite;
+}
+
+.particle2 {
+    animation: particleFlow 6s linear 2s infinite;
+}
+
+.particle3 {
+    animation: particleFlow 6s linear 4s infinite;
+}
+
+@keyframes particleFlow {
+    0% {
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* ---------- LLM Satellite Nodes ---------- */
+.llmNode {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.llmNode:hover {
+    transform: scale(1.15);
+}
+
+.nodeRing {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    backdrop-filter: blur(8px);
+    border: 2px solid;
+    transition: box-shadow 0.3s ease;
+}
+
+.nodeRing::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    opacity: 0.3;
+    animation: orbitPulse 3s ease-in-out infinite;
+}
+
+@keyframes orbitPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: scale(1.25);
+        opacity: 0.5;
+    }
+}
+
+.nodeLabel {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* ---------- Tooltip ---------- */
+.tooltip {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 11px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateX(-50%) translateY(4px);
+    z-index: 100;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.llmNode:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(15, 23, 42, 0.95);
+}
+
+/* ---------- Domain Cards ---------- */
+.domainCard {
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.domainCard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+}
+
+.domainCard:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Progress Bars ---------- */
+.barTrack {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 99px;
+    overflow: hidden;
+    position: relative;
+}
+
+.barFill {
+    height: 100%;
+    border-radius: 99px;
+    transform-origin: left;
+    animation: barGrow 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform: scaleX(0);
+    position: relative;
+}
+
+.barFill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2));
+    border-radius: 99px;
+}
+
+@keyframes barGrow {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+/* ---------- Verdict Banner ---------- */
+.verdict {
+    background: linear-gradient(135deg,
+            rgba(16, 185, 129, 0.08) 0%,
+            rgba(59, 130, 246, 0.08) 50%,
+            rgba(193, 68, 14, 0.08) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 24px 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+.verdict::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(135deg,
+            rgba(16, 185, 129, 0.3),
+            rgba(59, 130, 246, 0.3),
+            rgba(193, 68, 14, 0.3));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* ---------- Score badge in verdict ---------- */
+.scoreBadge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.3s ease;
+    min-width: 90px;
+}
+
+.scoreBadge:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+.crownBadge {
+    border-color: rgba(250, 204, 21, 0.3) !important;
+    background: rgba(250, 204, 21, 0.06) !important;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.1);
+}
+
+/* ---------- Hero section ---------- */
+.heroSection {
+    position: relative;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+/* ---------- Planet Labels ---------- */
+.planetLabel {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px currentColor;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .earth {
+        width: 60px;
+        height: 60px;
+    }
+
+    .mars {
+        width: 75px;
+        height: 75px;
+    }
+
+    .nodeRing {
+        width: 32px;
+        height: 32px;
+    }
+
+    .nodeLabel {
+        font-size: 8px;
+    }
+
+    .heroSection {
+        min-height: 240px;
+    }
+
+    .domainCard {
+        padding: 14px;
+    }
+
+    .verdict {
+        padding: 16px 20px;
+    }
+
+    .scoreBadge {
+        min-width: 72px;
+        padding: 8px 10px;
+    }
+}

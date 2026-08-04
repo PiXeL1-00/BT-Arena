@@ -1,0 +1,21 @@
+You are the {answerer} agent answering cross-examination questions.
+
+{case_packet}
+
+Your proposal:
+{own_proposal_toml}
+
+{memo_text}
+
+Questions to answer:
+{questions_toml}
+
+For each question, provide a direct answer. You MUST:
+- Cite evidence IDs in your answer OR explicitly say "INSUFFICIENT evidence in pack"
+- Set "admission" to "{admission_insufficient}" if you lack evidence, "{admission_uncertain}" if you're unsure,
+  or "{admission_none}" if you stand by your position
+
+Output ONLY valid TOML:
+{answers_schema_hint}
+
+Keep total response under 1200 characters. Return TOML only.

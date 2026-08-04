@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Event Horizon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Geist+Mono:wght@100..900&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#000000',
+                        accretion: '#f97316',
+                        relativity: '#3b82f6'
+                    },
+                    fontFamily: {
+                        display: ['Michroma', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .hud-border {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.05), transparent);
+        }
+    </style>
+</head>
+
+<body class="text-white font-mono h-screen w-screen relative">
+
+    <!-- 3D Canvas -->
+    <div id="horizon" class="absolute inset-0 z-0"></div>
+
+    <!-- Interface -->
+    <div class="absolute inset-0 z-10 pointer-events-none p-10 flex flex-col justify-between">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center pointer-events-auto">
+            <div>
+                <h1 class="font-display text-4xl tracking-widest uppercase text-glow">Event Horizon</h1>
+                <div class="flex gap-4 mt-2 text-xs text-blue-400">
+                    <span>COORDINATES: [ERROR_NULL]</span>
+                    <span>GRAVITY: 9.8e+12</span>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <div class="text-4xl font-bold text-orange-500">T-MINUS 00:00</div>
+                <div class="text-xs text-orange-300">SINGULARITY IMMINENT</div>
+            </div>
+        </div>
+
+        <!-- Center Overlay (Debate content) -->
+        <div class="absolute top-1/2 left-8 -translate-y-1/2 w-80 pointer-events-auto">
+            <div class="hud-border p-6 mb-4 backdrop-blur-sm">
+                <div class="text-xs font-bold text-blue-500 mb-1">INCOMING TRANSMISSION / ORTHODOX</div>
+                <p class="text-sm leading-relaxed text-gray-300">
+                    "The expansion of the model's context window creates a gravitational pull on memory retrieval
+                    tasks..."
+                </p>
+            </div>
+            <div class="hud-border p-6 backdrop-blur-sm border-l-4 border-l-orange-500">
+                <div class="text-xs font-bold text-orange-500 mb-1">WARNING / HERETIC DETECTED</div>
+                <p class="text-sm leading-relaxed text-gray-300">
+                    "False. Context length is linear, but reasoning depth is exponential. You are confusing mass with
+                    volume."
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center pointer-events-auto">
+            <button
+                class="border border-white/20 hover:bg-white/10 text-white px-8 py-2 rounded-full font-display text-sm tracking-widest transition-all">
+                INITIATE COLLAPSE
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Three.js Particle System
+        const container = document.getElementById('horizon');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+        camera.position.y = 10;
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // --- Black Hole / Accretion Disk ---
+
+        // 1. The Disk (Particles)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 15000;
+        const posArray = new Float32Array(particlesCount * 3);
+        const colorArray = new Float32Array(particlesCount * 3);
+
+        const colorInner = new THREE.Color(0xf97316); // Orange
+        const colorOuter = new THREE.Color(0x3b82f6); // Blue
+
+        for (let i = 0; i < particlesCount; i++) {
+            // Spiral distribution
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 5 + Math.random() * 20; // 5 to 25
+            const spiralOffset = angle + (radius * 0.2); // Twist
+
+            const x = Math.cos(spiralOffset) * radius;
+            const z = Math.sin(spiralOffset) * radius;
+            const y = (Math.random() - 0.5) * (radius * 0.1); // Flattened disk
+
+            posArray[i * 3] = x;
+            posArray[i * 3 + 1] = y;
+            posArray[i * 3 + 2] = z;
+
+            // Color gradient based on radius
+            const mixedColor = colorInner.clone().lerp(colorOuter, (radius - 5) / 20);
+            colorArray[i * 3] = mixedColor.r;
+            colorArray[i * 3 + 1] = mixedColor.g;
+            colorArray[i * 3 + 2] = mixedColor.b;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.1,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            transparent: true,
+            depthWrite: false
+        });
+
+        const starField = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(starField);
+
+        // 2. The Spherical Void (Event Horizon)
+        const sphereGeo = new THREE.SphereGeometry(4.5, 32, 32);
+        const sphereMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const blackHole = new THREE.Mesh(sphereGeo, sphereMat);
+        scene.add(blackHole);
+
+        // Ring Glow (Lens effect)
+        const ringGeo = new THREE.RingGeometry(4.6, 5.0, 64);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.5 });
+        const glowRing = new THREE.Mesh(ringGeo, ringMat);
+        glowRing.rotation.x = Math.PI / 2;
+        scene.add(glowRing);
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.0002;
+
+            // Rotate galaxy
+            starField.rotation.y = -time;
+
+            // Optional: Animate particles individually (expensive, skipped for performance) 
+            // but we can rotate camera slightly
+            camera.position.x = Math.sin(time * 0.5) * 30;
+            camera.position.z = Math.cos(time * 0.5) * 30;
+            camera.lookAt(0, 0, 0);
+
+            // Ring wobble
+            glowRing.rotation.x = (Math.PI / 2) + Math.sin(time * 5) * 0.1;
+            glowRing.rotation.y = Math.cos(time * 5) * 0.1;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>

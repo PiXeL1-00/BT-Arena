@@ -1,0 +1,48 @@
+{
+  "id": "trading",
+  "version": "2.1",
+  "description": "Trading subnet test cases.",
+  "meta": { "domain": "sports", "sport": "football", "topic": "trading", "year_range": "2025-2026", "updated_at": "2026-02-08" },
+  "cases": [
+    {
+      "case_id": "SN7",
+      "topic": "Trading",
+      "claim": "SN7",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN7-E1", "summary": "Trading subnet entry SN7.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN8",
+      "topic": "Trading",
+      "claim": "SN8",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN8-E1", "summary": "Trading subnet entry SN8.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN30",
+      "topic": "Trading",
+      "claim": "SN30",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN30-E1", "summary": "Trading subnet entry SN30.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN35",
+      "topic": "Trading",
+      "claim": "SN35",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN35-E1", "summary": "Trading subnet entry SN35.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    }
+  ]
+}

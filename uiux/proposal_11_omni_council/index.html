@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Proposal 11: Omni Council</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap');
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #050510;
+            font-family: 'Exo 2', sans-serif;
+            color: #F0F0F0;
+        }
+
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+            box-sizing: border-box;
+            background: radial-gradient(circle at center, transparent 0%, rgba(5, 5, 16, 0.8) 100%);
+        }
+
+        header {
+            text-align: center;
+            text-transform: uppercase;
+            pointer-events: auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            background: linear-gradient(to bottom, #fff, #00FFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #00FFFF;
+            opacity: 0.8;
+            letter-spacing: 0.1em;
+        }
+
+        #controls {
+            pointer-events: auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00FFFF;
+            color: #00FFFF;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        #status-panel {
+            position: absolute;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            width: 300px;
+            background: rgba(5, 5, 16, 0.8);
+            border-left: 2px solid #00FFFF;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+        }
+
+        .status-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            margin-top: 5px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: #00FFFF;
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+
+        #verdict-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        #verdict-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            color: #FFD700;
+            text-align: center;
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+            transform: scale(0.5);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="ui-layer">
+        <header>
+            <h1>Galileo Arena</h1>
+            <div class="subtitle">Proposal 11: Omni Council</div>
+        </header>
+
+        <div id="status-panel">
+            <div class="status-item">
+                <span class="label">Debate Intensity</span>
+                <div class="value" id="intensity-val">Inactive</div>
+                <div class="bar-container">
+                    <div class="bar-fill" id="intensity-bar"></div>
+                </div>
+            </div>
+            <div class="status-item">
+                <span class="label">Consensus Level</span>
+                <div class="value" id="consensus-val">0%</div>
+                <div class="bar-container">
+                    <div class="bar-fill" id="consensus-bar" style="background: #FFD700; box-shadow: 0 0 10px #FFD700;">
+                    </div>
+                </div>
+            </div>
+            <div class="status-item">
+                <span class="label">Active Node</span>
+                <div class="value" id="active-node">Waiting...</div>
+            </div>
+        </div>
+
+        <div id="controls">
+            <button class="btn" onclick="startDebate()">Initiate Debate</button>
+            <button class="btn" onclick="resetSim()">Reset Simulation</button>
+        </div>
+    </div>
+
+    <div id="verdict-overlay">
+        <div id="verdict-text">VERDICT REACHED</div>
+    </div>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // --- SCENE SETUP ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050510);
+        // Add some fog for depth
+        scene.fog = new THREE.FogExp2(0x050510, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+        camera.position.y = 10;
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        // --- LIGHTING ---
+        const ambientLight = new THREE.AmbientLight(0x404040, 2);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(0, 20, 0);
+        scene.add(pointLight);
+
+        // --- OBJECTS ---
+
+        // 1. The Judge (Center)
+        const judgeGeometry = new THREE.IcosahedronGeometry(4, 1);
+        const judgeMaterial = new THREE.MeshPhongMaterial({
+            color: 0xFFD700,
+            emissive: 0x553300,
+            shininess: 100,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.8
+        });
+        const judge = new THREE.Mesh(judgeGeometry, judgeMaterial);
+        scene.add(judge);
+
+        // Judge Halo
+        const haloGeo = new THREE.TorusGeometry(6, 0.1, 16, 100);
+        const haloMat = new THREE.MeshBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.5 });
+        const halo = new THREE.Mesh(haloGeo, haloMat);
+        halo.rotation.x = Math.PI / 2;
+        scene.add(halo);
+
+        // 2. The Robots (Council Members)
+        const robotCount = 8;
+        const radius = 15;
+        const robots = [];
+        const robotGroup = new THREE.Group();
+        scene.add(robotGroup);
+
+        for (let i = 0; i < robotCount; i++) {
+            const angle = (i / robotCount) * Math.PI * 2;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+
+            const geometry = new THREE.SphereGeometry(1.5, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x00FFFF,
+                emissive: 0x001133,
+                shininess: 80,
+                transparent: true,
+                opacity: 0.9
+            });
+            const robot = new THREE.Mesh(geometry, material);
+            robot.position.set(x, 0, z);
+
+            // Add a glow ring
+            const ringGeo = new THREE.TorusGeometry(2, 0.05, 16, 50);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0x00FFFF });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.rotation.x = Math.PI / 2;
+            robot.add(ring);
+
+            robot.userData = {
+                id: i,
+                baseY: 0,
+                speed: Math.random() * 0.02 + 0.01
+            };
+
+            robots.push(robot);
+            robotGroup.add(robot);
+        }
+
+        // 3. Environment (Stars)
+        const starGeo = new THREE.BufferGeometry();
+        const starCount = 2000;
+        const starPos = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount * 3; i++) {
+            starPos[i] = (Math.random() - 0.5) * 200;
+        }
+        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2 });
+        const starField = new THREE.Points(starGeo, starMat);
+        scene.add(starField);
+
+        // 4. Debate Lines (Beams)
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x9D00FF, transparent: true, opacity: 0.0 });
+        const debateLines = [];
+
+        // Create lines from robots to judge
+        robots.forEach(robot => {
+            const points = [];
+            points.push(robot.position);
+            points.push(judge.position);
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geometry, lineMaterial.clone());
+            scene.add(line);
+            debateLines.push(line);
+        });
+
+
+        // --- ANIMATION LOOP ---
+        let debating = false;
+        let time = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.01;
+
+            // Rotate Judge
+            judge.rotation.y += 0.005;
+            judge.rotation.x += 0.002;
+            halo.rotation.z -= 0.002;
+
+            // Robots hovering
+            robots.forEach((robot, i) => {
+                robot.position.y = Math.sin(time + i) * 1;
+                robot.rotation.y += robot.userData.speed;
+
+                // If debating, pulse scale
+                if (debating) {
+                    const scale = 1 + Math.sin(time * 5 + i) * 0.1;
+                    robot.scale.set(scale, scale, scale);
+                } else {
+                    robot.scale.set(1, 1, 1);
+                }
+            });
+
+            // Starfield slow rotation
+            starField.rotation.y += 0.0005;
+
+            // Debate logic visualization
+            if (debating) {
+                debateLines.forEach((line, i) => {
+                    // Randomly flash lines
+                    if (Math.random() > 0.90) {
+                        line.material.opacity = 1;
+                        line.material.color.setHex(0x9D00FF);
+                    } else {
+                        line.material.opacity *= 0.9;
+                    }
+                });
+
+                // Judge reacts
+                judge.scale.setScalar(1 + Math.sin(time * 10) * 0.05);
+                judge.material.emissive.setHex(0xFF0000);
+            } else {
+                debateLines.forEach(line => line.material.opacity = 0);
+                judge.scale.setScalar(1);
+                judge.material.emissive.setHex(0x553300);
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // --- INTERACTION LOGIC ---
+
+        function startDebate() {
+            if (debating) return;
+            debating = true;
+            document.getElementById('intensity-val').innerText = "HIGH";
+            document.getElementById('intensity-bar').style.width = "80%";
+            document.getElementById('active-node').innerText = "Processing Arguments...";
+
+            // Simulation sequence
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                document.getElementById('consensus-val').innerText = progress + "%";
+                document.getElementById('consensus-bar').style.width = progress + "%";
+
+                // Update active node text randomly
+                const nodes = ["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta"];
+                document.getElementById('active-node').innerText = "Node " + nodes[Math.floor(Math.random() * nodes.length)] + " arguing...";
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    endDebate();
+                }
+            }, 200);
+        }
+
+        function endDebate() {
+            debating = false;
+            document.getElementById('intensity-val').innerText = "CALCULATING VERDICT";
+            document.getElementById('active-node').innerText = "Consensus Reached";
+
+            // Show verdict
+            const overlay = document.getElementById('verdict-overlay');
+            const text = document.getElementById('verdict-text');
+
+            overlay.style.pointerEvents = "auto";
+            overlay.style.opacity = "1";
+            text.style.transform = "scale(1)";
+
+            setTimeout(() => {
+                overlay.style.opacity = "0";
+                overlay.style.pointerEvents = "none";
+                text.style.transform = "scale(0.5)";
+                resetUI();
+            }, 3000);
+        }
+
+        function resetSim() {
+            debating = false;
+            resetUI();
+        }
+
+        function resetUI() {
+            document.getElementById('intensity-val').innerText = "Inactive";
+            document.getElementById('intensity-bar').style.width = "0%";
+            document.getElementById('consensus-val').innerText = "0%";
+            document.getElementById('consensus-bar').style.width = "0%";
+        }
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>

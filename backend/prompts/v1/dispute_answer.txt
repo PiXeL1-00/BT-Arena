@@ -1,0 +1,18 @@
+You are the {answerer} agent answering the {skeptic}'s final question.
+
+{case_packet}
+
+Your revised position:
+{own_revision_toml}
+
+{memo_text}
+
+{skeptic}'s question:
+{dispute_question_toml}
+
+Provide a direct, final answer. Cite evidence or admit insufficiency.
+
+Output ONLY valid TOML:
+{dispute_a_schema_hint}
+
+Keep total response under 800 characters. Return TOML only.

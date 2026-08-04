@@ -1,0 +1,368 @@
+/* Global Styles */
+:root {
+    --bg-color: #f7f9fc;
+    --text-primary: #333;
+
+    /* Proposal 1 Colors */
+    --p1-bg: #121212;
+    --p1-card-bg: #1c1c1e;
+    --p1-accent: #ff453a;
+    --p1-text: #ffffff;
+    --p1-subtext: #8e8e93;
+
+    /* Proposal 2 Colors */
+    --p2-bg: #ffffff;
+    --p2-primary: #007aff;
+    --p2-secondary: #5856d6;
+    --p2-shadow: rgba(0, 0, 0, 0.05);
+
+    /* Proposal 3 Colors */
+    --p3-bg: #0d1117;
+    --p3-border: #30363d;
+    --p3-text: #c9d1d9;
+    --p3-accent: #2ecc71;
+    /* Green */
+    --p3-warning: #f1c40f;
+    /* Yellow */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.proposal-section {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.proposal-section h2 {
+    font-size: 1.2rem;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.desc {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+/* =========================================
+   Proposal 1: Critical Insight
+   ========================================= */
+.card.critical-insight {
+    background: var(--p1-card-bg);
+    color: var(--p1-text);
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 320px;
+    /* Constraints: Small block */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.critical-insight .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: var(--p1-subtext);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.critical-insight .card-header ion-icon {
+    font-size: 1.2rem;
+    color: var(--p1-accent);
+}
+
+.critical-insight .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+}
+
+.critical-insight .label {
+    font-size: 0.9rem;
+    color: var(--p1-subtext);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.critical-insight .value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.critical-insight .primary .value {
+    color: #fff;
+}
+
+.critical-insight .secondary .value {
+    color: var(--p1-accent);
+    /* Red for active/ongoing/bad news */
+}
+
+.critical-insight .divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--p1-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(255, 69, 58, 0.4);
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 69, 58, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(255, 69, 58, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 69, 58, 0);
+    }
+}
+
+
+/* =========================================
+   Proposal 2: Executive Summary
+   ========================================= */
+.card.executive-summary {
+    background: var(--p2-bg);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 380px;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03),
+        0 0 0 1px rgba(0, 0, 0, 0.03);
+    /* Subtle border */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.executive-summary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.08),
+        0 4px 6px -2px rgba(0, 0, 0, 0.04),
+        0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.executive-summary .icon-column {
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #4a6fa5;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.executive-summary .data-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.executive-summary .data-point {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.9rem;
+    color: #555;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed #eee;
+}
+
+.executive-summary .data-point:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    padding-top: 4px;
+}
+
+.executive-summary .year {
+    font-weight: 600;
+    color: #333;
+    width: 40px;
+}
+
+.executive-summary .count {
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #1a1a1a;
+    font-size: 1.1rem;
+}
+
+.executive-summary .highlight .count {
+    color: var(--p2-primary);
+    /* Blue highlight for current year */
+}
+
+.executive-summary .context {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #999;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   Proposal 3: Data Fragment
+   ========================================= */
+.card.data-fragment {
+    background: var(--p3-bg);
+    border: 1px solid var(--p3-border);
+    border-radius: 6px;
+    /* Squarish corners for tech feel */
+    padding: 0.8rem 1rem;
+    max-width: 300px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: var(--p3-text);
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.data-fragment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--p3-accent);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.fragment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #8b949e;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid var(--p3-border);
+    padding-bottom: 0.4rem;
+}
+
+.fragment-header ion-icon {
+    font-size: 1rem;
+}
+
+.fragment-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.log-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.log-year {
+    color: #58a6ff;
+    /* Soft blue */
+}
+
+.log-val {
+    color: #c9d1d9;
+    font-weight: bold;
+}
+
+.log-entry.warning .log-year {
+    color: var(--p3-accent);
+    /* Green for "active" or just distinction */
+}
+
+.log-entry.warning .log-val {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+}
+
+.trend-icon {
+    color: var(--p3-warning);
+    font-size: 1rem;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}

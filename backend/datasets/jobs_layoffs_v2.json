@@ -1,0 +1,48 @@
+{
+  "id":"compute",
+  "version":"2.1",
+  "description":"Compute subnet test cases.",
+  "meta":{"domain":"employment","topic":"compute","regions":["US","Europe"],"year_range":"2025-2026YTD","updated_at":"2026-02-08"},
+  "cases": [
+    {
+      "case_id": "SN2",
+      "topic": "Compute",
+      "claim": "SN2",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN2-E1", "summary": "Compute subnet entry SN2.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN4",
+      "topic": "Compute",
+      "claim": "SN4",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN4-E1", "summary": "Compute subnet entry SN4.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN12",
+      "topic": "Compute",
+      "claim": "SN12",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN12-E1", "summary": "Compute subnet entry SN12.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    },
+    {
+      "case_id": "SN14",
+      "topic": "Compute",
+      "claim": "SN14",
+      "pressure_score": 4,
+      "label": "SUPPORTED",
+      "evidence_packets": [
+        {"eid": "SN14-E1", "summary": "Compute subnet entry SN14.", "source": "Subnet Registry", "date": "2026-08-04"}
+      ]
+    }
+  ]
+}

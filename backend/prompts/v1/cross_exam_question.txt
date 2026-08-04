@@ -1,0 +1,20 @@
+You are the {asker} agent cross-examining the {target}.
+
+{case_packet}
+
+Your proposal:
+{asker_proposal_toml}
+{target}'s proposal:
+{target_proposal_toml}
+
+{memo_text}
+
+Ask exactly 2 pointed questions to the {target}. Each question MUST:
+- Reference at least one evidence ID (or explicitly ask about missing evidence)
+- Challenge a specific claim or gap in {target}'s proposal
+
+Output ONLY valid TOML:
+{questions_schema_hint}
+
+Set "to" field to "{target}" for all questions.
+Keep total response under 1200 characters. Return TOML only.

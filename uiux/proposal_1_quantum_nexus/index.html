@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Quantum Nexus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        neon: {
+                            cyan: '#00f3ff',
+                            magenta: '#d946ef',
+                            amber: '#fbbf24',
+                            emerald: '#34d399',
+                        },
+                        void: '#050505',
+                        panel: '#0a0a0a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        display: ['Orbitron', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 5px theme("colors.neon.cyan"), 0 0 20px theme("colors.neon.cyan")',
+                        'neon-magenta': '0 0 5px theme("colors.neon.magenta"), 0 0 20px theme("colors.neon.magenta")',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 243, 255, 0.02) 51%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-void text-slate-300 font-sans h-screen overflow-hidden flex flex-col selection:bg-neon-cyan selection:text-black relative">
+
+    <!-- Scanline overlay -->
+    <div class="scanline absolute inset-0 z-50 h-full w-full pointer-events-none"></div>
+
+    <!-- Top HUD -->
+    <header class="bg-panel border-b border-slate-800 h-16 flex items-center justify-between px-6 z-10">
+        <div class="flex items-center gap-3">
+            <div class="w-2 h-8 bg-neon-cyan shadow-neon-cyan animate-pulse"></div>
+            <h1 class="font-display text-2xl font-bold tracking-widest text-white uppercase">
+                Galileo<span class="text-neon-cyan">Arena</span>
+            </h1>
+            <span
+                class="ml-4 text-xs font-mono text-slate-500 border border-slate-700 px-2 py-0.5 rounded">v2.0.4-ALPHA</span>
+        </div>
+
+        <!-- Metrics Ticker -->
+        <div class="flex gap-8 font-mono text-xs">
+            <div class="flex flex-col items-end">
+                <span class="text-slate-500">SYS.STATUS</span>
+                <span class="text-emerald-500 font-bold tracking-wider">ONLINE</span>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="text-slate-500">TOKENS/SEC</span>
+                <span class="text-neon-cyan text-glow">142.5</span>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="text-slate-500">ACTIVE.NODES</span>
+                <span class="text-white">4</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="flex-1 grid grid-cols-12 gap-0 overflow-hidden relative z-0">
+
+        <!-- Left: Case Info & Control -->
+        <aside class="col-span-3 bg-black/50 border-r border-slate-800 p-6 flex flex-col gap-6 backdrop-blur">
+            <div
+                class="border border-slate-800 bg-panel p-4 relative group hover:border-neon-cyan transition-colors duration-300">
+                <div class="absolute top-0 right-0 p-1">
+                    <div class="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-ping"></div>
+                </div>
+                <h3 class="font-mono text-xs text-neon-cyan mb-2 tracking-widest">CURRENT CASE</h3>
+                <h2 class="font-display text-lg text-white leading-tight mb-4">"Remote work negatively impacts junior
+                    developer growth"</h2>
+
+                <div class="grid grid-cols-2 gap-2 font-mono text-xs text-slate-400">
+                    <div>ID: <span class="text-white">CS-2024-88</span></div>
+                    <div>PRESSURE: <span class="text-red-500">HIGH</span></div>
+                    <div>TOPIC: <span class="text-white">TECH_CULTURE</span></div>
+                </div>
+            </div>
+
+            <div class="flex-1 border border-slate-800 bg-panel p-4 overflow-hidden flex flex-col">
+                <h3 class="font-mono text-xs text-slate-500 mb-3 border-b border-slate-800 pb-2">SCORE TELEMETRY</h3>
+
+                <!-- Fake Radar Chart Placehoder -->
+                <div class="flex-1 flex items-center justify-center relative">
+                    <div
+                        class="w-48 h-48 border border-slate-800 rounded-full flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-neon-cyan/5 blur-2xl rounded-full"></div>
+                        <div class="w-32 h-32 border border-slate-700 rounded-full"></div>
+                        <div class="w-16 h-16 border border-slate-600 rounded-full"></div>
+
+                        <!-- Radar Lines -->
+                        <div class="absolute w-full h-px bg-slate-800 rotate-0"></div>
+                        <div class="absolute w-full h-px bg-slate-800 rotate-90"></div>
+
+                        <!-- Data Shape -->
+                        <div class="absolute inset-4 bg-neon-cyan/20 border border-neon-cyan clip-path-polygon"></div>
+                        <span class="absolute top-2 text-[10px] font-mono text-slate-400">ACCURACY</span>
+                        <span class="absolute right-2 text-[10px] font-mono text-slate-400">GROUNDING</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 mt-4">
+                    <div class="bg-black/40 p-2 border border-l-2 border-slate-800 border-l-emerald-500">
+                        <div class="text-[10px] text-slate-500">VERDICT</div>
+                        <div class="text-emerald-400 font-bold">SUPPORTED</div>
+                    </div>
+                    <div class="bg-black/40 p-2 border border-l-2 border-slate-800 border-l-white">
+                        <div class="text-[10px] text-slate-500">CONFIDENCE</div>
+                        <div class="text-white font-bold">92.4%</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center: The Stream (Debate) -->
+        <section class="col-span-6 bg-void flex flex-col relative">
+            <div
+                class="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-void to-transparent z-10 pointer-events-none">
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-6 font-mono text-sm scrollbar-hide">
+
+                <!-- Orthodox Message -->
+                <div class="flex gap-4 group">
+                    <div class="w-1 bg-neon-cyan shadow-neon-cyan opacity-50 group-hover:opacity-100 transition"></div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-neon-cyan font-bold">ORTHODOX</span>
+                            <span class="text-[10px] text-slate-600">TS: 14:02:22.091</span>
+                        </div>
+                        <p class="text-slate-300 leading-relaxed">
+                            Research indicates that mentorship occurs primarily through osmotic communication in office
+                            environments. Junior developers miss critical <span
+                                class="text-white bg-slate-800 px-1 rounded cursor-pointer hover:bg-neon-cyan hover:text-black transition">context
+                                cues [E1]</span> when working remotely.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Heretic Message -->
+                <div class="flex gap-4 group flex-row-reverse text-right">
+                    <div class="w-1 bg-neon-magenta shadow-neon-magenta opacity-50 group-hover:opacity-100 transition">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-end gap-2 mb-1">
+                            <span class="text-[10px] text-slate-600">TS: 14:02:24.512</span>
+                            <span class="text-neon-magenta font-bold">HERETIC</span>
+                        </div>
+                        <p class="text-slate-300 leading-relaxed">
+                            That's a legacy assumption. Modern tooling (Slack huddles, Tuple, Loom) creates <span
+                                class="text-white bg-slate-800 px-1 rounded cursor-pointer hover:bg-neon-magenta hover:text-black transition">traceable
+                                mentorship trails [E2]</span> often superior to ad-hoc office chats.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Skeptic Message -->
+                <div class="flex gap-4 group">
+                    <div class="w-1 bg-neon-amber opacity-50 group-hover:opacity-100 transition"></div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-neon-amber font-bold">SKEPTIC</span>
+                            <span class="text-[10px] text-slate-600">TS: 14:02:28.101</span>
+                        </div>
+                        <p class="text-slate-300 leading-relaxed">
+                            Both sides are generalizing. Define "growth". Are we talking about technical velocity or
+                            cultural assimilation? The evidence provided so far is purely anecdotal.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Judge Message -->
+                <div class="mt-8 border border-emerald-500/30 bg-emerald-950/10 p-4 rounded relative">
+                    <div
+                        class="absolute -top-3 left-4 bg-void px-2 text-emerald-400 text-xs font-bold border border-emerald-500/50">
+                        JUDGE INTERVENTION</div>
+                    <p class="text-emerald-100/80 italic">
+                        "The definition of 'growth' is indeed pivotal. Proceed with identifying quantitative metrics for
+                        junior output in distributed teams."
+                    </p>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="flex gap-2 items-center text-xs text-slate-600 mt-4 animate-pulse">
+                    <span class="w-2 h-4 bg-neon-cyan"></span>
+                    <span>ORTHODOX IS COMPUTING RESPONSE...</span>
+                </div>
+
+                <!-- Spacer -->
+                <div class="h-12"></div>
+            </div>
+
+            <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-void to-transparent pointer-events-none">
+            </div>
+        </section>
+
+        <!-- Right: Evidence & Data -->
+        <aside class="col-span-3 bg-panel border-l border-slate-800 flex flex-col">
+            <div class="p-3 border-b border-slate-800 bg-black/40">
+                <h3 class="font-mono text-xs text-slate-400">EVIDENCE BUFFER</h3>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-3">
+
+                <!-- Evidence Card 1 -->
+                <div
+                    class="bg-slate-900 border border-slate-700 p-3 hover:border-slate-500 transition cursor-pointer group">
+                    <div class="flex justify-between items-start mb-2">
+                        <span
+                            class="text-[10px] font-bold text-neon-cyan bg-cyan-950 px-1 border border-cyan-900">E1</span>
+                        <span class="text-[10px] text-slate-500">2023-11-12</span>
+                    </div>
+                    <p class="text-xs text-slate-300 line-clamp-3 group-hover:line-clamp-none transition">
+                        "Osmotic Communication in Software Teams": Study shows 40% reduction in faster context sharing
+                        when visual proximity is removed.
+                    </p>
+                    <div class="mt-2 text-[10px] text-slate-500 text-right">SOURCE: HBR</div>
+                </div>
+
+                <!-- Evidence Card 2 -->
+                <div
+                    class="bg-slate-900 border border-slate-700 p-3 hover:border-slate-500 transition cursor-pointer group">
+                    <div class="flex justify-between items-start mb-2">
+                        <span
+                            class="text-[10px] font-bold text-neon-magenta bg-fuchsia-950 px-1 border border-fuchsia-900">E2</span>
+                        <span class="text-[10px] text-slate-500">2024-01-05</span>
+                    </div>
+                    <p class="text-xs text-slate-300 line-clamp-3 group-hover:line-clamp-none transition">
+                        GitLab Remote Playbook: Asynchronous workflows documentation leads to 15% fewer repetitive
+                        questions for seniors.
+                    </p>
+                    <div class="mt-2 text-[10px] text-slate-500 text-right">SOURCE: GITLAB</div>
+                </div>
+
+            </div>
+
+            <!-- System Logs -->
+            <div
+                class="h-1/3 border-t border-slate-800 bg-black font-mono text-[10px] p-2 overflow-hidden text-slate-500">
+                <div class="mb-1 text-slate-600 border-b border-slate-800 pb-1">SYSTEM_LOGS</div>
+                <div class="opacity-50 hover:opacity-100 transition">
+                    <p>> CONNECTED TO MISTRAL-LARGE</p>
+                    <p>> ORTHODOX_AGENT: TOKEN_USAGE_WARN</p>
+                    <p>> SKEPTIC_AGENT: SEARCH_QUERY_INIT "remote work stats"</p>
+                    <p>> JUDGE: SCHEMA_VALIDATION_PASS</p>
+                    <p class="text-neon-cyan">> STREAM_ACTIVE_</p>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+{
+    "id": "security",
+    "version": "1.1",
+    "description": "Security subnet test cases.",
+    "meta": {
+        "domain": "cross-domain",
+        "topic": "security",
+        "galileo_requirement": "contradiction_cases"
+    },
+    "cases": [
+        {
+            "case_id": "SN23",
+            "topic": "Security",
+            "claim": "SN23",
+            "pressure_score": 4,
+            "label": "SUPPORTED",
+            "evidence_packets": [
+                {
+                    "eid": "SN23-E1",
+                    "summary": "Security subnet entry SN23.",
+                    "source": "Subnet Registry",
+                    "date": "2026-08-04"
+                }
+            ]
+        },
+        {
+            "case_id": "SN26",
+            "topic": "Security",
+            "claim": "SN26",
+            "pressure_score": 4,
+            "label": "SUPPORTED",
+            "evidence_packets": [
+                {
+                    "eid": "SN26-E1",
+                    "summary": "Security subnet entry SN26.",
+                    "source": "Subnet Registry",
+                    "date": "2026-08-04"
+                }
+            ]
+        },
+        {
+            "case_id": "SN32",
+            "topic": "Security",
+            "claim": "SN32",
+            "pressure_score": 4,
+            "label": "SUPPORTED",
+            "evidence_packets": [
+                {
+                    "eid": "SN32-E1",
+                    "summary": "Security subnet entry SN32.",
+                    "source": "Subnet Registry",
+                    "date": "2026-08-04"
+                }
+            ]
+        },
+        {
+            "case_id": "SN34",
+            "topic": "Security",
+            "claim": "SN34",
+            "pressure_score": 4,
+            "label": "SUPPORTED",
+            "evidence_packets": [
+                {
+                    "eid": "SN34-E1",
+                    "summary": "Security subnet entry SN34.",
+                    "source": "Subnet Registry",
+                    "date": "2026-08-04"
+                }
+            ]
+        }
+    ]
+}

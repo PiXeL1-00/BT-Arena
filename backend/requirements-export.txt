@@ -1,0 +1,10 @@
+# Dev-only: ONNX model export dependencies
+# NOT needed in production -- only run once to generate backend/models/
+#
+# Usage:
+#   pip install -r requirements-export.txt
+#   python -m scripts.export_onnx_models --output-dir models
+-r requirements.txt
+torch>=2.2
+optimum[onnxruntime]>=1.17
+sentence-transformers>=3.0

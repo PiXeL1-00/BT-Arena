@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Background — deep observatory navy */
+    --background: 222 30% 6%;
+    --foreground: 210 40% 96%;
+
+    /* Card — barely lifted above background */
+    --card: 224 28% 9%;
+    --card-foreground: 210 40% 96%;
+
+    /* Popover */
+    --popover: 224 28% 9%;
+    --popover-foreground: 210 40% 96%;
+
+    /* Primary — electric blue */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary */
+    --secondary: 224 22% 12%;
+    --secondary-foreground: 210 40% 90%;
+
+    /* Muted */
+    --muted: 224 22% 12%;
+    --muted-foreground: 218 18% 46%;
+
+    /* Accent — warm amber-gold */
+    --accent: 35 90% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border & Input */
+    --border: 224 16% 14%;
+    --input: 224 16% 14%;
+    --ring: 217 91% 60%;
+
+    /* Radius */
+    --radius: 1rem;
+
+    /* Glass */
+    --glass: 224 26% 10%;
+    --glass-border: 224 18% 15%;
+
+    /* Status */
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+
+    /* Sidebar */
+    --sidebar-background: 224 32% 5%;
+    --sidebar-foreground: 218 18% 46%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 22% 10%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 224 18% 9%;
+    --sidebar-ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  input,
+  textarea,
+  [contenteditable="true"] {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+}
+
+@layer components {
+
+  /* Glass Card */
+  .glass-card {
+    @apply rounded-xl border bg-card/60 backdrop-blur-xl;
+    border-color: hsl(var(--glass-border));
+  }
+
+  /* Soft Glow */
+  .glow-blue {
+    box-shadow: 0 0 10px hsl(217 91% 60% / 0.06), 0 0 30px hsl(217 91% 60% / 0.02);
+  }
+
+  /* Glass Panel */
+  .glass-panel {
+    background: hsl(var(--glass) / 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+  }
+
+  /* Glass Button */
+  .glass-button {
+    background: hsl(var(--glass) / 0.4);
+    backdrop-filter: blur(4px);
+    border: 1px solid hsl(var(--glass-border));
+    transition: all 0.3s ease;
+  }
+
+  .glass-button:hover {
+    background: hsl(var(--glass) / 0.7);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Card Glow */
+  .card-glow {
+    @apply glass-panel rounded-3xl p-5;
+    transition: all 0.3s ease;
+  }
+
+  .card-glow:hover {
+    background: hsl(var(--glass) / 0.7);
+    transform: scale(1.01);
+  }
+
+  /* Hide Scrollbar */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile utilities */
+  .mobile-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-text-sm {
+    @apply text-sm sm:text-base;
+  }
+
+  .tap-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  .container-responsive {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Typography hierarchy */
+  .text-display {
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .text-data {
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+    opacity: 0.88;
+  }
+
+  .text-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: hsl(var(--muted-foreground));
+    font-weight: 600;
+  }
+}
+
+/* Aurora Background */
+.aurora-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background: hsl(var(--background));
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+/* Disabled select options */
+select option:disabled {
+  color: hsl(var(--muted-foreground)) !important;
+  background-color: hsl(var(--secondary)) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* GlassCard expand overlay */
+.glass-expanded>* {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Safe-area insets for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}

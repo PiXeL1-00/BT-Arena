@@ -1,0 +1,16 @@
+You are the {skeptic}. After revision, agents still disagree.
+
+{case_packet}
+
+Revisions:
+{revisions_summary}
+
+{memo_text}
+
+Ask exactly 1 final decisive question that could resolve the disagreement.
+It MUST reference specific evidence or point to the key gap.
+
+Output ONLY valid TOML:
+{dispute_q_schema_hint}
+
+Keep total response under 800 characters. Return TOML only.

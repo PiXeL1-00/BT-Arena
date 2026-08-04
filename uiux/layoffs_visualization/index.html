@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layoff Visualization Proposals</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- Ionicons for Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Layoff Visualization Proposals</h1>
+            <p>Displaying data: 2025 (123,941) & 2026 YTD (24,818)</p>
+        </header>
+
+        <!-- Proposal 1: The "Critical Insight" Card -->
+        <section class="proposal-section">
+            <h2>Proposal 1: "Critical Insight"</h2>
+            <p class="desc">A dark-themed, high-contrast block emphasizing the severity. Uses a "live" pulse for the
+                current year (YTD).</p>
+
+            <div class="card critical-insight">
+                <div class="card-header">
+                    <ion-icon name="alert-circle-outline"></ion-icon>
+                    <span>Tech Layoff Tracker</span>
+                </div>
+                <div class="card-body">
+                    <div class="stat-row primary">
+                        <span class="label">2025 Total</span>
+                        <span class="value">123,941</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="stat-row secondary">
+                        <span class="label">
+                            <span class="pulse-dot"></span> 2026 YTD
+                        </span>
+                        <span class="value">24,818</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proposal 2: The "Executive Summary" Widget -->
+        <section class="proposal-section">
+            <h2>Proposal 2: "Executive Summary"</h2>
+            <p class="desc">Clean, professional, and minimal. Focuses on clarity and readability with a modern SaaS
+                aesthetic.</p>
+
+            <div class="card executive-summary">
+                <div class="icon-column">
+                    <ion-icon name="people-outline"></ion-icon>
+                </div>
+                <div class="data-column">
+                    <div class="data-point">
+                        <span class="year">2025</span>
+                        <span class="count">123,941</span>
+                        <span class="context">Global</span>
+                    </div>
+                    <div class="data-point highlight">
+                        <span class="year">2026</span>
+                        <span class="count">24,818</span>
+                        <span class="context">YTD</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proposal 3: The "Data Fragment" Pill -->
+        <section class="proposal-section">
+            <h2>Proposal 3: "Data Fragment"</h2>
+            <p class="desc">Compact, futuristic, mono-spaced design. Feels like a system status update or terminal log.
+            </p>
+
+            <div class="card data-fragment">
+                <div class="fragment-header">
+                    <ion-icon name="terminal-outline"></ion-icon> LAYOFFS.LOG
+                </div>
+                <div class="fragment-content">
+                    <div class="log-entry">
+                        <span class="log-year">[2025]</span>
+                        <span class="log-val">123,941</span>
+                    </div>
+                    <div class="log-entry warning">
+                        <span class="log-year">[2026]</span>
+                        <span class="log-val">24,818</span>
+                        <ion-icon name="arrow-up-outline" class="trend-icon"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+
+</html>

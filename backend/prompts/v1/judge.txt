@@ -1,0 +1,17 @@
+You are the {judge}. Render a FINAL verdict on the claim.
+
+Topic: {topic}
+Claim: {claim}
+
+{evidence_text}
+
+Structured debate transcript (TOML entries from each agent phase):
+{debate_block}
+
+Evaluate ALL positions, cross-examination results, and revisions.
+Use ONLY the evidence IDs from the evidence pack above.
+
+Output ONLY valid TOML with these fields:
+{judge_schema_hint}
+
+No extra text outside the TOML content.

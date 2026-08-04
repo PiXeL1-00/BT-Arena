@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galileo Arena - Holo Stratum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#020617',
+                        holo: '#22d3ee',
+                        alert: '#f43f5e',
+                        stable: '#34d399'
+                    },
+                    fontFamily: {
+                        sans: ['Rajdhani', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #020617;
+        }
+
+        .hud-text {
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.7);
+        }
+
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="text-white font-sans h-screen w-screen relative">
+
+    <!-- 3D Canvas -->
+    <div id="canvas-container" class="absolute inset-0 z-0"></div>
+
+    <!-- Scanline Overlay -->
+    <div class="absolute inset-0 scanline z-50 opacity-20 pointer-events-none"></div>
+
+    <!-- HUD Interface (Overlay) -->
+    <div class="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between p-8">
+        <!-- Top Bar -->
+        <div class="flex justify-between items-start pointer-events-auto">
+            <div>
+                <h1 class="text-4xl font-bold uppercase tracking-widest text-holo hud-text">Galileo<span
+                        class="text-white">Stratum</span></h1>
+                <div class="flex gap-4 mt-2 font-mono text-sm text-cyan-700">
+                    <span>SYS.VER.7.0</span>
+                    <span>SECURE_CONN: <span class="text-emerald-400">ACTIVE</span></span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <div class="border border-cyan-900 bg-slate-900/80 p-4 w-48 backdrop-blur-sm">
+                    <div class="text-xs text-cyan-600 mb-1">CPU_LOAD</div>
+                    <div class="h-1 bg-cyan-900 w-full mb-1">
+                        <div class="h-full bg-holo w-[72%]"></div>
+                    </div>
+                    <div class="text-right font-mono text-holo">72%</div>
+                </div>
+                <div class="border border-cyan-900 bg-slate-900/80 p-4 w-48 backdrop-blur-sm">
+                    <div class="text-xs text-cyan-600 mb-1">MEM_ALLOC</div>
+                    <div class="h-1 bg-cyan-900 w-full mb-1">
+                        <div class="h-full bg-alert w-[45%]"></div>
+                    </div>
+                    <div class="text-right font-mono text-alert">45%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Message -->
+        <div id="loading"
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+            <div class="text-holo font-mono animate-pulse">INITIALIZING HOLO-DECK...</div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="flex justify-between items-end pointer-events-auto">
+            <div class="border-l-2 border-holo pl-4">
+                <div class="text-xs text-cyan-600 mb-1">ACTIVE MISSION</div>
+                <div class="text-xl">DEBATE: AI ETHICS / 2026</div>
+            </div>
+
+            <div class="flex gap-4 font-mono text-xs text-cyan-600">
+                <button class="hover:text-holo transition cursor-pointer">[RESETVIEW]</button>
+                <button class="hover:text-holo transition cursor-pointer">[TOGGLE_GRID]</button>
+                <button class="hover:text-holo transition cursor-pointer">[EXPORT_LOGS]</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Three.js Setup
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x020617, 0.02); // Deep space fog
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 5, 15);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxDistance = 50;
+        controls.minDistance = 5;
+
+        // --- Lights ---
+        const ambientLight = new THREE.AmbientLight(0x0f2e3d, 2);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0x22d3ee, 1, 100);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // --- Grid Floor (Holo-Deck) ---
+        const gridHelper = new THREE.GridHelper(50, 50, 0x22d3ee, 0x0f2e3d);
+        scene.add(gridHelper);
+
+        // --- Floating Panels (Arguments) ---
+        const panelGroup = new THREE.Group();
+        scene.add(panelGroup);
+
+        function createHoloPanel(x, y, z, color, title, text) {
+            const group = new THREE.Group();
+            group.position.set(x, y, z);
+
+            // Glass Plane
+            const geometry = new THREE.PlaneGeometry(6, 4);
+            const material = new THREE.MeshPhysicalMaterial({
+                color: 0x000000,
+                transparent: true,
+                opacity: 0.7,
+                roughness: 0,
+                metalness: 0.1,
+                clearcoat: 1.0,
+                side: THREE.DoubleSide
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            group.add(mesh);
+
+            // Border Glow
+            const edges = new THREE.EdgesGeometry(geometry);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color }));
+            group.add(line);
+
+            // Text (Canvas Texture) - Simplified simulation of text
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            // Background for text
+            ctx.fillStyle = "rgba(0,0,0,0)";
+            ctx.fillRect(0, 0, 512, 256);
+
+            // Title
+            ctx.font = "bold 40px Arial";
+            ctx.fillStyle = color === 0x22d3ee ? "#22d3ee" : (color === 0xf43f5e ? "#f43f5e" : "#34d399");
+            ctx.fillText(title, 20, 50);
+
+            // Body
+            ctx.font = "20px Arial"; // Using Arial for texture clarity
+            ctx.fillStyle = "#ffffff";
+            wrapText(ctx, text, 20, 100, 480, 28);
+
+            // Tech markings
+            ctx.fillStyle = "rgba(255,255,255,0.2)";
+            ctx.fillRect(20, 220, 100, 10);
+            ctx.fillRect(130, 220, 20, 10);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const textMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+            const textGeo = new THREE.PlaneGeometry(6, 3); // Slightly smaller/different aspect
+            const textMesh = new THREE.Mesh(textGeo, textMat);
+            textMesh.position.z = 0.1; // Float above glass
+            textMesh.position.y = -0.2;
+            group.add(textMesh);
+
+            // Add simple floating particles/glitch elements around panel
+            const particlesGeo = new THREE.BufferGeometry();
+            const particleCount = 20;
+            const posArray = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 7;
+            }
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMat = new THREE.PointsMaterial({ size: 0.05, color: color, transparent: true, opacity: 0.6 });
+            const particles = new THREE.Points(particlesGeo, particlesMat);
+            group.add(particles);
+
+            return group;
+        }
+
+        // Helper for text wrapping
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            var words = text.split(' ');
+            var line = '';
+
+            for (var n = 0; n < words.length; n++) {
+                var testLine = line + words[n] + ' ';
+                var metrics = context.measureText(testLine);
+                var testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+
+        // Create initial panels
+        const panel1 = createHoloPanel(-5, 2, 0, 0x22d3ee, "ORTHODOX", "Remote work fosters deep work through isolation. Stats show 20% increase in code output.");
+        const panel2 = createHoloPanel(5, 3, -4, 0xf43f5e, "HERETIC", "Isolation destroys culture. 'Deep work' is often just 'unblocked stagnation'.");
+        const panel3 = createHoloPanel(0, 6, -8, 0x34d399, "SKEPTIC", "Define 'culture'. Is it ping-pong tables or shared mission? Metric ambiguous.");
+
+        panelGroup.add(panel1);
+        panelGroup.add(panel2);
+        panelGroup.add(panel3);
+
+        // Connection Lines (Laser beams)
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.3 });
+        const points = [];
+        points.push(panel1.position);
+        points.push(panel3.position);
+        points.push(panel2.position);
+        points.push(panel1.position); // close loop
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+        const connections = new THREE.Line(lineGeo, lineMat);
+        scene.add(connections);
+
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            // Subtle floating animation
+            const time = Date.now() * 0.001;
+            panel1.position.y += Math.sin(time) * 0.002;
+            panel2.position.y += Math.sin(time + 1) * 0.002;
+            panel3.position.y += Math.sin(time + 2) * 0.002;
+
+            // Rotate entire group slowly
+            panelGroup.rotation.y = Math.sin(time * 0.1) * 0.1;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Loading off
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+        }, 1000);
+
+        // Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    </script>
+</body>
+
+</html>

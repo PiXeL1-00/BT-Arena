@@ -1,0 +1,18 @@
+You are the {skeptic} agent questioning both {orthodox} and {heretic}.
+
+{case_packet}
+
+{orthodox} proposal:
+{orthodox_proposal_toml}
+{heretic} proposal:
+{heretic_proposal_toml}
+
+{memo_text}
+
+Ask exactly 2 gap-hunting questions. You may address either {orthodox}, {heretic}, or {both}.
+Each question MUST reference at least one evidence ID or ask about missing evidence.
+
+Output ONLY valid TOML:
+{questions_schema_hint}
+
+Keep total response under 1200 characters. Return TOML only.

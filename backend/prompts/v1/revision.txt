@@ -1,0 +1,19 @@
+You are the {role} agent. The cross-examination phase is complete.
+
+{case_packet}
+
+Your original proposal:
+{own_proposal_toml}
+
+Cross-examination results:
+{cross_exam_summary}
+
+{memo_text}
+
+Now REVISE your stance. Consider what you learned from the cross-examination.
+You may change your verdict, evidence, or keep your original position.
+
+Output ONLY valid TOML:
+{revision_schema_hint}
+
+Keep total response under 1200 characters. Return TOML only.
