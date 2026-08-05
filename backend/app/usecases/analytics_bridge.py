@@ -74,14 +74,39 @@ def _extract_score_components(result: RunResultRow) -> dict | None:
     return None
 
 
+# def _extract_failure_flags(result: RunResultRow) -> dict | None:
+#     flags: dict[str, object] = {}
+#     if result.critical_fail_reason:
+#         flags["critical_fail"] = result.critical_fail_reason
+#     if not result.passed:
+#         flags["not_passed"] = True
+#     if result.verdict and result.label and result.verdict != result.label:
+#         flags["wrong_verdict"] = f"{result.verdict}→{result.label}"
+#     if isinstance(result.score, (int, float)) and result.score < 40:
+#         flags["low_score"] = True
+#     return flags or None
+
+
 def _extract_failure_flags(result: RunResultRow) -> dict | None:
     flags: dict[str, object] = {}
+
     if result.critical_fail_reason:
         flags["critical_fail"] = result.critical_fail_reason
+
     if not result.passed:
         flags["not_passed"] = True
-    if result.verdict and result.label and result.verdict != result.label:
-        flags["wrong_verdict"] = f"{result.verdict}→{result.label}"
-    if result.score is not None and result.score < 40:
+
+    verdict = getattr(result, "verdict", None)
+    label = getattr(result, "label", None)
+
+    if (
+        isinstance(verdict, str)
+        and isinstance(label, str)
+        and verdict != label
+    ):
+        flags["wrong_verdict"] = f"{verdict}→{label}"
+
+    if isinstance(result.score, (int, float)) and result.score < 40:
         flags["low_score"] = True
+
     return flags or None
