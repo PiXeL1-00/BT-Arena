@@ -145,7 +145,7 @@ export default function DatasetsPage() {
 
                 {/* Header / Intro - Left Side */}
                 <div className="lg:col-span-4 flex flex-col justify-center space-y-6 lg:sticky lg:top-24">
-                    <h1 className="text-3xl sm:text-5xl lg:text-6xl text-white font-great-vibes leading-tight bg-gradient-to-r from-cyan-200 via-teal-200 to-white bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(34,211,238,0.15)]" style={{ fontFamily: 'var(--font-great-vibes)' }}>
+                    <h1 className="text-3xl sm:text-5xl lg:text-6xl text-white font-display font-bold leading-tight bg-gradient-to-r from-cyan-200 via-teal-200 to-white bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(34,211,238,0.15)]">
                         Bittensor <span className="hidden sm:inline"><br /></span>Arena
                     </h1>
                     <p className="text-lg text-slate-300 font-light leading-relaxed backdrop-blur-sm bg-slate-900/30 p-4 rounded-xl border border-white/5">

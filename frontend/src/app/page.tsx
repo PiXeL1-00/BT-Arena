@@ -55,7 +55,7 @@ export default function Home() {
 
                     <div className="mt-1 opacity-90 z-10 relative">
                       <div className="absolute -inset-4 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-xl -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                      <span className="font-great-vibes text-4xl text-white -rotate-6 block tracking-wide" style={{ fontFamily: 'var(--font-great-vibes)' }}>
+                      <span className="font-sans font-medium text-[13px] sm:text-sm text-cyan-300/90 block tracking-wide">
                         Const, core dev @ Rao Foundation
                       </span>
                     </div>
