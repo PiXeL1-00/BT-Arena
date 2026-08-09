@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import time
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
@@ -111,18 +111,29 @@ async def get_available_keys(
     request: Request,
     validate: bool = False,
     force: bool = False,
-    _: None = Depends(verify_admin_key),
+    x_admin_key: str | None = Header(None),
 ):
     """Return a set of API key environment variable names that are configured.
+
+    This endpoint is publicly readable (no admin auth required) because it only
+    returns the *names* of configured env vars, not the secret values themselves.
+
+    When ``validate=True`` is passed, admin authentication is enforced because
+    that path performs live API-key validation against external providers.
 
     Args:
         validate: If True, also validate keys and return validation results
         force: If True, bypass cache and force re-validation (only used if validate=True)
         request: FastAPI request object (injected automatically, used for rate limiting)
+        x_admin_key: Admin API key header (only required when validate=True)
 
     Returns:
         Dict with available_keys list, and optionally validation dict
     """
+    # --- Admin auth is only required for live validation ---
+    if validate:
+        await verify_admin_key(x_admin_key)
+
     available = set()
 
     _PROVIDER_NAMES = ("openai", "anthropic", "mistral", "deepseek", "gemini", "grok")
