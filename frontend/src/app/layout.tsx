@@ -40,9 +40,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${outfit.variable} ${inter.variable} ${greatVibes.variable} min-h-screen antialiased relative font-sans`} suppressHydrationWarning>
         <div className={styles.ambient}>
-          <div className={styles['stars-sm']} />
-          <div className={styles['stars-md']} />
-          <div className={styles['stars-lg']} />
           <div className={styles.blob} />
           <div className={styles.noise} />
           <div className={styles.vignette} />

@@ -10,17 +10,17 @@ const Earth3D = () => {
     useEffect(() => {
         if (!containerRef.current) return;
 
-        // Scene setup - adjusted camera distance
+        // Scene setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-        camera.position.z = 10.12;
+        camera.position.z = 9.5;
 
-        // Renderer - full size
+        // Renderer
         const renderer = new THREE.WebGLRenderer({
             antialias: true,
-            alpha: true
+            alpha: true,
+            powerPreference: "high-performance"
         });
-        // Start with container size
         const width = containerRef.current.clientWidth || 800;
         const height = containerRef.current.clientHeight || 800;
         renderer.setSize(width, height);
@@ -28,146 +28,120 @@ const Earth3D = () => {
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         rendererRef.current = renderer;
 
-        // Update camera aspect
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
 
         containerRef.current.innerHTML = '';
         containerRef.current.appendChild(renderer.domElement);
 
-        // Lighting - exactly matching source
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        // Ambient Lighting & Subtle Soft Lights
+        const ambientLight = new THREE.AmbientLight(0x0f172a, 1.5);
         scene.add(ambientLight);
 
-        // const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
-        // directionalLight.position.set(5, 3, 5);
-        // scene.add(directionalLight);
+        const pointLight1 = new THREE.PointLight(0x06b6d4, 2, 20); // Soft cyan
+        pointLight1.position.set(6, 6, 6);
+        scene.add(pointLight1);
 
-        // const pointLight1 = new THREE.PointLight(0xff8866, 0.4);
-        // pointLight1.position.set(-8, -5, -8);
-        // scene.add(pointLight1);
+        const pointLight2 = new THREE.PointLight(0x6366f1, 1.5, 20); // Soft violet
+        pointLight2.position.set(-6, -4, -4);
+        scene.add(pointLight2);
 
-        // const pointLight2 = new THREE.PointLight(0xaaccff, 0.3);
-        // pointLight2.position.set(8, 5, 8);
-        // scene.add(pointLight2);
+        // Abstract 3D Wireframe / Data Mesh Structure
+        const radius = 3.4;
+        const detail = 3;
 
-        // Mars sphere
-        const textureLoader = new THREE.TextureLoader();
-        const marsGeometry = new THREE.SphereGeometry(3.2, 64, 64);
-        const marsMaterial = new THREE.MeshStandardMaterial({
-            emissive: new THREE.Color(0x401008),
-            emissiveIntensity: 0.15,
-            roughness: 0.7,
-            metalness: 0.1,
-        });
+        // Outer Geodesic Wireframe Mesh
+        const outerGeometry = new THREE.IcosahedronGeometry(radius, detail);
+        const initialPositions = outerGeometry.attributes.position.clone();
 
-        textureLoader.load(
-            // "/mars-texture.webp",
-            "/bt_mesh.png",
-            (texture) => {
-                texture.colorSpace = THREE.SRGBColorSpace;
-                marsMaterial.map = texture;
-                marsMaterial.needsUpdate = true;
-            },
-            undefined,
-            (error) => {
-                console.error("Error loading Mars texture:", error);
-                marsMaterial.color = new THREE.Color(0xc1440e);
-            }
-        );
-
-        const mars = new THREE.Mesh(marsGeometry, marsMaterial);
-        // Mars axial tilt: 25.19 degrees
-        mars.rotation.x = THREE.MathUtils.degToRad(25.19);
-        scene.add(mars);
-
-        // Phobos - grayish-taupe, elongated potato shape (like MRO image)
-        const phobosGeometry = new THREE.DodecahedronGeometry(0.18, 1);
-        const phobosPositions = phobosGeometry.attributes.position;
-        for (let i = 0; i < phobosPositions.count; i++) {
-            const x = phobosPositions.getX(i);
-            const y = phobosPositions.getY(i);
-            const z = phobosPositions.getZ(i);
-            // Elongated potato with slight asymmetry
-            phobosPositions.setX(i, x * 1.6);
-            phobosPositions.setY(i, y * 0.75);
-            phobosPositions.setZ(i, z * 0.85);
-        }
-        phobosGeometry.computeVertexNormals();
-        const phobosMaterial = new THREE.MeshStandardMaterial({
-            color: 0xa09890, // Grayish-taupe like MRO image
-            roughness: 1.0,
-            metalness: 0.0,
-            flatShading: true,
-        });
-        const phobos = new THREE.Mesh(phobosGeometry, phobosMaterial);
-        const phobosOrbit = new THREE.Group();
-        phobos.position.set(4.5, 0, 0);
-        phobosOrbit.rotation.x = THREE.MathUtils.degToRad(25.19);
-        phobosOrbit.add(phobos);
-        scene.add(phobosOrbit);
-
-        // Deimos - yellowish-tan, rounder lumpy shape (like MRO image)
-        const deimosGeometry = new THREE.DodecahedronGeometry(0.12, 1);
-        const deimosPositions = deimosGeometry.attributes.position;
-        for (let i = 0; i < deimosPositions.count; i++) {
-            const x = deimosPositions.getX(i);
-            const y = deimosPositions.getY(i);
-            const z = deimosPositions.getZ(i);
-            // Rounder but still lumpy
-            deimosPositions.setX(i, x * 1.2);
-            deimosPositions.setY(i, y * 0.9);
-            deimosPositions.setZ(i, z * 1.1);
-        }
-        deimosGeometry.computeVertexNormals();
-        const deimosMaterial = new THREE.MeshStandardMaterial({
-            color: 0xc4b8a0, // Yellowish-tan like MRO image
-            roughness: 1.0,
-            metalness: 0.0,
-            flatShading: true,
-        });
-        const deimos = new THREE.Mesh(deimosGeometry, deimosMaterial);
-        const deimosOrbit = new THREE.Group();
-        deimos.position.set(5.5, 0, 0);
-        deimosOrbit.rotation.x = THREE.MathUtils.degToRad(25.19);
-        deimosOrbit.add(deimos);
-        scene.add(deimosOrbit);
-
-        // Atmosphere
-        const atmosphereGeometry = new THREE.SphereGeometry(3.35, 32, 32);
-        const atmosphereMaterial = new THREE.MeshStandardMaterial({
-            color: 0xff9966,
+        const outerMaterial = new THREE.MeshStandardMaterial({
+            color: 0x0284c7,
+            emissive: 0x0369a1,
+            emissiveIntensity: 0.25,
+            wireframe: true,
             transparent: true,
-            opacity: 0.06,
-            side: THREE.BackSide,
+            opacity: 0.38,
+            roughness: 0.2,
+            metalness: 0.8,
         });
-        const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-        scene.add(atmosphere);
 
-        // Outer glow
-        const glowGeometry = new THREE.SphereGeometry(3.5, 32, 32);
+        const outerMesh = new THREE.Mesh(outerGeometry, outerMaterial);
+        scene.add(outerMesh);
+
+        // Data Nodes (Vertices Points)
+        const nodesMaterial = new THREE.PointsMaterial({
+            color: 0x38bdf8,
+            size: 0.07,
+            transparent: true,
+            opacity: 0.75,
+            sizeAttenuation: true,
+        });
+
+        const nodesMesh = new THREE.Points(outerGeometry, nodesMaterial);
+        scene.add(nodesMesh);
+
+        // Inner Core Lattice (Concentric Wireframe)
+        const innerGeometry = new THREE.IcosahedronGeometry(radius * 0.65, 2);
+        const innerMaterial = new THREE.MeshStandardMaterial({
+            color: 0x6366f1,
+            emissive: 0x4f46e5,
+            emissiveIntensity: 0.2,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.25,
+        });
+
+        const innerMesh = new THREE.Mesh(innerGeometry, innerMaterial);
+        scene.add(innerMesh);
+
+        // Subtle Ambient Glow Sphere behind mesh
+        const glowGeometry = new THREE.SphereGeometry(radius * 0.95, 32, 32);
         const glowMaterial = new THREE.MeshBasicMaterial({
-            color: 0xcc6644,
+            color: 0x0369a1,
             transparent: true,
-            opacity: 0.04,
+            opacity: 0.05,
             side: THREE.BackSide,
         });
-        const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-        scene.add(glow);
+        const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+        scene.add(glowMesh);
 
-        // Animation
+        // Animation Loop - Subtle, Slow Organic Motion
         let animationId: number;
+        const clock = new THREE.Clock();
+
         const animate = () => {
             animationId = requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
 
-            // Mars rotation (1 Mars day = ~24.6 hours)
-            mars.rotation.y += 0.002;
+            // Organic Vertex Wave Deformation
+            const pos = outerGeometry.attributes.position;
+            const initPos = initialPositions;
+            for (let i = 0; i < pos.count; i++) {
+                const uX = initPos.getX(i);
+                const uY = initPos.getY(i);
+                const uZ = initPos.getZ(i);
 
-            // Phobos orbits Mars in 7.66 hours (very fast!)
-            phobosOrbit.rotation.y += 0.008;
+                const len = Math.sqrt(uX * uX + uY * uY + uZ * uZ);
+                const nx = uX / len;
+                const ny = uY / len;
+                const nz = uZ / len;
 
-            // Deimos orbits Mars in 30.3 hours (slower than Mars rotates)
-            deimosOrbit.rotation.y += 0.002;
+                // Subtle multi-harmonic wave
+                const wave = Math.sin(time * 0.7 + uX * 0.8 + uY * 0.5) * Math.cos(time * 0.5 + uZ * 0.7) * 0.14;
+                pos.setXYZ(i, uX + nx * wave, uY + ny * wave, uZ + nz * wave);
+            }
+            pos.needsUpdate = true;
+            outerGeometry.computeVertexNormals();
+
+            // Slow, ambient rotations
+            outerMesh.rotation.y = time * 0.04;
+            outerMesh.rotation.x = Math.sin(time * 0.02) * 0.08;
+
+            nodesMesh.rotation.y = time * 0.04;
+            nodesMesh.rotation.x = Math.sin(time * 0.02) * 0.08;
+
+            innerMesh.rotation.y = -time * 0.03;
+            innerMesh.rotation.z = Math.cos(time * 0.025) * 0.1;
 
             renderer.render(scene, camera);
         };
@@ -190,14 +164,11 @@ const Earth3D = () => {
             window.removeEventListener("resize", handleResize);
             cancelAnimationFrame(animationId);
             renderer.dispose();
-            marsGeometry.dispose();
-            marsMaterial.dispose();
-            phobosGeometry.dispose();
-            phobosMaterial.dispose();
-            deimosGeometry.dispose();
-            deimosMaterial.dispose();
-            atmosphereGeometry.dispose();
-            atmosphereMaterial.dispose();
+            outerGeometry.dispose();
+            outerMaterial.dispose();
+            nodesMaterial.dispose();
+            innerGeometry.dispose();
+            innerMaterial.dispose();
             glowGeometry.dispose();
             glowMaterial.dispose();
         };
@@ -212,3 +183,4 @@ const Earth3D = () => {
 };
 
 export default Earth3D;
+

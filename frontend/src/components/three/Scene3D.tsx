@@ -38,32 +38,9 @@ interface Scene3DProps {
     containerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-/* ───────────────────── starfield ───────────────────── */
-function createStarfield(count: number): THREE.Points {
-    const geo = new THREE.BufferGeometry();
-    const positions = new Float32Array(count * 3);
-    const sizes = new Float32Array(count);
-    for (let i = 0; i < count; i++) {
-        const r = 40 + Math.random() * 60;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-        positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-        positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-        positions[i * 3 + 2] = r * Math.cos(phi);
-        sizes[i] = 0.5 + Math.random() * 1.5;
-    }
-    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geo.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
-    const mat = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.12,
-        transparent: true,
-        opacity: 0.6,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        sizeAttenuation: true,
-    });
-    return new THREE.Points(geo, mat);
+/* ───────────────────── starfield (removed for minimal aesthetic) ───────────────────── */
+function createStarfield(): THREE.Group {
+    return new THREE.Group();
 }
 
 /* ───────────────────── grid floor ───────────────────── */
@@ -152,7 +129,7 @@ export default function Scene3D({
         scene.add(fill);
 
         /* ── env objects ── */
-        const stars = createStarfield(2000);
+        const stars = createStarfield();
         scene.add(stars);
         const gridFloor = createGridFloor();
         scene.add(gridFloor);

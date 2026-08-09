@@ -2,61 +2,10 @@
    Mars Mission Simulation — CSS Module
    ============================================================ */
 
-/* ---------- Starfield background ---------- */
+/* ---------- Ambient background container ---------- */
 .starfield {
     position: relative;
     overflow: hidden;
-}
-
-.starfield::before,
-.starfield::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.starfield::before {
-    background-image:
-        radial-gradient(1.5px 1.5px at 10% 15%, rgba(255, 255, 255, 0.7) 50%, transparent 50%),
-        radial-gradient(1px 1px at 25% 40%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
-        radial-gradient(1.2px 1.2px at 50% 10%, rgba(255, 255, 255, 0.6) 50%, transparent 50%),
-        radial-gradient(1px 1px at 70% 65%, rgba(255, 255, 255, 0.4) 50%, transparent 50%),
-        radial-gradient(1.5px 1.5px at 85% 25%, rgba(255, 255, 255, 0.65) 50%, transparent 50%),
-        radial-gradient(1px 1px at 15% 80%, rgba(255, 255, 255, 0.45) 50%, transparent 50%),
-        radial-gradient(1.3px 1.3px at 40% 55%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
-        radial-gradient(1px 1px at 60% 90%, rgba(255, 255, 255, 0.35) 50%, transparent 50%),
-        radial-gradient(1.2px 1.2px at 90% 50%, rgba(255, 255, 255, 0.55) 50%, transparent 50%),
-        radial-gradient(1px 1px at 35% 20%, rgba(255, 255, 255, 0.4) 50%, transparent 50%),
-        radial-gradient(0.8px 0.8px at 5% 50%, rgba(255, 255, 255, 0.3) 50%, transparent 50%),
-        radial-gradient(1px 1px at 78% 12%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
-        radial-gradient(1.4px 1.4px at 55% 75%, rgba(255, 255, 255, 0.6) 50%, transparent 50%),
-        radial-gradient(0.9px 0.9px at 92% 82%, rgba(255, 255, 255, 0.35) 50%, transparent 50%);
-    animation: twinkle 6s ease-in-out infinite alternate;
-}
-
-.starfield::after {
-    background-image:
-        radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.4) 50%, transparent 50%),
-        radial-gradient(1.2px 1.2px at 45% 70%, rgba(255, 255, 255, 0.55) 50%, transparent 50%),
-        radial-gradient(1px 1px at 65% 20%, rgba(255, 255, 255, 0.35) 50%, transparent 50%),
-        radial-gradient(1.3px 1.3px at 80% 55%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
-        radial-gradient(1px 1px at 30% 85%, rgba(255, 255, 255, 0.45) 50%, transparent 50%),
-        radial-gradient(0.8px 0.8px at 12% 60%, rgba(255, 255, 255, 0.3) 50%, transparent 50%),
-        radial-gradient(1.1px 1.1px at 58% 42%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
-        radial-gradient(1px 1px at 95% 15%, rgba(255, 255, 255, 0.4) 50%, transparent 50%);
-    animation: twinkle 8s ease-in-out 2s infinite alternate-reverse;
-}
-
-@keyframes twinkle {
-    0% {
-        opacity: 0.5;
-    }
-
-    100% {
-        opacity: 1;
-    }
 }
 
 /* ---------- Planets ---------- */
