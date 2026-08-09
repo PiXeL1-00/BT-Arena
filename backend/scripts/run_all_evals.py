@@ -21,10 +21,10 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)-5s %(message)s")
 log = logging.getLogger("run_all_evals")
 
 MODELS = [
-    {"provider": "openai",    "model_name": "gpt-4o",                   "api_key_env": "OPENAI_API_KEY"},
+    {"provider": "openai",    "model_name": "gpt-4o-mini",               "api_key_env": "OPENROUTER_API_KEY"},
     {"provider": "anthropic", "model_name": "claude-sonnet-4-20250514", "api_key_env": "ANTHROPIC_API_KEY"},
     {"provider": "mistral",   "model_name": "mistral-large-latest",     "api_key_env": "MISTRAL_API_KEY"},
-    {"provider": "deepseek",  "model_name": "deepseek-chat",            "api_key_env": "DEEPSEEK_API_KEY"},
+    {"provider": "deepseek",  "model_name": "deepseek-v4-flash-latest", "api_key_env": "OPENROUTER_API_KEY"},
     {"provider": "grok",      "model_name": "grok-3",                   "api_key_env": "GROK_API_KEY"},
 ]
 

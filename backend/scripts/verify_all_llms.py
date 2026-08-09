@@ -20,10 +20,10 @@ log = logging.getLogger("verify")
 BASE = "http://localhost:8000"
 
 MODELS = [
-    {"provider": "openai",    "model_name": "gpt-4o",                   "api_key_env": API_KEY_ENV_NAMES["openai"]},
+    {"provider": "openai",    "model_name": "gpt-4o-mini",               "api_key_env": API_KEY_ENV_NAMES["openai"]},
     {"provider": "anthropic", "model_name": "claude-sonnet-4-20250514",         "api_key_env": API_KEY_ENV_NAMES["anthropic"]},
     {"provider": "mistral",   "model_name": "mistral-large-latest",     "api_key_env": API_KEY_ENV_NAMES["mistral"]},
-    {"provider": "deepseek",  "model_name": "deepseek-chat",            "api_key_env": API_KEY_ENV_NAMES["deepseek"]},
+    {"provider": "deepseek",  "model_name": "deepseek-v4-flash-latest", "api_key_env": API_KEY_ENV_NAMES["deepseek"]},
     {"provider": "gemini",    "model_name": "gemini-2.0-flash",         "api_key_env": API_KEY_ENV_NAMES["gemini"]},
     {"provider": "grok",      "model_name": "grok-3",                   "api_key_env": API_KEY_ENV_NAMES["grok"]},
 ]

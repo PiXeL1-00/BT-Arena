@@ -18,7 +18,7 @@ _ENV_FILE = _BACKEND_ROOT / ".env"
 
 
 # Debate-mode defaults (prod)
-DEFAULT_DEBATE_ENABLED_PRODUCTION_MODELS = "mistral/mistral-large-latest,deepseek/deepseek-chat"
+DEFAULT_DEBATE_ENABLED_PRODUCTION_MODELS = "mistral/mistral-large-latest,deepseek/deepseek-v4-flash-latest"
 DEFAULT_DEBATE_DAILY_PRODUCTION_CAP = 3
 DEFAULT_EVAL_SCHEDULER_CRON_DAY = 1
 DEFAULT_EVAL_SCHEDULER_CRON_HOUR = 2
@@ -61,6 +61,10 @@ class Settings(BaseSettings):
     openai_api_key: Optional[str] = Field(
         default=None,
         description="OpenAI API key from OPENAI_API_KEY env var",
+    )
+    openrouter_api_key: Optional[str] = Field(
+        default=None,
+        description="OpenRouter API key from OPENROUTER_API_KEY env var",
     )
     anthropic_api_key: Optional[str] = Field(
         default=None,
@@ -315,10 +319,10 @@ class Settings(BaseSettings):
     def get_api_key(self, provider: str) -> str | None:
         """Explicit provider → key mapping. No getattr."""
         key_map: dict[str, str | None] = {
-            "openai": self.openai_api_key,
+            "openai": self.openrouter_api_key or self.openai_api_key,
             "anthropic": self.anthropic_api_key,
             "mistral": self.mistral_api_key,
-            "deepseek": self.deepseek_api_key,
+            "deepseek": self.openrouter_api_key or self.deepseek_api_key,
             "gemini": self.gemini_api_key,
             "grok": self.grok_api_key,
             "moonshotai": self.moonshotai_api_key,

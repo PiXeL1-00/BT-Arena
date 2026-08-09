@@ -11,6 +11,7 @@ from app.api.security import verify_admin_key
 from app.config import settings
 from app.infra.llm.key_validator import validate_all_keys
 from app.infra.llm.key_validation import KeyValidationResult, KeyValidationStatus
+from app.infra.llm.preflight_constants import API_KEY_ENV_NAMES
 from app.infra.db.repository import Repository
 from app.infra.timezone_utils import get_today_in_tz
 
@@ -125,7 +126,7 @@ async def get_available_keys(
     _INVALID_VALUES = frozenset(("no", "false", "none", "", "n/a", "na", "not set", "unset"))
 
     for provider in _PROVIDER_NAMES:
-        env_name = f"{provider.upper()}_API_KEY"
+        env_name = API_KEY_ENV_NAMES.get(provider, f"{provider.upper()}_API_KEY")
         key_value = settings.get_api_key(provider)
         if not key_value or not isinstance(key_value, str):
             continue

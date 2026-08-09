@@ -108,6 +108,7 @@ async def _validate_single_key(
 
     # Map api_key_env to preflight function
     preflight_functions = {
+        "OPENROUTER_API_KEY": preflight_openai,
         "OPENAI_API_KEY": preflight_openai,
         "ANTHROPIC_API_KEY": preflight_anthropic,
         "MISTRAL_API_KEY": preflight_mistral,
