@@ -96,3 +96,28 @@ class TestModelIdentityFrozen:
         a = parse_model_key("openai/gpt-4o")
         b = parse_model_key("openai/gpt-4o-mini")
         assert a != b
+
+
+class TestParseLLMEnvVar:
+    def test_single_prefix(self):
+        from app.core.model_registry import parse_llm_env_var
+        model = parse_llm_env_var("deepseek", "deepseek-v4-flash-latest|DeepSeek")
+        assert model is not None
+        assert model.model_name == "deepseek-v4-flash-latest"
+        assert model.id == "deepseek/deepseek-v4-flash-latest"
+        assert model.api_key_env == "OPENROUTER_API_KEY"
+
+    def test_duplicated_prefix(self):
+        from app.core.model_registry import parse_llm_env_var
+        model = parse_llm_env_var("deepseek", "deepseek/deepseek-v4-flash-latest|DeepSeek")
+        assert model is not None
+        assert model.model_name == "deepseek-v4-flash-latest"
+        assert model.id == "deepseek/deepseek-v4-flash-latest"
+
+    def test_multi_duplicated_prefix(self):
+        from app.core.model_registry import parse_llm_env_var
+        model = parse_llm_env_var("deepseek", "deepseek/deepseek/deepseek-v4-flash-latest|DeepSeek")
+        assert model is not None
+        assert model.model_name == "deepseek-v4-flash-latest"
+        assert model.id == "deepseek/deepseek-v4-flash-latest"
+

@@ -132,9 +132,10 @@ async def get_available_keys(
     for provider in _PROVIDER_NAMES:
         if provider in ("openai", "deepseek") and settings.openrouter_api_key:
             env_name = "OPENROUTER_API_KEY"
+            key_value = settings.openrouter_api_key
         else:
             env_name = API_KEY_ENV_NAMES.get(provider, f"{provider.upper()}_API_KEY")
-        key_value = settings.get_api_key(provider)
+            key_value = settings.get_api_key(provider)
         if not key_value or not isinstance(key_value, str):
             continue
         stripped = key_value.strip().lower()
