@@ -57,9 +57,12 @@ def parse_llm_env_var(provider: str, value: str) -> RegisteredModel | None:
         logger.warning("LLM_%s has empty model_name, skipping", provider.upper())
         return None
 
+    provider_lower = provider.lower()
+    if model_name.lower().startswith(f"{provider_lower}/"):
+        model_name = model_name[len(provider_lower) + 1:]
+
     label = parts[1].strip() if len(parts) > 1 and parts[1].strip() else f"{provider.capitalize()} ({model_name})"
 
-    provider_lower = provider.lower()
     return RegisteredModel(
         provider=provider_lower,
         model_name=model_name,
