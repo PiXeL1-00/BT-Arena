@@ -43,7 +43,11 @@ _INVALID_VALUES = frozenset(("no", "false", "none", "", "n/a", "na", "not set", 
 def _get_available_keys() -> dict[str, str]:
     """Get all configured API keys via settings.get_api_key()."""
     available: dict[str, str] = {}
-    for provider, env_name in API_KEY_ENV_NAMES.items():
+    for provider in ("openai", "anthropic", "mistral", "deepseek", "gemini", "grok"):
+        if provider in ("openai", "deepseek") and settings.openrouter_api_key:
+            env_name = "OPENROUTER_API_KEY"
+        else:
+            env_name = API_KEY_ENV_NAMES.get(provider, f"{provider.upper()}_API_KEY")
         key_value = settings.get_api_key(provider)
         if not key_value or not isinstance(key_value, str):
             continue

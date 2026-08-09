@@ -74,7 +74,11 @@ async def get_debate_config(
 
     repo = Repository(session)
     today = get_today_in_tz()
-    usage = await repo.get_all_debate_usage_today(today=today)
+    try:
+        usage = await repo.get_all_debate_usage_today(today=today)
+    except Exception as exc:
+        logging.getLogger(__name__).warning("Could not fetch debate usage from DB: %s", exc)
+        usage = {}
 
     return {
         "debug_mode": False,
@@ -126,7 +130,10 @@ async def get_available_keys(
     _INVALID_VALUES = frozenset(("no", "false", "none", "", "n/a", "na", "not set", "unset"))
 
     for provider in _PROVIDER_NAMES:
-        env_name = API_KEY_ENV_NAMES.get(provider, f"{provider.upper()}_API_KEY")
+        if provider in ("openai", "deepseek") and settings.openrouter_api_key:
+            env_name = "OPENROUTER_API_KEY"
+        else:
+            env_name = API_KEY_ENV_NAMES.get(provider, f"{provider.upper()}_API_KEY")
         key_value = settings.get_api_key(provider)
         if not key_value or not isinstance(key_value, str):
             continue
