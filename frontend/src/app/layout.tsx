@@ -25,7 +25,7 @@ const greatVibes = Great_Vibes({
 });
 
 export const metadata: Metadata = {
-  title: "Const AI",
+  title: "Bittensor Arena",
   description: "Multi-model Bittensor agentic evaluation platform",
 };
 
