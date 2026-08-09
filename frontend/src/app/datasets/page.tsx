@@ -44,8 +44,12 @@ export default function DatasetsPage() {
         getModelUsageRemaining,
         keyValidation,
         validationLoading,
-        refreshValidation
+        refreshValidation,
+        filterAvailableModels,
     } = useKeyValidation();
+
+    // Only models whose API key is present and real — missing-key models are hidden entirely
+    const availableModels = filterAvailableModels(models);
 
     const handleSelectDataset = useCallback((dsId: string) => {
         setSelected(dsId);
@@ -94,7 +98,7 @@ export default function DatasetsPage() {
         setLaunching(true);
         setError("");
         try {
-            const m = models.find(
+            const m = availableModels.find(
                 (am) => am.id === selectedModel
             )!;
             const modelConfigs = [
@@ -230,7 +234,7 @@ export default function DatasetsPage() {
                     {selected && selectedCaseId && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <ModelSelector
-                                models={models}
+                                models={availableModels}
                                 selectedModel={selectedModel}
                                 onSelectModel={setSelectedModel}
                                 isModelDisabled={isModelDisabled}

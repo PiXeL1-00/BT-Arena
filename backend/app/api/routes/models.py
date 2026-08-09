@@ -129,6 +129,21 @@ async def get_available_keys(
     _MIN_KEY_LENGTH = 10
     _INVALID_VALUES = frozenset(("no", "false", "none", "", "n/a", "na", "not set", "unset"))
 
+    def _is_real_key(val: str) -> bool:
+        """Return True only if val looks like a real API key, not a placeholder."""
+        if not val or not isinstance(val, str):
+            return False
+        stripped = val.strip()
+        lower = stripped.lower()
+        if lower in _INVALID_VALUES:
+            return False
+        if len(stripped) <= _MIN_KEY_LENGTH:
+            return False
+        # Reject obvious placeholder patterns like "your_*_api_key_here"
+        if lower.startswith("your_") or lower.endswith("_api_key_here") or "placeholder" in lower:
+            return False
+        return True
+
     for provider in _PROVIDER_NAMES:
         if provider in ("openai", "deepseek") and settings.openrouter_api_key:
             env_name = "OPENROUTER_API_KEY"
@@ -136,13 +151,10 @@ async def get_available_keys(
         else:
             env_name = API_KEY_ENV_NAMES.get(provider, f"{provider.upper()}_API_KEY")
             key_value = settings.get_api_key(provider)
-        if not key_value or not isinstance(key_value, str):
-            continue
-        stripped = key_value.strip().lower()
-        if stripped not in _INVALID_VALUES and len(stripped) > _MIN_KEY_LENGTH:
+        if _is_real_key(key_value):
             available.add(env_name)
 
-    response = {"available_keys": list(available)}
+    response: dict = {"available_keys": list(available)}
 
     # If validation requested, add validation results
     if validate:

@@ -95,7 +95,15 @@ export const api = {
   },
 
   async getAvailableKeys(): Promise<{ available_keys: string[] }> {
-    return fetchJSON<{ available_keys: string[] }>("/models/available-keys");
+    try {
+      const res = await fetch(`${API_BASE}/models/available-keys`, {
+        headers: ADMIN_API_KEY ? { "X-Admin-Key": ADMIN_API_KEY } : {},
+      });
+      if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+      return res.json();
+    } catch {
+      return { available_keys: [] };
+    }
   },
 
   async validateKeys(force?: boolean): Promise<Record<string, KeyValidationResult>> {

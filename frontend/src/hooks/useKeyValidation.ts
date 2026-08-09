@@ -30,8 +30,17 @@ export function useKeyValidation() {
 
     const isModelAvailable = useCallback(
         (model: ModelDef) => {
-            if (!availableKeysData) return true;
+            if (!availableKeysData) return true; // optimistic until data loads
             return availableKeys.has(model.api_key_env);
+        },
+        [availableKeys, availableKeysData]
+    );
+
+    // Returns only models whose required API key is present and real
+    const filterAvailableModels = useCallback(
+        (modelList: ModelDef[]): ModelDef[] => {
+            if (!availableKeysData) return modelList; // show all while loading
+            return modelList.filter((m) => availableKeys.has(m.api_key_env));
         },
         [availableKeys, availableKeysData]
     );
@@ -109,6 +118,7 @@ export function useKeyValidation() {
         validationError,
         refreshValidation,
         isModelAvailable,
+        filterAvailableModels,
         getValidationStatus,
         isModelDisabled,
         isModelAllowedInMode,
