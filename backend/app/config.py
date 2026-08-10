@@ -18,7 +18,7 @@ _ENV_FILE = _BACKEND_ROOT / ".env"
 
 
 # Debate-mode defaults (prod)
-DEFAULT_DEBATE_ENABLED_PRODUCTION_MODELS = "openai/gpt-4o-mini,deepseek/deepseek-v4-flash-latest,mistral/mistral-large-latest,anthropic/claude-sonnet-4-20250514,grok/grok-3,gemini/gemini-3.6-flash"
+DEFAULT_DEBATE_ENABLED_PRODUCTION_MODELS = "openai/gpt-4o-mini,deepseek/deepseek-v4-flash-latest,mistral/mistral-large-latest,anthropic/claude-sonnet-4-20250514,grok/grok-3,gemini/gemini-3.6-flash,nvidia/z-ai/glm-5.2"
 DEFAULT_DEBATE_DAILY_PRODUCTION_CAP = 3
 DEFAULT_EVAL_SCHEDULER_CRON_DAY = 1
 DEFAULT_EVAL_SCHEDULER_CRON_HOUR = 2
