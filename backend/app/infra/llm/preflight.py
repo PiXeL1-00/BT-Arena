@@ -563,3 +563,74 @@ async def preflight_moonshotai(api_key: str) -> KeyValidationResult:
             api_key_env=api_key_env,
             error_message=str(exc),
         )
+
+
+async def preflight_nvidia(api_key: str) -> KeyValidationResult:
+    """Preflight validation for NVIDIA NIM API key (build.nvidia.com).
+
+    Uses OpenAI-compatible chat completions with a minimal 1-token request
+    against z-ai/glm-5.2 to verify the key without significant cost.
+    """
+    provider = "nvidia"
+    api_key_env = API_KEY_ENV_NAMES[provider]
+
+    if AsyncOpenAI is None:
+        return _missing_sdk_result(provider, api_key_env, "openai")
+
+    try:
+        client = AsyncOpenAI(api_key=api_key, base_url=PROVIDER_BASE_URLS[provider])
+
+        await asyncio.wait_for(
+            client.chat.completions.create(
+                model=PREFLIGHT_MODELS[provider],
+                messages=[{"role": "user", "content": PREFLIGHT_TEST_CONTENT}],
+                max_tokens=PREFLIGHT_MAX_TOKENS,
+            ),
+            timeout=PREFLIGHT_TIMEOUT,
+        )
+        return KeyValidationResult(
+            status=KeyValidationStatus.VALID,
+            provider=provider,
+            api_key_env=api_key_env,
+            http_status=200,
+        )
+    except asyncio.TimeoutError:
+        return KeyValidationResult(
+            status=KeyValidationStatus.TIMEOUT,
+            provider=provider,
+            api_key_env=api_key_env,
+            error_message=ERR_PREFLIGHT_TIMEOUT,
+        )
+    except APIError as exc:
+        status = getattr(exc, "status_code", None)
+        message = getattr(exc, "message", str(exc))
+        request_id = getattr(exc, "request_id", None)
+        return KeyValidationResult(
+            status=classify_error(status, message),
+            provider=provider,
+            api_key_env=api_key_env,
+            error_message=message,
+            request_id=request_id,
+            http_status=status,
+        )
+    except RateLimitError as exc:
+        status = getattr(exc, "status_code", 429)
+        message = getattr(exc, "message", str(exc))
+        request_id = getattr(exc, "request_id", None)
+        return KeyValidationResult(
+            status=classify_error(status, message),
+            provider=provider,
+            api_key_env=api_key_env,
+            error_message=message,
+            request_id=request_id,
+            http_status=status,
+        )
+    except Exception as exc:
+        logger.warning("Unexpected error in NVIDIA preflight: %s", exc, exc_info=True)
+        return KeyValidationResult(
+            status=classify_error(None, str(exc)),
+            provider=provider,
+            api_key_env=api_key_env,
+            error_message=str(exc),
+        )
+

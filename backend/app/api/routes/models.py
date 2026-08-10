@@ -136,7 +136,7 @@ async def get_available_keys(
 
     available = set()
 
-    _PROVIDER_NAMES = ("openai", "anthropic", "mistral", "deepseek", "gemini", "grok")
+    _PROVIDER_NAMES = ("openai", "anthropic", "mistral", "deepseek", "gemini", "grok", "nvidia")
     _MIN_KEY_LENGTH = 10
     _INVALID_VALUES = frozenset(("no", "false", "none", "", "n/a", "na", "not set", "unset"))
 

@@ -90,6 +90,10 @@ class Settings(BaseSettings):
         default=None,
         description="MoonshotAI API key from MOONSHOTAI_API_KEY env var",
     )
+    nvidia_api_key: Optional[str] = Field(
+        default=None,
+        description="NVIDIA NIM API key from NVIDIA_API_KEY env var (build.nvidia.com)",
+    )
 
     # --- LLM model registry (LLM_<PROVIDER>=model_name|Label|context_window) ---
     llm_openai: Optional[str] = Field(
@@ -119,6 +123,10 @@ class Settings(BaseSettings):
     llm_moonshotai: Optional[str] = Field(
         default=None,
         description="Moonshotai model definition: model_name|Label",
+    )
+    llm_nvidia: Optional[str] = Field(
+        default=None,
+        description="NVIDIA NIM model definition: model_name|Label (e.g. z-ai/glm-5.2|GLM-5.2)",
     )
 
     log_level: str = Field(
@@ -326,6 +334,7 @@ class Settings(BaseSettings):
             "gemini": self.gemini_api_key,
             "grok": self.grok_api_key,
             "moonshotai": self.moonshotai_api_key,
+            "nvidia": self.nvidia_api_key,
         }
         return key_map.get(provider.lower())
 

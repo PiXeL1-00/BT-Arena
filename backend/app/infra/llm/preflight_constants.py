@@ -11,6 +11,7 @@ PREFLIGHT_MODELS: Final[dict[str, str]] = {
     "deepseek": "deepseek/deepseek-v4-flash-latest",
     "grok": "grok-3",
     "moonshotai": "moonshotai/Kimi-K2.5",
+    "nvidia": "z-ai/glm-5.2",
 }
 
 PROVIDER_BASE_URLS: Final[dict[str, str]] = {
@@ -18,6 +19,7 @@ PROVIDER_BASE_URLS: Final[dict[str, str]] = {
     "deepseek": "https://openrouter.ai/api/v1",
     "grok": "https://api.x.ai/v1",
     "moonshotai": "https://api.together.xyz/v1",
+    "nvidia": "https://integrate.api.nvidia.com/v1",
 }
 
 API_KEY_ENV_NAMES: Final[dict[str, str]] = {
@@ -28,6 +30,7 @@ API_KEY_ENV_NAMES: Final[dict[str, str]] = {
     "deepseek": "OPENROUTER_API_KEY",
     "grok": "GROK_API_KEY",
     "moonshotai": "MOONSHOTAI_API_KEY",
+    "nvidia": "NVIDIA_API_KEY",
 }
 
 PREFLIGHT_TEST_CONTENT: Final[str] = "test"

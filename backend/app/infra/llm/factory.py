@@ -30,6 +30,9 @@ def _get_provider_class(provider: str) -> type:
     if provider == LLMProvider.MOONSHOTAI:
         from .moonshotai_client import MoonshotAIClient
         return MoonshotAIClient
+    if provider == LLMProvider.NVIDIA:
+        from .nvidia_client import NvidiaClient
+        return NvidiaClient
 
     raise ValueError(
         f"Unknown provider '{provider}'. Supported: "

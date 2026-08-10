@@ -80,6 +80,7 @@ class LLMProvider(str, Enum):
     GEMINI = "gemini"
     GROK = "grok"
     MOONSHOTAI = "moonshotai"
+    NVIDIA = "nvidia"
 
 
 class RunMode(str, Enum):

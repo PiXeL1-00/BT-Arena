@@ -17,6 +17,7 @@ from .preflight import (
     preflight_grok,
     preflight_mistral,
     preflight_moonshotai,
+    preflight_nvidia,
     preflight_openai,
 )
 from .preflight_constants import API_KEY_ENV_NAMES
@@ -43,7 +44,7 @@ _INVALID_VALUES = frozenset(("no", "false", "none", "", "n/a", "na", "not set", 
 def _get_available_keys() -> dict[str, str]:
     """Get all configured API keys via settings.get_api_key()."""
     available: dict[str, str] = {}
-    for provider in ("openai", "anthropic", "mistral", "deepseek", "gemini", "grok"):
+    for provider in ("openai", "anthropic", "mistral", "deepseek", "gemini", "grok", "nvidia"):
         if provider in ("openai", "deepseek") and settings.openrouter_api_key:
             env_name = "OPENROUTER_API_KEY"
         else:
@@ -120,6 +121,7 @@ async def _validate_single_key(
         "GEMINI_API_KEY": preflight_gemini,
         "GROK_API_KEY": preflight_grok,
         "MOONSHOTAI_API_KEY": preflight_moonshotai,
+        "NVIDIA_API_KEY": preflight_nvidia,
     }
 
     preflight_func = preflight_functions.get(api_key_env)
