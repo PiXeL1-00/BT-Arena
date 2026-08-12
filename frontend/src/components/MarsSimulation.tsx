@@ -189,10 +189,10 @@ export default function MarsSimulation() {
         <div className={`${styles.starfield} space-y-8`}>
             {/* ===== HEADER ===== */}
             <div className="text-center space-y-2 relative z-10">
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-cyan-300 to-orange-400 bg-clip-text text-transparent">
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#292524]">
                     Which LLM Will Get Us to Mars?
                 </h2>
-                <p className="text-sm text-white/40 max-w-xl mx-auto">
+                <p className="text-sm text-[#292524]/70 max-w-xl mx-auto">
                     Rating 5 frontier LLMs across 6 critical Mars mission
                     domains — from trajectory planning to life support.
                 </p>
@@ -289,31 +289,13 @@ export default function MarsSimulation() {
                                         : `0 0 10px rgba(${llm.colorRGB}, 0.2)`,
                                 }}
                             >
-                                <span
-                                    className="text-xs font-bold"
-                                    style={{ color: llm.color }}
-                                >
+                                <span className="text-xs font-bold" style={{ color: llm.color }}>
                                     {llm.shortName.charAt(0)}
                                 </span>
                             </div>
-                            <span
-                                className={styles.nodeLabel}
-                                style={{ color: llm.color }}
-                            >
+                            <span className={styles.nodeLabel} style={{ color: llm.color }}>
                                 {llm.shortName}
                             </span>
-                            {/* Tooltip */}
-                            <div className={styles.tooltip}>
-                                <div
-                                    className="font-bold text-xs mb-1"
-                                    style={{ color: llm.color }}
-                                >
-                                    {llm.name}
-                                </div>
-                                <div className="text-[10px] text-white/60">
-                                    {llm.tagline}
-                                </div>
-                            </div>
                         </div>
                     );
                 })}
@@ -321,30 +303,30 @@ export default function MarsSimulation() {
 
             {/* ===== MISSION DOMAINS GRID ===== */}
             <div className="relative z-10">
-                <h3 className="text-lg font-bold text-white/70 mb-4 flex items-center gap-2">
-                    <span className="w-1 h-5 bg-gradient-to-b from-blue-400 to-orange-400 rounded-full" />
+                <h3 className="text-lg font-bold text-[#292524] mb-4 flex items-center gap-2">
+                    <span className="w-1 h-5 bg-[#412AD1] rounded-full" />
                     Mission Domain Ratings
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {DOMAINS.map((domain, di) => (
-                        <div key={domain.key} className={styles.domainCard}>
+                    {DOMAINS.map((domain) => (
+                        <div key={domain.key} className="glass-panel rounded-2xl p-5 shadow-sm">
                             <div className="flex items-start gap-3 mb-4">
                                 <span className="text-2xl leading-none">
                                     {domain.emoji}
                                 </span>
                                 <div>
-                                    <h4 className="text-sm font-bold text-white/90">
+                                    <h4 className="text-sm font-bold text-[#292524]">
                                         {domain.title}
                                     </h4>
-                                    <p className="text-[11px] text-white/35 leading-relaxed mt-0.5">
+                                    <p className="text-[11px] text-[#292524]/60 leading-relaxed mt-0.5">
                                         {domain.description}
                                     </p>
                                 </div>
                             </div>
 
                             <div className="space-y-2.5">
-                                {LLMS.map((llm, li) => {
+                                {LLMS.map((llm) => {
                                     const score =
                                         llm.scores[domain.key] ?? 0;
                                     return (
@@ -353,24 +335,20 @@ export default function MarsSimulation() {
                                             className="flex items-center gap-2"
                                         >
                                             <span
-                                                className="text-[10px] font-semibold w-16 truncate"
-                                                style={{
-                                                    color: llm.color,
-                                                }}
+                                                className="text-[10px] font-semibold w-16 truncate text-[#292524]"
                                             >
                                                 {llm.shortName}
                                             </span>
-                                            <div className={`${styles.barTrack} flex-1`}>
+                                            <div className="flex-1 bg-[#292524]/10 rounded-full h-2 overflow-hidden">
                                                 <div
-                                                    className={styles.barFill}
+                                                    className="h-full rounded-full transition-all duration-500"
                                                     style={{
                                                         width: `${score}%`,
-                                                        background: `linear-gradient(90deg, ${llm.color}, ${llm.color}dd)`,
-                                                        animationDelay: `${di * 0.15 + li * 0.08}s`,
+                                                        backgroundColor: llm.color,
                                                     }}
                                                 />
                                             </div>
-                                            <span className="text-[10px] font-mono text-white/50 w-7 text-right tabular-nums">
+                                            <span className="text-[10px] font-mono text-[#292524]/70 w-7 text-right tabular-nums">
                                                 {score}
                                             </span>
                                         </div>
@@ -383,13 +361,13 @@ export default function MarsSimulation() {
             </div>
 
             {/* ===== MARS READINESS VERDICT ===== */}
-            <div className={`${styles.verdict} relative z-10`}>
+            <div className="glass-panel rounded-3xl p-6 shadow-lg relative z-10">
                 <div className="flex flex-col items-center gap-5">
                     <div className="text-center">
-                        <h3 className="text-lg font-bold bg-gradient-to-r from-emerald-400 via-blue-400 to-orange-400 bg-clip-text text-transparent">
+                        <h3 className="text-lg font-bold text-[#412AD1]">
                             Mars Readiness Verdict
                         </h3>
-                        <p className="text-xs text-white/35 mt-1">
+                        <p className="text-xs text-[#292524]/60 mt-1">
                             Composite score across all 6 mission domains
                         </p>
                     </div>
@@ -398,20 +376,18 @@ export default function MarsSimulation() {
                         {rankings.map((r, i) => (
                             <div
                                 key={r.llm.id}
-                                className={`${styles.scoreBadge} ${i === 0 ? styles.crownBadge : ""}`}
+                                className="flex flex-col items-center p-3 rounded-2xl bg-[#FFFFFF] border border-[#292524]/10 shadow-sm min-w-[80px]"
                             >
                                 {i === 0 && (
-                                    <span className="text-base">👑</span>
+                                    <span className="text-base mb-1">👑</span>
                                 )}
                                 <span
-                                    className="text-xl font-extrabold tabular-nums"
-                                    style={{ color: r.llm.color }}
+                                    className="text-xl font-extrabold tabular-nums text-[#292524]"
                                 >
                                     {r.avg}
                                 </span>
                                 <span
-                                    className="text-[10px] font-semibold"
-                                    style={{ color: r.llm.color }}
+                                    className="text-[10px] font-semibold text-[#412AD1]"
                                 >
                                     {r.llm.shortName}
                                 </span>
@@ -419,15 +395,14 @@ export default function MarsSimulation() {
                         ))}
                     </div>
 
-                    <p className="text-xs text-white/50 text-center max-w-lg leading-relaxed">
+                    <p className="text-xs text-[#292524]/70 text-center max-w-lg leading-relaxed">
                         <span
-                            className="font-bold"
-                            style={{ color: leader.llm.color }}
+                            className="font-bold text-[#412AD1]"
                         >
                             {leader.llm.name}
                         </span>{" "}
                         leads with a composite score of{" "}
-                        <span className="text-white font-semibold">
+                        <span className="text-[#292524] font-semibold">
                             {leader.avg}
                         </span>
                         , excelling in{" "}
@@ -451,7 +426,7 @@ export default function MarsSimulation() {
             </div>
 
             {/* ===== FOOTER NOTE ===== */}
-            <p className="text-[10px] text-white/20 text-center relative z-10 pb-4">
+            <p className="text-[10px] text-[#292524]/50 text-center relative z-10 pb-4">
                 Ratings are editorial assessments based on model capabilities
                 as of Feb 2026. Not derived from benchmark data.
             </p>

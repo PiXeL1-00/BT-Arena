@@ -32,34 +32,34 @@ export function PressureScatter({ results }: Props) {
   if (data.length === 0) return null;
 
   return (
-    <div className="glass-panel rounded-3xl p-6">
-      <h2 className="text-lg font-medium text-cyan-300 mb-4">Score Distribution</h2>
+    <div className="glass-panel rounded-3xl p-6 shadow-lg">
+      <h2 className="text-lg font-bold text-[#412AD1] mb-4">Score Distribution</h2>
       <ResponsiveContainer width="100%" height={250}>
         <ScatterChart margin={{ top: 10, right: 10, bottom: 10, left: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(41,37,36,0.1)" />
           <XAxis
             dataKey="x"
             name="Case #"
-            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.6)" }}
+            tick={{ fontSize: 11, fill: "rgba(41,37,36,0.7)" }}
           />
           <YAxis
             dataKey="y"
             name="Score"
             domain={[0, 100]}
-            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.6)" }}
+            tick={{ fontSize: 11, fill: "rgba(41,37,36,0.7)" }}
           />
           <Tooltip
             contentStyle={{
-              background: "rgba(255, 255, 255, 0.1)",
-              backdropFilter: "blur(16px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
+              background: "#FFFFFF",
+              border: "1px solid rgba(41,37,36,0.15)",
               borderRadius: "12px",
-              color: "#fff",
+              color: "#292524",
+              boxShadow: "0 4px 16px rgba(12,10,9,0.08)"
             }}
           />
           <Legend />
-          <Scatter name="Pass" data={passData} fill="#34d399" />
-          <Scatter name="Fail" data={failData} fill="#f87171" />
+          <Scatter name="Pass" data={passData} fill="#29BC41" />
+          <Scatter name="Fail" data={failData} fill="#B50BBB" />
         </ScatterChart>
       </ResponsiveContainer>
     </div>

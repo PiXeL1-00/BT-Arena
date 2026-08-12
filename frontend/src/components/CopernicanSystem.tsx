@@ -13,9 +13,9 @@ export default function CopernicanSystem() {
 
     return (
         <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none select-none">
-            <div className="absolute inset-0 bg-radial-gradient from-cyan-950/20 via-background/90 to-background" />
-            <div className="absolute w-[900px] h-[900px] rounded-full bg-cyan-500/[0.04] blur-[140px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute w-[600px] h-[600px] rounded-full bg-indigo-500/[0.03] blur-[120px] top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#412AD1]/[0.02] via-background to-background" />
+            <div className="absolute w-[900px] h-[900px] rounded-full bg-[#412AD1]/[0.03] blur-[140px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute w-[600px] h-[600px] rounded-full bg-[#B50BBB]/[0.02] blur-[120px] top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2" />
         </div>
     );
 }

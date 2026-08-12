@@ -13,7 +13,7 @@ const Earth3D = () => {
         // Scene setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-        camera.position.z = 9.8;
+        camera.position.z = 7.2;
 
         // Renderer
         const renderer = new THREE.WebGLRenderer({
@@ -50,7 +50,7 @@ const Earth3D = () => {
         // Non-spherical, organic cybernetic mesh with protruding nodes & dense edges
         // =========================================================================
         const numVertices = 200;
-        const baseRadius = 3.1;
+        const baseRadius = 2.17;
 
         // Structured vertex node data
         interface NodeData {
@@ -133,11 +133,10 @@ const Earth3D = () => {
         linesGeometry.setAttribute('position', new THREE.BufferAttribute(edgePositions, 3));
 
         const linesMaterial = new THREE.LineBasicMaterial({
-            color: 0x412ad1,
+            color: 0x0C0A09,
             transparent: true,
-            opacity: 0.26,
+            opacity: 0.32,
             depthWrite: false,
-            blending: THREE.AdditiveBlending,
         });
 
         const linesMesh = new THREE.LineSegments(linesGeometry, linesMaterial);
@@ -151,12 +150,11 @@ const Earth3D = () => {
         coreNodeGeometry.setAttribute('position', new THREE.BufferAttribute(coreNodePositions, 3));
 
         const coreNodeMaterial = new THREE.PointsMaterial({
-            color: 0x412ad1,
-            size: 0.08,
+            color: 0x292524,
+            size: 0.05,
             transparent: true,
             opacity: 0.7,
             sizeAttenuation: true,
-            blending: THREE.AdditiveBlending,
         });
         const coreNodesMesh = new THREE.Points(coreNodeGeometry, coreNodeMaterial);
         scene.add(coreNodesMesh);
@@ -168,31 +166,16 @@ const Earth3D = () => {
         protrudeGeometry.setAttribute('position', new THREE.BufferAttribute(protrudePositions, 3));
 
         const protrudeMaterial = new THREE.PointsMaterial({
-            color: 0xb50bbb,
-            size: 0.16,
+            color: 0x412ad1,
+            size: 0.09,
             transparent: true,
-            opacity: 0.95,
+            opacity: 0.85,
             sizeAttenuation: true,
-            blending: THREE.AdditiveBlending,
         });
         const protrudeNodesMesh = new THREE.Points(protrudeGeometry, protrudeMaterial);
         scene.add(protrudeNodesMesh);
 
-        // =========================================================================
-        // Inner Core Lattice (Concentric Wireframe for multi-layer depth)
-        // =========================================================================
-        const innerGeometry = new THREE.IcosahedronGeometry(baseRadius * 0.55, 2);
-        const innerMaterial = new THREE.MeshStandardMaterial({
-            color: 0x412ad1,
-            emissive: 0x412ad1,
-            emissiveIntensity: 0.25,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.18,
-            roughness: 0.3,
-        });
-        const innerMesh = new THREE.Mesh(innerGeometry, innerMaterial);
-        scene.add(innerMesh);
+        // Inner core removed per design update
 
         // =========================================================================
         // Animation Loop - Dynamic Mesh Wave & Protrusion Motion
@@ -210,14 +193,13 @@ const Earth3D = () => {
             for (let i = 0; i < numVertices; i++) {
                 const node = nodes[i];
                 
-                // Pulsating radial wave motion (protruding nodes extend further dynamically)
-                const wave1 = Math.sin(time * node.freq + node.phase);
-                const wave2 = Math.cos(time * 0.7 + node.direction.x * 2.5 + node.direction.y * 1.8);
-                const pulse = wave1 * 0.18 + wave2 * 0.14;
+                // Gentle radial wave motion (reduced wobble)
+                const wave1 = Math.sin(time * node.freq * 0.5 + node.phase);
+                const wave2 = Math.cos(time * 0.35 + node.direction.x * 2.5 + node.direction.y * 1.8);
+                const pulse = wave1 * 0.06 + wave2 * 0.05;
                 
                 if (node.isProtruding) {
-                    // Extra dynamic protrusion sticking out
-                    const extrudeWave = Math.sin(time * 1.1 + node.phase) * 0.45;
+                    const extrudeWave = Math.sin(time * 0.55 + node.phase) * 0.12;
                     node.currentDist = node.baseDist + extrudeWave;
                 } else {
                     node.currentDist = node.baseDist + pulse;
@@ -257,9 +239,9 @@ const Earth3D = () => {
             }
             linesGeometry.attributes.position.needsUpdate = true;
 
-            // Ambient group rotations
-            const rotY = time * 0.035;
-            const rotX = Math.sin(time * 0.02) * 0.07;
+            // Ambient group rotations (slower, less wobble)
+            const rotY = time * 0.018;
+            const rotX = Math.sin(time * 0.012) * 0.03;
 
             linesMesh.rotation.y = rotY;
             linesMesh.rotation.x = rotX;
@@ -269,9 +251,6 @@ const Earth3D = () => {
 
             protrudeNodesMesh.rotation.y = rotY;
             protrudeNodesMesh.rotation.x = rotX;
-
-            innerMesh.rotation.y = -time * 0.025;
-            innerMesh.rotation.z = Math.cos(time * 0.02) * 0.08;
 
             renderer.render(scene, camera);
         };
@@ -300,8 +279,6 @@ const Earth3D = () => {
             coreNodeMaterial.dispose();
             protrudeGeometry.dispose();
             protrudeMaterial.dispose();
-            innerGeometry.dispose();
-            innerMaterial.dispose();
         };
     }, []);
 

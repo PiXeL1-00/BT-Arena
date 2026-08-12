@@ -36,23 +36,23 @@ export function CalibrationChart({ results }: Props) {
   if (results.length === 0) return null;
 
   return (
-    <div className="glass-panel rounded-3xl p-6">
-      <h2 className="text-lg font-medium text-cyan-300 mb-4">Score Distribution</h2>
+    <div className="glass-panel rounded-3xl p-6 shadow-lg">
+      <h2 className="text-lg font-bold text-[#412AD1] mb-4">Score Distribution</h2>
       <ResponsiveContainer width="100%" height={180}>
         <BarChart data={buckets} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-          <XAxis dataKey="range" tick={{ fontSize: 10, fill: "rgba(255,255,255,0.6)" }} />
-          <YAxis tick={{ fontSize: 10, fill: "rgba(255,255,255,0.6)" }} />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(41,37,36,0.1)" />
+          <XAxis dataKey="range" tick={{ fontSize: 10, fill: "rgba(41,37,36,0.7)" }} />
+          <YAxis tick={{ fontSize: 10, fill: "rgba(41,37,36,0.7)" }} />
           <Tooltip
             contentStyle={{
-              background: "rgba(255, 255, 255, 0.1)",
-              backdropFilter: "blur(16px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
+              background: "#FFFFFF",
+              border: "1px solid rgba(41,37,36,0.15)",
               borderRadius: "12px",
-              color: "#fff",
+              color: "#292524",
+              boxShadow: "0 4px 16px rgba(12,10,9,0.08)"
             }}
           />
-          <Bar dataKey="count" fill="#22d3ee" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="count" fill="#412AD1" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

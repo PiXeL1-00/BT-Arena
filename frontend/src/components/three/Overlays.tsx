@@ -58,19 +58,19 @@ export function LegendOverlay({ items, axes, title }: LegendOverlayProps) {
                         </div>
                         {axes.x && (
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] text-cyan-400 font-bold w-3">X</span>
+                                <span className="text-[10px] text-[#412AD1] font-bold w-3">X</span>
                                 <span className="text-[10px] text-white/60">{axes.x}</span>
                             </div>
                         )}
                         {axes.y && (
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] text-amber-400 font-bold w-3">Y</span>
+                                <span className="text-[10px] text-[#FCC503] font-bold w-3">Y</span>
                                 <span className="text-[10px] text-white/60">{axes.y}</span>
                             </div>
                         )}
                         {axes.z && (
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] text-emerald-400 font-bold w-3">Z</span>
+                                <span className="text-[10px] text-[#29BC41] font-bold w-3">Z</span>
                                 <span className="text-[10px] text-white/60">{axes.z}</span>
                             </div>
                         )}
@@ -101,8 +101,8 @@ export function TooltipOverlay({ data }: TooltipOverlayProps) {
             className="absolute z-20 pointer-events-none"
             style={{ left: data.x + 12, top: data.y - 10 }}
         >
-            <div className="bg-black/85 backdrop-blur-lg border border-cyan-400/30 rounded-lg px-3 py-2 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
-                <div className="text-[11px] text-cyan-300 font-semibold mb-1">{data.label}</div>
+            <div className="bg-black/90 backdrop-blur-lg border border-[#412AD1]/40 rounded-lg px-3 py-2 shadow-[0_0_20px_rgba(65,42,209,0.25)]">
+                <div className="text-[11px] text-[#FFFFFF] font-bold mb-1">{data.label}</div>
                 {data.rows.map((r, i) => (
                     <div key={i} className="flex justify-between gap-4">
                         <span className="text-[10px] text-white/50">{r.key}</span>

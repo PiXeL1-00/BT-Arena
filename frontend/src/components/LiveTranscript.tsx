@@ -24,12 +24,12 @@ function getAvatarInitial(role: string): string {
 
 function getAvatarGradient(role: string): string {
   const gradientMap: Record<string, string> = {
-    Orthodox: "from-blue-400 to-cyan-500",
-    Heretic: "from-rose-500 to-orange-600",
-    Skeptic: "from-amber-400 to-yellow-600",
-    Judge: "from-emerald-400 to-teal-500",
+    Orthodox: "from-[#412AD1] to-[#412AD1]/80 text-[#FFFFFF]",
+    Heretic: "from-[#B50BBB] to-[#B50BBB]/80 text-[#FFFFFF]",
+    Skeptic: "from-[#FCC503] to-[#FCC503]/80 text-[#0C0A09]",
+    Judge: "from-[#29BC41] to-[#29BC41]/80 text-[#FFFFFF]",
   };
-  return gradientMap[role] || "from-gray-400 to-gray-500";
+  return gradientMap[role] || "from-[#292524]/20 to-[#292524]/40 text-[#292524]";
 }
 
 function shouldAlignRight(role: string): boolean {
@@ -119,21 +119,21 @@ export function LiveTranscript({ messages, sseStatus, debugMode }: Props) {
   }, [displayedMessages.length]);
 
   return (
-    <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-8 relative overflow-hidden flex flex-col">
+    <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-8 relative overflow-hidden flex flex-col shadow-lg">
       {/* Scroll fade mask at top */}
-      <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[rgba(255,255,255,0.05)] to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[#FFFFFF] to-transparent z-10 pointer-events-none"></div>
 
       <div className="flex justify-between items-center mb-3 sm:mb-6">
-        <h2 className="text-base sm:text-lg font-medium text-cyan-300">Live Debate</h2>
+        <h2 className="text-base sm:text-lg font-semibold text-[#412AD1]">Live Debate</h2>
         {debugMode && (
           <div className="flex gap-2">
-            <div className={`text-[10px] font-mono px-2 py-1 rounded border ${sseStatus === "OPEN" ? "bg-green-500/20 text-green-300 border-green-500/30" :
-              sseStatus === "CONNECTING" ? "bg-yellow-500/20 text-yellow-300 border-yellow-500/30" :
-                "bg-red-500/20 text-red-300 border-red-500/30"
+            <div className={`text-[10px] font-mono px-2 py-1 rounded border ${sseStatus === "OPEN" ? "bg-[#29BC41]/20 text-[#29BC41] border-[#29BC41]/30" :
+              sseStatus === "CONNECTING" ? "bg-[#FCC503]/20 text-[#292524] border-[#FCC503]/40" :
+                "bg-[#B50BBB]/20 text-[#B50BBB] border-[#B50BBB]/30"
               }`}>
               SSE: {sseStatus || "UNKNOWN"}
             </div>
-            <div className="hidden sm:block text-[10px] font-mono text-white/30 bg-black/20 px-2 py-1 rounded border border-white/5">
+            <div className="hidden sm:block text-[10px] font-mono text-[#292524]/60 bg-[#292524]/5 px-2 py-1 rounded border border-[#292524]/10">
               DEBUG: S={messages.length} D={displayedMessages.length} Q={queueRef.current.length}
             </div>
           </div>
@@ -145,13 +145,13 @@ export function LiveTranscript({ messages, sseStatus, debugMode }: Props) {
         className="flex-1 overflow-y-auto space-y-4 sm:space-y-8 pr-1 sm:pr-2 relative z-0 hide-scrollbar"
       >
         {messages.length === 0 && (
-          <p className="text-sm text-white/50 text-center py-12">Waiting for agents...</p>
+          <p className="text-sm text-[#292524]/60 text-center py-12">Waiting for agents...</p>
         )}
         {displayedMessages.map((msg, i) => {
           const alignRight = shouldAlignRight(msg.role);
           const avatarInitial = getAvatarInitial(msg.role);
           const avatarGradient = getAvatarGradient(msg.role);
-          const roleColor = ROLE_COLORS[msg.role] ?? "text-white/60";
+          const roleColor = ROLE_COLORS[msg.role] ?? "text-[#412AD1]";
 
           // Try to parse structured message (JSON or TOML)
           const parsed = parseStructuredMessage(msg.content, msg.phase);
@@ -174,35 +174,35 @@ export function LiveTranscript({ messages, sseStatus, debugMode }: Props) {
             >
               {/* Avatar */}
               <div
-                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br ${avatarGradient} flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-glow mt-1 flex-shrink-0`}
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br ${avatarGradient} flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-md mt-1 flex-shrink-0`}
               >
                 {avatarInitial}
               </div>
 
               {/* Message bubble */}
               <div
-                className={`bg-white/10 border p-3 sm:p-5 rounded-xl sm:rounded-2xl backdrop-blur-sm group-hover:bg-white/15 transition-all ${alignRight ? "rounded-tr-none text-right" : "rounded-tl-none"
+                className={`bg-[#FFFFFF] border p-3 sm:p-5 rounded-xl sm:rounded-2xl backdrop-blur-sm group-hover:border-[#412AD1]/30 transition-all ${alignRight ? "rounded-tr-none text-right" : "rounded-tl-none"
                   } ${isHighlighted
-                    ? "border-cyan-400/60 bg-cyan-500/10 shadow-[0_0_30px_rgba(34,211,238,0.4)] ring-2 ring-cyan-400/30 scale-[1.02]"
-                    : "border-white/5"
+                    ? "border-[#412AD1]/60 bg-[#412AD1]/5 shadow-[0_0_20px_rgba(65,42,209,0.15)] ring-2 ring-[#412AD1]/20 scale-[1.01]"
+                    : "border-[#292524]/12 shadow-sm"
                   } max-w-full sm:max-w-2xl`}
               >
                 <div
                   className={`flex justify-between items-baseline mb-2 ${alignRight ? "flex-row-reverse" : ""
                     }`}
                 >
-                  <span className={`${roleColor} font-medium text-sm`}>
+                  <span className={`${roleColor} font-semibold text-sm`}>
                     {msg.role} Agent
                   </span>
-                  <span className="text-[10px] text-white/30">
+                  <span className="text-[10px] text-[#292524]/50">
                     {i === messages.length - 1 ? "Just now" : `${messages.length - i - 1}s ago`}
                   </span>
                 </div>
 
                 {parsed ? (
-                  <div className="text-white/90">{formatStructuredMessage(parsed, msg.role, msg.model_key)}</div>
+                  <div className="text-[#292524]">{formatStructuredMessage(parsed, msg.role, msg.model_key)}</div>
                 ) : (
-                  <p className="text-sm sm:text-lg font-light leading-relaxed text-white/90">
+                  <p className="text-sm sm:text-base font-normal leading-relaxed text-[#292524]">
                     {msg.content}
                   </p>
                 )}

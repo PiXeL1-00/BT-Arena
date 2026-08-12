@@ -19,7 +19,7 @@ export default function CaseReplayPage() {
   if (!data) {
     return (
       <div className="glass-panel rounded-3xl p-12 text-center">
-        <p className="text-white/60">Loading replay...</p>
+        <p className="text-[#292524]/60">Loading replay...</p>
       </div>
     );
   }

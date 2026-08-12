@@ -14,8 +14,8 @@ export function FailGallery({ runId, results }: Props) {
   if (failures.length === 0) return null;
 
   return (
-    <div className="glass-panel rounded-3xl p-6">
-      <h2 className="text-lg font-medium text-red-300 mb-4">
+    <div className="glass-panel rounded-3xl p-6 shadow-lg">
+      <h2 className="text-lg font-bold text-[#B50BBB] mb-4">
         Recent Failures ({failures.length})
       </h2>
       <div className="space-y-3">
@@ -23,18 +23,18 @@ export function FailGallery({ runId, results }: Props) {
           <Link
             key={i}
             href={`/run/${runId}/case/${f.case_id}`}
-            className="block glass-button rounded-xl p-3 transition"
+            className="block bg-[#FFFFFF] border border-[#292524]/10 rounded-xl p-3 hover:border-[#B50BBB]/40 transition shadow-sm"
           >
             <div className="flex justify-between items-center">
-              <span className="text-xs font-mono text-white/60">{f.case_id}</span>
-              <span className="text-xs text-red-300 font-medium">
+              <span className="text-xs font-mono font-semibold text-[#292524]">{f.case_id}</span>
+              <span className="text-xs text-[#B50BBB] font-bold">
                 {f.score}/100
               </span>
             </div>
-            <p className="text-xs text-white/50 mt-2">
+            <p className="text-xs text-[#292524]/60 mt-2">
               {f.model_key} &middot; {f.verdict}
               {f.critical_fail_reason && (
-                <span className="text-red-300 ml-2">
+                <span className="text-[#B50BBB] font-medium ml-2 block sm:inline">
                   CRITICAL: {f.critical_fail_reason.slice(0, 40)}
                 </span>
               )}

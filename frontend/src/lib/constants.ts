@@ -21,8 +21,8 @@ export interface AvailableModel {
 export const AVAILABLE_MODELS: AvailableModel[] = [];
 
 export const ROLE_COLORS: Record<string, string> = {
-  Orthodox: "text-cyan-300",
-  Heretic: "text-pink-300",
-  Skeptic: "text-amber-300",
-  Judge: "text-emerald-300",
+  Orthodox: "text-[#412AD1]",
+  Heretic: "text-[#B50BBB]",
+  Skeptic: "text-[#FCC503]",
+  Judge: "text-[#29BC41]",
 };
