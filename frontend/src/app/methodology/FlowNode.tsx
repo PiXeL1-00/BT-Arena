@@ -16,8 +16,8 @@ export function FlowNode({ icon: Icon, title, description, accentColor }: FlowNo
             >
                 <Icon className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{description}</p>
+            <h3 className="text-sm font-semibold text-[#292524]">{title}</h3>
+            <p className="text-xs text-[#292524]/70 leading-relaxed">{description}</p>
         </div>
     );
 }

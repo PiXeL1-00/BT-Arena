@@ -9,8 +9,7 @@ import type { DistributionItem } from "@/lib/galileoTypes";
 import { TOOLTIP_STYLE } from "@/lib/chartConfig";
 
 const BAR_COLORS = [
-    "#22d3ee", "#60a5fa", "#14b8a6", "#4ade80", "#fbbf24",
-    "#fb7185", "#f472b6", "#2dd4bf", "#fb923c", "#f59e0b",
+    "#412AD1", "#B50BBB", "#29BC41", "#FCC503", "#0C0809", "#292524",
 ];
 
 interface DistributionChartProps {
@@ -35,7 +34,7 @@ export default function DistributionChart({ items, modelNames }: DistributionCha
 
     if (!chartData.length) {
         return (
-            <div className="flex items-center justify-center h-64 text-gray-500">
+            <div className="flex items-center justify-center h-64 text-[#292524]/60">
                 No distribution data available
             </div>
         );
@@ -52,23 +51,23 @@ export default function DistributionChart({ items, modelNames }: DistributionCha
                         </linearGradient>
                     ))}
                 </defs>
-                <CartesianGrid strokeDasharray="3 6" stroke="#1e293b" vertical={false} />
+                <CartesianGrid strokeDasharray="3 6" stroke="rgba(41, 37, 36, 0.15)" vertical={false} />
                 <XAxis
                     dataKey="name"
-                    stroke="#334155"
+                    stroke="#292524"
                     fontSize={11}
                     angle={-10}
                     textAnchor="end"
                     tickLine={false}
                 />
-                <YAxis stroke="#334155" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis stroke="#292524" fontSize={11} tickLine={false} axisLine={false} />
                 <Tooltip
                     contentStyle={TOOLTIP_STYLE}
                     formatter={(v: number, name: string) => {
                         if (name === "mean") return [`${v}`, "Mean Score"];
                         return [v, name];
                     }}
-                    cursor={{ fill: "rgba(34, 211, 238, 0.05)" }}
+                    cursor={{ fill: "rgba(65, 42, 209, 0.05)" }}
                 />
                 <Bar dataKey="mean" radius={[6, 6, 0, 0]}>
                     {chartData.map((_, i) => (

@@ -26,7 +26,7 @@ export default function AboutPage() {
                     {/* Back link */}
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+                        className="inline-flex items-center gap-2 text-sm text-[#292524]/60 hover:text-[#292524] transition-colors group"
                     >
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
                         Back to Arena
@@ -34,20 +34,20 @@ export default function AboutPage() {
 
                     {/* Title */}
                     <header className="space-y-3">
-                        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#292524]">
                             About Bittensor Arena
                         </h1>
 
-                        <p className="text-lg sm:text-xl text-primary font-medium italic">
+                        <p className="text-lg sm:text-xl text-[#412AD1] font-medium font-serif italic">
                             Explore the decentralized intelligence economy.
                         </p>
                     </header>
 
                     {/* Intro */}
-                    <section className="space-y-4 text-muted-foreground leading-relaxed">
+                    <section className="space-y-4 text-[#292524]/70 leading-relaxed">
                         <p>
                             Bittensor is a decentralized machine intelligence network where independent
-                            teams build specialized AI services called <span className="text-foreground font-medium">subnets</span>.
+                            teams build specialized AI services called <span className="text-[#292524] font-medium">subnets</span>.
                             Each subnet competes to provide useful intelligence while being rewarded by the network based on performance.
                         </p>
 
@@ -65,7 +65,7 @@ export default function AboutPage() {
 
                     {/* Bittensor Images */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-white/[0.08]">
+                        <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-[#292524]/10">
                             <Image
                                 src="/bt_tao.webp"
                                 alt="Bittensor Tao 3d image"
@@ -73,11 +73,11 @@ export default function AboutPage() {
                                 className="object-cover"
                                 sizes="(max-width: 640px) 100vw, 50vw"
                             />
-                            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                                <p className="text-sm text-white/80 font-medium">TAO</p>
+                            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#0C0A09]/70 to-transparent p-4">
+                                <p className="text-sm text-[#FFFFFF] font-medium">TAO</p>
                             </div>
                         </div>
-                        <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-white/[0.08]">
+                        <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-[#292524]/10">
                             <Image
                                 src="/bt_mesh.png"
                                 alt="Graphical mesh of Bittensor"
@@ -85,19 +85,19 @@ export default function AboutPage() {
                                 className="object-cover"
                                 sizes="(max-width:640px) 100vw, 50vw"
                             />
-                            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                                <p className="text-sm text-white/80 font-medium">Bittensor Network</p>
+                            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#0C0A09]/70 to-transparent p-4">
+                                <p className="text-sm text-[#FFFFFF] font-medium">Bittensor Network</p>
                             </div>
                         </div>
                     </div>
 
                     {/* The Modern Problem */}
                     <SectionCard>
-                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                        <h2 className="text-xl sm:text-2xl font-bold text-[#292524]">
                             Why Subnets?
                         </h2>
 
-                        <div className="space-y-3 text-muted-foreground leading-relaxed">
+                        <div className="space-y-3 text-[#292524]/70 leading-relaxed">
                             <p>
                                 Different AI problems require different architectures, incentives,
                                 and expertise. Bittensor organizes these into specialized subnets
@@ -119,13 +119,13 @@ export default function AboutPage() {
                                     "Infrastructure & Validation",
                                 ].map((item) => (
                                     <li key={item} className="flex items-start gap-2">
-                                        <span className="mt-1.5 h-2 w-2 rounded-full bg-primary shrink-0" />
+                                        <span className="mt-1.5 h-2 w-2 rounded-full bg-[#412AD1] shrink-0" />
                                         <span>{item}</span>
                                     </li>
                                 ))}
                             </ul>
 
-                            <p className="text-primary font-semibold">
+                            <p className="text-[#412AD1] font-semibold">
                                 Every subnet contributes a different form of intelligence to the network.
                             </p>
                         </div>
@@ -133,11 +133,11 @@ export default function AboutPage() {
 
                     {/* The Bittensor Standard */}
                     <SectionCard>
-                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                        <h2 className="text-xl sm:text-2xl font-bold text-[#292524]">
                             Explore by Category
                         </h2>
 
-                        <div className="space-y-3 text-muted-foreground leading-relaxed">
+                        <div className="space-y-3 text-[#292524]/70 leading-relaxed">
                             <p>
                                 This platform organizes subnets into high-level categories to make the
                                 rapidly growing Bittensor ecosystem easier to navigate.
@@ -175,10 +175,10 @@ export default function AboutPage() {
                                     },
                                 ].map(({ label, desc }) => (
                                     <li key={label} className="flex items-start gap-3">
-                                        <span className="mt-1.5 h-2 w-2 rounded-full bg-primary shrink-0" />
+                                        <span className="mt-1.5 h-2 w-2 rounded-full bg-[#412AD1] shrink-0" />
                                         <span>
-                                            <span className="font-semibold text-foreground">{label}</span>
-                                            <span className="text-muted-foreground"> — {desc}</span>
+                                            <span className="font-semibold text-[#292524]">{label}</span>
+                                            <span className="text-[#292524]/70"> — {desc}</span>
                                         </span>
                                     </li>
                                 ))}
@@ -188,11 +188,11 @@ export default function AboutPage() {
 
                     {/* What Const AI Does */}
                     <SectionCard>
-                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                        <h2 className="text-xl sm:text-2xl font-bold text-[#292524]">
                             What You'll Find Here
                         </h2>
 
-                        <div className="space-y-3 text-muted-foreground leading-relaxed">
+                        <div className="space-y-3 text-[#292524]/70 leading-relaxed">
                             <p>
                                 Bittensor Arena provides an organized view of the Bittensor ecosystem,
                                 making it easier to explore projects across different subnet categories.
@@ -207,13 +207,13 @@ export default function AboutPage() {
                                     "Navigate the decentralized AI landscape"
                                 ].map((item) => (
                                     <li key={item} className="flex items-start gap-2">
-                                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-green-400 shrink-0" />
+                                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#29BC41] shrink-0" />
                                         <span>{item}</span>
                                     </li>
                                 ))}
                             </ul>
 
-                            <p className="text-primary font-semibold pt-2">
+                            <p className="text-[#412AD1] font-semibold pt-2">
                                 Whether you're a developer, validator, miner, researcher, or simply
                                 curious about decentralized AI, this platform is your gateway to the
                                 Bittensor ecosystem.

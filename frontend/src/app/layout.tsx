@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import { Outfit, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { GlobalHeader } from "@/components/GlobalHeader";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { NavLockProvider } from "@/hooks/useNavLock";
 import styles from "./AmbientBackground.module.css";
 import "./globals.css";
 
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-outfit",
-});
-
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-inter",
 });
 
@@ -31,8 +25,8 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${outfit.variable} ${inter.variable} min-h-screen antialiased relative font-sans`} suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
+      <body className={`${inter.variable} min-h-screen antialiased relative font-sans`} suppressHydrationWarning>
         <div className={styles.ambient}>
           <div className={styles.blob} />
           <div className={styles.noise} />

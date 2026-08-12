@@ -1,23 +1,66 @@
-version: "3.9"
+# version: "3.9"
+
+# services:
+#   # --- Local PostgreSQL (commented out — using Supabase) ---
+#   # Uncomment for offline development:
+#   # postgres:
+#   #   image: postgres:16-alpine
+#   #   environment:
+#   #     POSTGRES_USER: galileo
+#   #     POSTGRES_PASSWORD: galileo_pass
+#   #     POSTGRES_DB: galileo_arena
+#   #   ports:
+#   #     - "5432:5432"
+#   #   volumes:
+#   #     - pgdata:/var/lib/postgresql/data
+#   #   healthcheck:
+#   #     test: ["CMD-SHELL", "pg_isready -U galileo"]
+#   #     interval: 5s
+#   #     timeout: 3s
+#   #     retries: 5
+
+#   backend:
+#     build: ./backend
+#     ports:
+#       - "8000:8000"
+#     env_file:
+#       - backend/.env
+#     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+#     read_only: true
+#     security_opt:
+#       - no-new-privileges:true
+
+#   frontend:
+#     build: ./frontend
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       NEXT_PUBLIC_API_URL: http://localhost:8000
+#     depends_on:
+#       - backend
+      
+
+# # volumes:
+# #   pgdata:
+
+
 
 services:
-  # --- Local PostgreSQL (commented out — using Supabase) ---
-  # Uncomment for offline development:
-  # postgres:
-  #   image: postgres:16-alpine
-  #   environment:
-  #     POSTGRES_USER: galileo
-  #     POSTGRES_PASSWORD: galileo_pass
-  #     POSTGRES_DB: galileo_arena
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U galileo"]
-  #     interval: 5s
-  #     timeout: 3s
-  #     retries: 5
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: galileo
+      POSTGRES_PASSWORD: galileo_pass
+      POSTGRES_DB: galileo_arena
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U galileo -d galileo_arena"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   backend:
     build: ./backend
@@ -29,6 +72,9 @@ services:
     read_only: true
     security_opt:
       - no-new-privileges:true
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   frontend:
     build: ./frontend
@@ -38,8 +84,6 @@ services:
       NEXT_PUBLIC_API_URL: http://localhost:8000
     depends_on:
       - backend
-      
 
-# volumes:
-#   pgdata:
-
+volumes:
+  pgdata:

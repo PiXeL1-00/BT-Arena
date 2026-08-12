@@ -9,8 +9,7 @@ import type { CalibrationPoint } from "@/lib/galileoTypes";
 import { TOOLTIP_STYLE } from "@/lib/chartConfig";
 
 const PALETTE = [
-    "#22d3ee", "#fb7185", "#14b8a6", "#4ade80", "#fbbf24",
-    "#60a5fa", "#f472b6", "#2dd4bf", "#fb923c", "#f59e0b",
+    "#412AD1", "#B50BBB", "#29BC41", "#FCC503", "#0C0809", "#292524",
 ];
 
 interface CalibrationScatterProps {
@@ -31,7 +30,7 @@ export default function CalibrationScatter({ points, modelNames }: CalibrationSc
 
     if (!points.length) {
         return (
-            <div className="flex items-center justify-center h-64 text-gray-500">
+            <div className="flex items-center justify-center h-64 text-[#292524]/60">
                 No calibration data available
             </div>
         );
@@ -42,27 +41,27 @@ export default function CalibrationScatter({ points, modelNames }: CalibrationSc
     return (
         <ResponsiveContainer width="100%" height={360}>
             <ScatterChart margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 6" stroke="#1e293b" />
+                <CartesianGrid strokeDasharray="3 6" stroke="rgba(41, 37, 36, 0.15)" />
                 <XAxis
                     type="number"
                     dataKey="x"
                     name="Score"
                     domain={[0, 100]}
-                    stroke="#334155"
+                    stroke="#292524"
                     fontSize={11}
                     tickLine={false}
-                    label={{ value: "Score", position: "bottom", fill: "#64748b", fontSize: 10 }}
+                    label={{ value: "Score", position: "bottom", fill: "#292524", fontSize: 10 }}
                 />
                 <YAxis
                     type="number"
                     dataKey="y"
                     name="Calibration"
                     domain={[0, 1]}
-                    stroke="#334155"
+                    stroke="#292524"
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
-                    label={{ value: "Calibration", angle: -90, position: "insideLeft", fill: "#64748b", fontSize: 10 }}
+                    label={{ value: "Calibration", angle: -90, position: "insideLeft", fill: "#292524", fontSize: 10 }}
                 />
                 <ZAxis range={[40, 40]} />
                 <Tooltip
@@ -72,13 +71,13 @@ export default function CalibrationScatter({ points, modelNames }: CalibrationSc
                         return [v.toFixed(2), "Calibration"];
                     }}
                 />
-                <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
+                <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px", color: "#292524" }} />
                 <ReferenceLine
                     segment={[{ x: 0, y: 0 }, { x: 100, y: 1 }]}
-                    stroke="#334155"
+                    stroke="#292524"
                     strokeDasharray="6 4"
                     strokeWidth={1.5}
-                    label={{ value: "Perfect", fill: "#475569", fontSize: 10 }}
+                    label={{ value: "Perfect", fill: "#292524", fontSize: 10 }}
                 />
                 {ids.map((id, i) => (
                     <Scatter

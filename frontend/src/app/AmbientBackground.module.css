@@ -4,7 +4,7 @@
     z-index: -1;
     overflow: hidden;
     pointer-events: none;
-    background: radial-gradient(circle at 50% 30%, hsl(222 30% 7%), hsl(224 35% 4%));
+    background: #FFFFFF;
 }
 
 /* Subtle ambient radial lighting blobs */
@@ -14,31 +14,31 @@
     position: absolute;
     border-radius: 50%;
     filter: blur(120px);
-    opacity: 0.22;
+    opacity: 0.35;
     will-change: transform;
 }
 
-/* Soft cyan-blue glow top left */
+/* Soft purple glow (#412AD1) top left */
 .ambient::before {
     width: 60vw;
     height: 60vw;
     top: -20%;
     left: -15%;
-    background: radial-gradient(circle, hsl(190 70% 35% / 0.18), transparent 70%);
+    background: radial-gradient(circle, rgba(65, 42, 209, 0.12), transparent 70%);
     animation: ambient-drift-a 45s ease-in-out infinite alternate;
 }
 
-/* Soft deep violet glow bottom right */
+/* Soft magenta glow (#B50BBB) bottom right */
 .ambient::after {
     width: 55vw;
     height: 55vw;
     bottom: -22%;
     right: -12%;
-    background: radial-gradient(circle, hsl(245 60% 40% / 0.15), transparent 70%);
+    background: radial-gradient(circle, rgba(181, 11, 187, 0.10), transparent 70%);
     animation: ambient-drift-b 50s ease-in-out infinite alternate;
 }
 
-/* Third ambient blob - subtle charcoal/indigo center-right */
+/* Third ambient blob - soft yellow (#FCC503) center-right */
 .blob {
     position: absolute;
     width: 45vw;
@@ -47,8 +47,8 @@
     left: 45%;
     border-radius: 50%;
     filter: blur(130px);
-    opacity: 0.15;
-    background: radial-gradient(circle, hsl(217 65% 45% / 0.14), transparent 65%);
+    opacity: 0.25;
+    background: radial-gradient(circle, rgba(252, 197, 3, 0.10), transparent 65%);
     animation: ambient-drift-c 55s ease-in-out infinite alternate;
     will-change: transform;
 }
@@ -57,7 +57,7 @@
 .noise {
     position: absolute;
     inset: 0;
-    opacity: 0.02;
+    opacity: 0.015;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-repeat: repeat;
     pointer-events: none;
@@ -67,7 +67,7 @@
 .vignette {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 75% 65% at 50% 50%, transparent 45%, hsl(224 35% 3% / 0.6) 100%);
+    background: radial-gradient(ellipse 75% 65% at 50% 50%, transparent 60%, rgba(41, 37, 36, 0.03) 100%);
     pointer-events: none;
 }
 

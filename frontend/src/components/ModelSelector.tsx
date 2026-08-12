@@ -36,17 +36,17 @@ export function ModelSelector({
     return (
         <div
             ref={containerRef}
-            className={`glass-panel border-white/10 bg-slate-950/40 backdrop-blur-md rounded-3xl p-6 shadow-2xl transition-all duration-700 ${highlighted
-                ? 'border-cyan-400/60 bg-cyan-500/10 shadow-[0_0_30px_rgba(34,211,238,0.4)] ring-2 ring-cyan-400/30'
+            className={`glass-panel rounded-3xl p-6 shadow-lg transition-all duration-700 ${highlighted
+                ? 'border-[#412AD1]/60 bg-[#412AD1]/10 shadow-[0_0_30px_rgba(65,42,209,0.25)] ring-2 ring-[#412AD1]/30'
                 : ''
                 }`}
         >
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xs font-semibold text-cyan-400 tracking-widest uppercase flex items-center gap-2">
+                <h2 className="text-xs font-semibold text-[#412AD1] tracking-widest uppercase flex items-center gap-2">
                     Inference Engine
                     <div className="relative group/info">
-                        <Info className="w-3 h-3 text-white/30 cursor-help" />
-                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-black/90 border border-white/10 rounded-lg text-[10px] text-white/70 pointer-events-none opacity-0 group-hover/info:opacity-100 transition-opacity z-50">
+                        <Info className="w-3 h-3 text-[#292524]/30 cursor-help" />
+                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-[#FFFFFF] border border-[#292524]/10 rounded-lg text-[10px] text-[#292524]/70 pointer-events-none opacity-0 group-hover/info:opacity-100 transition-opacity z-50 shadow-lg">
                             Select the LLM that will power the debate agents.
                         </div>
                     </div>
@@ -55,7 +55,7 @@ export function ModelSelector({
                 <button
                     onClick={onRefreshValidation}
                     disabled={validationLoading}
-                    className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-cyan-400 transition-colors disabled:opacity-50"
+                    className="p-1.5 rounded-lg hover:bg-[#412AD1]/10 text-[#292524]/40 hover:text-[#412AD1] transition-colors disabled:opacity-50"
                     title="Refresh API key validation"
                 >
                     <RefreshCw className={`w-3 h-3 ${validationLoading ? "animate-spin" : ""}`} />
@@ -97,7 +97,7 @@ export function ModelSelector({
                 const reason = getDisabledReason?.(model);
                 if (reason) {
                     return (
-                        <div className="mt-3 text-[10px] text-red-300 bg-red-500/10 p-2 rounded border border-red-500/20 flex items-center gap-2">
+                        <div className="mt-3 text-[10px] text-[#B50BBB] bg-[#B50BBB]/10 p-2 rounded border border-[#B50BBB]/20 flex items-center gap-2">
                             <AlertTriangle className="w-3 h-3" />
                             {reason}
                         </div>
@@ -109,7 +109,7 @@ export function ModelSelector({
                     const result = keyValidation.get(model.api_key_env);
                     const errorText = result?.error_message || status;
                     return (
-                        <div className="mt-3 text-[10px] text-red-300 bg-red-500/10 p-2 rounded border border-red-500/20 flex items-center gap-2">
+                        <div className="mt-3 text-[10px] text-[#B50BBB] bg-[#B50BBB]/10 p-2 rounded border border-[#B50BBB]/20 flex items-center gap-2">
                             <AlertTriangle className="w-3 h-3" />
                             {errorText}
                         </div>

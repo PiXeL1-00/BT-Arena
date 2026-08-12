@@ -9,21 +9,21 @@ interface HeatmapChartProps {
 }
 
 function scoreStyle(score: number | null): { bg: string; text: string; shadow: string } {
-    if (score === null) return { bg: "bg-slate-800/60", text: "text-gray-600", shadow: "" };
+    if (score === null) return { bg: "bg-[#292524]/10", text: "text-[#292524]/40", shadow: "" };
     if (score >= 70) return {
-        bg: "bg-emerald-500/30",
-        text: "text-emerald-300",
-        shadow: "shadow-[0_0_8px_rgba(52,211,153,0.25)]",
+        bg: "bg-[#29BC41]/20",
+        text: "text-[#29BC41]",
+        shadow: "shadow-[0_0_8px_rgba(41,188,65,0.2)]",
     };
     if (score >= 40) return {
-        bg: "bg-amber-500/25",
-        text: "text-amber-300",
-        shadow: "shadow-[0_0_8px_rgba(251,191,36,0.2)]",
+        bg: "bg-[#FCC503]/25",
+        text: "text-[#292524]",
+        shadow: "shadow-[0_0_8px_rgba(252,197,3,0.2)]",
     };
     return {
-        bg: "bg-rose-500/25",
-        text: "text-rose-300",
-        shadow: "shadow-[0_0_8px_rgba(251,113,133,0.2)]",
+        bg: "bg-[#B50BBB]/20",
+        text: "text-[#B50BBB]",
+        shadow: "shadow-[0_0_8px_rgba(181,11,187,0.2)]",
     };
 }
 
@@ -53,7 +53,7 @@ export default function HeatmapChart({ cells, modelNames }: HeatmapChartProps) {
 
     if (!cells.length) {
         return (
-            <div className="flex items-center justify-center h-64 text-gray-500">
+            <div className="flex items-center justify-center h-64 text-[#292524]/60">
                 No heatmap data — select a dataset
             </div>
         );
@@ -63,10 +63,10 @@ export default function HeatmapChart({ cells, modelNames }: HeatmapChartProps) {
         <div className="overflow-x-auto">
             <table className="min-w-full text-xs">
                 <thead>
-                    <tr className="border-b border-cyan-500/10">
-                        <th className="px-2 py-2 text-left text-gray-500 font-medium uppercase tracking-wider text-[10px]">Case</th>
+                    <tr className="border-b border-[#292524]/10">
+                        <th className="px-2 py-2 text-left text-[#292524]/60 font-medium uppercase tracking-wider text-[10px]">Case</th>
                         {llmIds.map((lid) => (
-                            <th key={lid} className="px-2 py-2 text-center text-gray-400 font-medium truncate max-w-[100px] text-[10px] uppercase tracking-wider">
+                            <th key={lid} className="px-2 py-2 text-center text-[#292524] font-medium truncate max-w-[100px] text-[10px] uppercase tracking-wider">
                                 {(modelNames.get(lid) ?? lid.slice(0, 8)).split("/").pop()}
                             </th>
                         ))}
@@ -74,8 +74,8 @@ export default function HeatmapChart({ cells, modelNames }: HeatmapChartProps) {
                 </thead>
                 <tbody>
                     {caseIds.map((cid) => (
-                        <tr key={cid} className="border-t border-white/[0.03] hover:bg-white/[0.03] transition-colors">
-                            <td className="px-2 py-1.5 text-gray-400 truncate max-w-[160px]" title={cid}>
+                        <tr key={cid} className="border-t border-[#292524]/10 hover:bg-[#412AD1]/5 transition-colors">
+                            <td className="px-2 py-1.5 text-[#292524] truncate max-w-[160px]" title={cid}>
                                 {cid}
                             </td>
                             {llmIds.map((lid) => {

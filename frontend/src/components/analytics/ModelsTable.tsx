@@ -8,9 +8,9 @@ interface ModelsTableProps {
 }
 
 const RANK_COLORS = [
-    "from-yellow-400/30 to-yellow-500/10 border-yellow-500/30 text-yellow-300",
-    "from-slate-300/20 to-slate-400/10 border-slate-400/30 text-slate-300",
-    "from-amber-600/20 to-amber-700/10 border-amber-600/30 text-amber-400",
+    "bg-[#FCC503] border-[#FCC503] text-[#0C0A09]",
+    "bg-[#292524] border-[#292524] text-[#FFFFFF]",
+    "bg-[#B50BBB] border-[#B50BBB] text-[#FFFFFF]",
 ];
 
 function formatScore(val: number | null): string {
@@ -27,7 +27,7 @@ function formatDate(iso: string | null): string {
 export default function ModelsTable({ models, windowDays }: ModelsTableProps) {
     if (!models.length) {
         return (
-            <div className="flex items-center justify-center h-32 text-gray-500">
+            <div className="flex items-center justify-center h-32 text-[#292524]/60">
                 No models configured
             </div>
         );
@@ -37,7 +37,7 @@ export default function ModelsTable({ models, windowDays }: ModelsTableProps) {
         <div className="overflow-x-auto">
             <table className="w-full text-sm">
                 <thead>
-                    <tr className="border-b border-cyan-500/10 text-gray-500 text-[10px] uppercase tracking-[0.15em]">
+                    <tr className="border-b border-[#292524]/10 text-[#292524]/60 text-[10px] uppercase tracking-[0.15em]">
                         <th className="text-center py-3 px-2 w-10">#</th>
                         <th className="text-left py-3 px-2">Model</th>
                         <th className="text-right py-3 px-2">All‑Time Avg</th>
@@ -51,47 +51,47 @@ export default function ModelsTable({ models, windowDays }: ModelsTableProps) {
                     {models.map((m, i) => (
                         <tr
                             key={m.llm_id}
-                            className="border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors group/row"
+                            className="border-b border-[#292524]/10 hover:bg-[#412AD1]/5 transition-colors group/row"
                         >
                             <td className="text-center py-3 px-2">
-                                <span className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-[10px] font-bold bg-gradient-to-br border ${i < 3 ? RANK_COLORS[i] : "from-slate-700/30 to-slate-800/20 border-white/5 text-gray-600"}`}>
+                                <span className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-[10px] font-bold border ${i < 3 ? RANK_COLORS[i] : "bg-[#292524]/10 border-[#292524]/20 text-[#292524]/60"}`}>
                                     {i + 1}
                                 </span>
                             </td>
                             <td className="py-3 px-2">
-                                <span className="font-medium text-white group-hover/row:text-cyan-200 transition-colors">{m.display_name}</span>
-                                <span className="ml-2 text-[10px] text-gray-600">{m.provider}</span>
+                                <span className="font-medium text-[#292524] group-hover/row:text-[#412AD1] transition-colors">{m.display_name}</span>
+                                <span className="ml-2 text-[10px] text-[#292524]/50">{m.provider}</span>
                             </td>
                             <td className="text-right py-3 px-2">
-                                <span className="font-mono text-cyan-300 drop-shadow-[0_0_4px_rgba(34,211,238,0.3)]">
+                                <span className="font-mono text-[#412AD1] font-semibold">
                                     {formatScore(m.all_time_avg)}
                                 </span>
                             </td>
                             <td className="text-right py-3 px-2">
-                                <span className="font-mono text-emerald-300 drop-shadow-[0_0_4px_rgba(52,211,153,0.3)]">
+                                <span className="font-mono text-[#29BC41] font-semibold">
                                     {formatScore(m.window_avg)}
                                 </span>
                             </td>
-                            <td className="text-right py-3 px-2 font-mono text-gray-400 tabular-nums">
+                            <td className="text-right py-3 px-2 font-mono text-[#292524]/70 tabular-nums">
                                 {m.all_time_runs}
                             </td>
-                            <td className="text-right py-3 px-2 text-gray-500 text-xs">
+                            <td className="text-right py-3 px-2 text-[#292524]/60 text-xs">
                                 {formatDate(m.last_run_at)}
                             </td>
                             <td className="text-center py-3 px-2">
                                 {m.is_stale ? (
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/20">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_4px_rgba(251,191,36,0.6)]" />
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] rounded-full bg-[#FCC503]/20 text-[#292524] border border-[#FCC503]/40">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#FCC503]" />
                                         Stale
                                     </span>
                                 ) : m.all_time_runs === 0 ? (
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] rounded-full bg-gray-500/15 text-gray-400 border border-gray-500/20">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-gray-500" />
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] rounded-full bg-[#292524]/10 text-[#292524]/60 border border-[#292524]/20">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#292524]/40" />
                                         No Data
                                     </span>
                                 ) : (
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.6)]" />
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] rounded-full bg-[#29BC41]/20 text-[#29BC41] border border-[#29BC41]/30">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#29BC41]" />
                                         Active
                                     </span>
                                 )}

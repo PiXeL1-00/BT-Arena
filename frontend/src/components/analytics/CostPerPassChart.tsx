@@ -9,8 +9,7 @@ import type { CostPerPassItem } from "@/lib/galileoTypes";
 import { TOOLTIP_STYLE } from "@/lib/chartConfig";
 
 const BAR_COLORS = [
-    "#fb7185", "#f472b6", "#14b8a6", "#f59e0b", "#60a5fa",
-    "#22d3ee", "#2dd4bf", "#4ade80", "#fbbf24", "#fb923c",
+    "#412AD1", "#B50BBB", "#29BC41", "#FCC503", "#0C0809", "#292524",
 ];
 
 interface CostPerPassChartProps {
@@ -33,7 +32,7 @@ export default function CostPerPassChart({ items, modelNames }: CostPerPassChart
 
     if (!chartData.length) {
         return (
-            <div className="flex items-center justify-center h-64 text-gray-500">
+            <div className="flex items-center justify-center h-64 text-[#292524]/60">
                 No cost data available
             </div>
         );
@@ -50,10 +49,10 @@ export default function CostPerPassChart({ items, modelNames }: CostPerPassChart
                         </linearGradient>
                     ))}
                 </defs>
-                <CartesianGrid strokeDasharray="3 6" stroke="#1e293b" vertical={false} />
-                <XAxis dataKey="name" stroke="#334155" fontSize={11} angle={-10} textAnchor="end" tickLine={false} />
+                <CartesianGrid strokeDasharray="3 6" stroke="rgba(41, 37, 36, 0.15)" vertical={false} />
+                <XAxis dataKey="name" stroke="#292524" fontSize={11} angle={-10} textAnchor="end" tickLine={false} />
                 <YAxis
-                    stroke="#334155"
+                    stroke="#292524"
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
@@ -65,7 +64,7 @@ export default function CostPerPassChart({ items, modelNames }: CostPerPassChart
                         if (name === "cost") return [`$${v.toFixed(4)}`, "Cost / Pass"];
                         return [v, name];
                     }}
-                    cursor={{ fill: "rgba(251, 113, 133, 0.05)" }}
+                    cursor={{ fill: "rgba(65, 42, 209, 0.05)" }}
                 />
                 <Bar dataKey="cost" radius={[6, 6, 0, 0]}>
                     {chartData.map((_, i) => (

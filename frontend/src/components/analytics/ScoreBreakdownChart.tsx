@@ -9,12 +9,12 @@ import type { ScoreBreakdownItem } from "@/lib/galileoTypes";
 import { TOOLTIP_STYLE } from "@/lib/chartConfig";
 
 const DIMENSION_COLORS: Record<string, string> = {
-    correctness: "#22d3ee",
-    grounding: "#4ade80",
-    calibration: "#fbbf24",
-    falsifiable: "#14b8a6",
-    deference_penalty: "#fb7185",
-    refusal_penalty: "#f87171",
+    correctness: "#412AD1",
+    grounding: "#29BC41",
+    calibration: "#FCC503",
+    falsifiable: "#B50BBB",
+    deference_penalty: "#0C0809",
+    refusal_penalty: "#292524",
 };
 
 const DIMENSION_LABELS: Record<string, string> = {
@@ -46,7 +46,7 @@ export default function ScoreBreakdownChart({ items, modelNames }: ScoreBreakdow
 
     if (!chartData.length) {
         return (
-            <div className="flex items-center justify-center h-64 text-gray-500">
+            <div className="flex items-center justify-center h-64 text-[#292524]/60">
                 No breakdown data available
             </div>
         );
@@ -63,12 +63,12 @@ export default function ScoreBreakdownChart({ items, modelNames }: ScoreBreakdow
                         </linearGradient>
                     ))}
                 </defs>
-                <CartesianGrid strokeDasharray="3 6" stroke="#1e293b" vertical={false} />
-                <XAxis dataKey="name" stroke="#334155" fontSize={11} angle={-10} textAnchor="end" tickLine={false} />
-                <YAxis stroke="#334155" fontSize={11} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 6" stroke="rgba(41, 37, 36, 0.15)" vertical={false} />
+                <XAxis dataKey="name" stroke="#292524" fontSize={11} angle={-10} textAnchor="end" tickLine={false} />
+                <YAxis stroke="#292524" fontSize={11} tickLine={false} axisLine={false} />
                 <Tooltip
                     contentStyle={TOOLTIP_STYLE}
-                    cursor={{ fill: "rgba(34, 211, 238, 0.05)" }}
+                    cursor={{ fill: "rgba(65, 42, 209, 0.05)" }}
                 />
                 <Legend
                     wrapperStyle={{ fontSize: "9px", paddingTop: "4px", lineHeight: "14px" }}

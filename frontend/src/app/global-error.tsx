@@ -11,7 +11,7 @@ export default function GlobalError({
 }) {
     return (
         <html>
-            <body className="bg-[#050510] text-white min-h-screen flex items-center justify-center p-4">
+            <body className="bg-[#FFFFFF] text-[#292524] min-h-screen flex items-center justify-center p-4">
                 <ErrorBoundary
                     error={error}
                     reset={reset}

@@ -38,13 +38,13 @@ export function GlassCard({ children, title, className = "", size = "md", expand
     }, [expanded, close]);
 
     const header = title ? (
-        <h3 className={`${expanded ? "text-xs" : cfg.titleText} font-semibold text-white/40 uppercase tracking-[0.15em] ${expanded ? "mb-4" : cfg.mb} flex items-center ${cfg.gap} flex-shrink-0`}>
-            <span className={`${cfg.dot} rounded-full bg-cyan-400/60`} />
+        <h3 className={`${expanded ? "text-xs" : cfg.titleText} font-semibold text-[#292524]/60 uppercase tracking-[0.15em] ${expanded ? "mb-4" : cfg.mb} flex items-center ${cfg.gap} flex-shrink-0`}>
+            <span className={`${cfg.dot} rounded-full bg-[#412AD1]`} />
             {title}
             {expandable && (
                 <button
                     onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }}
-                    className="ml-auto p-1 rounded-md text-white/20 hover:text-cyan-400 hover:bg-white/[0.06] transition-all duration-200"
+                    className="ml-auto p-1 rounded-md text-[#292524]/40 hover:text-[#412AD1] hover:bg-[#292524]/5 transition-all duration-200"
                     aria-label={expanded ? "Minimize" : "Maximize"}
                 >
                     {expanded ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
@@ -59,12 +59,12 @@ export function GlassCard({ children, title, className = "", size = "md", expand
                 className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 animate-[fadeIn_200ms_ease-out]"
                 onClick={close}
             >
-                <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+                <div className="absolute inset-0 bg-[#0C0A09]/50 backdrop-blur-md" />
                 <div
-                    className="relative w-full h-full max-w-[95vw] max-h-[92vh] bg-[hsl(224_28%_9%/0.95)] backdrop-blur-xl rounded-2xl border border-white/[0.08] p-4 sm:p-8 shadow-[0_8px_64px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] flex flex-col animate-[scaleIn_200ms_ease-out]"
+                    className="relative w-full h-full max-w-[95vw] max-h-[92vh] bg-[#FFFFFF]/95 backdrop-blur-xl rounded-2xl border border-[#292524]/15 p-4 sm:p-8 shadow-[0_8px_64px_rgba(12,10,9,0.15)] flex flex-col animate-[scaleIn_200ms_ease-out]"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+                    <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#412AD1]/30 to-transparent" />
                     {header}
                     <div className="flex-1 min-h-0 glass-expanded">{children}</div>
                 </div>
@@ -76,8 +76,8 @@ export function GlassCard({ children, title, className = "", size = "md", expand
     return (
         <>
             <div className={`relative group rounded-2xl overflow-hidden ${className}`}>
-                <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent group-hover:via-cyan-300/60 transition-colors duration-500" />
-                <div className={`relative bg-[hsl(224_28%_9%/0.7)] backdrop-blur-xl rounded-2xl border border-white/[0.06] ${cfg.padding} shadow-[0_1px_2px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.04)] group-hover:shadow-[0_4px_24px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] group-hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col`}>
+                <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#412AD1]/25 to-transparent group-hover:via-[#412AD1]/50 transition-colors duration-500" />
+                <div className={`relative bg-[#FFFFFF]/85 backdrop-blur-xl rounded-2xl border border-[#292524]/10 ${cfg.padding} shadow-[0_2px_8px_rgba(12,10,9,0.04)] group-hover:shadow-[0_8px_24px_rgba(12,10,9,0.08)] group-hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col`}>
                     {header}
                     <div className="flex-1 min-h-0">{children}</div>
                 </div>

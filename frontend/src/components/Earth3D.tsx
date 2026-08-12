@@ -35,14 +35,14 @@ const Earth3D = () => {
         containerRef.current.appendChild(renderer.domElement);
 
         // Ambient Lighting & Soft Accent Lights
-        const ambientLight = new THREE.AmbientLight(0x0f172a, 1.5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
         scene.add(ambientLight);
 
-        const pointLight1 = new THREE.PointLight(0x06b6d4, 2.5, 25);
+        const pointLight1 = new THREE.PointLight(0x412ad1, 2.5, 25);
         pointLight1.position.set(7, 7, 7);
         scene.add(pointLight1);
 
-        const pointLight2 = new THREE.PointLight(0x6366f1, 2, 25);
+        const pointLight2 = new THREE.PointLight(0xb50bbb, 2, 25);
         pointLight2.position.set(-7, -5, -5);
         scene.add(pointLight2);
 
@@ -133,7 +133,7 @@ const Earth3D = () => {
         linesGeometry.setAttribute('position', new THREE.BufferAttribute(edgePositions, 3));
 
         const linesMaterial = new THREE.LineBasicMaterial({
-            color: 0x38bdf8,
+            color: 0x412ad1,
             transparent: true,
             opacity: 0.26,
             depthWrite: false,
@@ -151,7 +151,7 @@ const Earth3D = () => {
         coreNodeGeometry.setAttribute('position', new THREE.BufferAttribute(coreNodePositions, 3));
 
         const coreNodeMaterial = new THREE.PointsMaterial({
-            color: 0x38bdf8,
+            color: 0x412ad1,
             size: 0.08,
             transparent: true,
             opacity: 0.7,
@@ -168,7 +168,7 @@ const Earth3D = () => {
         protrudeGeometry.setAttribute('position', new THREE.BufferAttribute(protrudePositions, 3));
 
         const protrudeMaterial = new THREE.PointsMaterial({
-            color: 0x67e8f9,
+            color: 0xb50bbb,
             size: 0.16,
             transparent: true,
             opacity: 0.95,
@@ -183,8 +183,8 @@ const Earth3D = () => {
         // =========================================================================
         const innerGeometry = new THREE.IcosahedronGeometry(baseRadius * 0.55, 2);
         const innerMaterial = new THREE.MeshStandardMaterial({
-            color: 0x6366f1,
-            emissive: 0x4f46e5,
+            color: 0x412ad1,
+            emissive: 0x412ad1,
             emissiveIntensity: 0.25,
             wireframe: true,
             transparent: true,

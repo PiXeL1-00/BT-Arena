@@ -9,8 +9,7 @@ import type { HallucinationTrendSeries } from "@/lib/galileoTypes";
 import { TOOLTIP_STYLE } from "@/lib/chartConfig";
 
 const PALETTE = [
-    "#22d3ee", "#fb7185", "#14b8a6", "#4ade80", "#fbbf24",
-    "#60a5fa", "#f472b6", "#2dd4bf", "#fb923c", "#f59e0b",
+    "#412AD1", "#B50BBB", "#29BC41", "#FCC503", "#0C0809", "#292524",
 ];
 
 interface HallucinationTrendChartProps {
@@ -40,7 +39,7 @@ export default function HallucinationTrendChart({ series, modelNames }: Hallucin
 
     if (!chartData.length) {
         return (
-            <div className="flex items-center justify-center h-64 text-gray-500">
+            <div className="flex items-center justify-center h-64 text-[#292524]/60">
                 No hallucination data available
             </div>
         );
@@ -57,10 +56,10 @@ export default function HallucinationTrendChart({ series, modelNames }: Hallucin
                         </linearGradient>
                     ))}
                 </defs>
-                <CartesianGrid strokeDasharray="3 6" stroke="#1e293b" />
-                <XAxis dataKey="date" stroke="#334155" fontSize={11} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 6" stroke="rgba(41, 37, 36, 0.15)" />
+                <XAxis dataKey="date" stroke="#292524" fontSize={11} tickLine={false} />
                 <YAxis
-                    stroke="#334155"
+                    stroke="#292524"
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
@@ -70,7 +69,7 @@ export default function HallucinationTrendChart({ series, modelNames }: Hallucin
                     contentStyle={TOOLTIP_STYLE}
                     formatter={(v: number) => [`${v}%`, "Hallucination Rate"]}
                 />
-                <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
+                <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px", color: "#292524" }} />
                 {series.map((s, i) => (
                     <Area
                         key={s.llm_id}
@@ -85,7 +84,7 @@ export default function HallucinationTrendChart({ series, modelNames }: Hallucin
                             r: 5,
                             strokeWidth: 2,
                             stroke: PALETTE[i % PALETTE.length],
-                            fill: "#0f172a",
+                            fill: "#FFFFFF",
                             style: { filter: `drop-shadow(0 0 6px ${PALETTE[i % PALETTE.length]})` },
                         }}
                         connectNulls={false}

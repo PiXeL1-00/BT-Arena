@@ -4,7 +4,7 @@
   flex-shrink: 0;
   width: 48px;
   height: 2px;
-  background: linear-gradient(90deg, hsl(180 60% 45% / 0.5), hsl(200 80% 55% / 0.7));
+  background: linear-gradient(90deg, rgba(65, 42, 209, 0.5), rgba(181, 11, 187, 0.7));
   align-self: center;
 }
 
@@ -14,7 +14,7 @@
   right: -4px;
   top: 50%;
   transform: translateY(-50%);
-  border-left: 6px solid hsl(200 80% 55% / 0.7);
+  border-left: 6px solid #B50BBB;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
 }
@@ -23,7 +23,7 @@
   width: 2px;
   height: 32px;
   margin: 0 auto;
-  background: linear-gradient(180deg, hsl(180 60% 45% / 0.5), hsl(200 80% 55% / 0.7));
+  background: linear-gradient(180deg, rgba(65, 42, 209, 0.5), rgba(181, 11, 187, 0.7));
 }
 
 .connectorVertical::after {
@@ -32,7 +32,7 @@
   bottom: -4px;
   left: 50%;
   transform: translateX(-50%);
-  border-top: 6px solid hsl(200 80% 55% / 0.7);
+  border-top: 6px solid #B50BBB;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
 }
@@ -52,10 +52,10 @@
   width: 2px;
   background: linear-gradient(
     180deg,
-    hsl(180 60% 45% / 0.15),
-    hsl(200 80% 55% / 0.4),
-    hsl(280 60% 55% / 0.4),
-    hsl(180 60% 45% / 0.15)
+    rgba(65, 42, 209, 0.15),
+    rgba(181, 11, 187, 0.4),
+    rgba(252, 197, 3, 0.4),
+    rgba(41, 188, 65, 0.15)
   );
 }
 
@@ -71,9 +71,9 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: hsl(200 80% 55% / 0.3);
-  border: 2px solid hsl(200 80% 55% / 0.6);
-  box-shadow: 0 0 8px hsl(200 80% 55% / 0.3);
+  background: rgba(65, 42, 209, 0.2);
+  border: 2px solid #412AD1;
+  box-shadow: 0 0 8px rgba(65, 42, 209, 0.3);
 }
 
 /* Rubric segment bar */
@@ -100,8 +100,8 @@
   width: 24px;
   height: 24px;
   transform: rotate(45deg);
-  border: 2px solid hsl(35 90% 55% / 0.6);
-  background: hsl(35 90% 55% / 0.1);
+  border: 2px solid #FCC503;
+  background: rgba(252, 197, 3, 0.1);
   flex-shrink: 0;
 }
 
@@ -111,8 +111,8 @@
 }
 
 @keyframes pulseDot {
-  0%, 100% { box-shadow: 0 0 0 0 hsl(200 80% 55% / 0.4); }
-  50% { box-shadow: 0 0 0 6px hsl(200 80% 55% / 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(65, 42, 209, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(65, 42, 209, 0); }
 }
 
 /* Flow entrance animation */
@@ -137,7 +137,7 @@
   .connector {
     width: 2px;
     height: 32px;
-    background: linear-gradient(180deg, hsl(180 60% 45% / 0.5), hsl(200 80% 55% / 0.7));
+    background: linear-gradient(180deg, rgba(65, 42, 209, 0.5), rgba(181, 11, 187, 0.7));
   }
 
   .connector::after {
@@ -148,6 +148,6 @@
     transform: translateX(-50%);
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-top: 6px solid hsl(200 80% 55% / 0.7);
+    border-top: 6px solid #B50BBB;
   }
 }

@@ -4,63 +4,75 @@
 
 @layer base {
   :root {
-    /* Background — deep observatory navy */
-    --background: 222 30% 6%;
-    --foreground: 210 40% 96%;
+    /* Brand Colors */
+    --masx-purple: #412AD1;
+    --masx-magenta: #B50BBB;
+    --masx-yellow: #FCC503;
+    --masx-green: #29BC41;
 
-    /* Card — barely lifted above background */
-    --card: 224 28% 9%;
-    --card-foreground: 210 40% 96%;
+    /* Neutral Colors */
+    --masx-white: #FFFFFF;
+    --masx-dark: #292524;
+    --masx-black: #0C0A09;
+    --masx-dark-secondary: #0C0809;
+
+    /* Semantic Theme (Bright) */
+    --background: #FFFFFF;
+    --foreground: #292524;
+
+    /* Card */
+    --card: #FFFFFF;
+    --card-foreground: #292524;
 
     /* Popover */
-    --popover: 224 28% 9%;
-    --popover-foreground: 210 40% 96%;
+    --popover: #FFFFFF;
+    --popover-foreground: #292524;
 
-    /* Primary — electric blue */
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary — MASX Purple */
+    --primary: #412AD1;
+    --primary-foreground: #FFFFFF;
 
-    /* Secondary */
-    --secondary: 224 22% 12%;
-    --secondary-foreground: 210 40% 90%;
+    /* Secondary — MASX Magenta */
+    --secondary: #B50BBB;
+    --secondary-foreground: #FFFFFF;
 
     /* Muted */
-    --muted: 224 22% 12%;
-    --muted-foreground: 218 18% 46%;
+    --muted: #FFFFFF;
+    --muted-foreground: #292524;
 
-    /* Accent — warm amber-gold */
-    --accent: 35 90% 55%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent — MASX Yellow */
+    --accent: #FCC503;
+    --accent-foreground: #292524;
 
     /* Destructive */
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: #B50BBB;
+    --destructive-foreground: #FFFFFF;
 
     /* Border & Input */
-    --border: 224 16% 14%;
-    --input: 224 16% 14%;
-    --ring: 217 91% 60%;
+    --border: #292524;
+    --input: #292524;
+    --ring: #412AD1;
 
     /* Radius */
     --radius: 1rem;
 
     /* Glass */
-    --glass: 224 26% 10%;
-    --glass-border: 224 18% 15%;
+    --glass: #FFFFFF;
+    --glass-border: #292524;
 
     /* Status */
-    --success: 142 71% 45%;
-    --warning: 38 92% 50%;
+    --success: #29BC41;
+    --warning: #FCC503;
 
     /* Sidebar */
-    --sidebar-background: 224 32% 5%;
-    --sidebar-foreground: 218 18% 46%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 224 22% 10%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 224 18% 9%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-background: #FFFFFF;
+    --sidebar-foreground: #292524;
+    --sidebar-primary: #412AD1;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #FFFFFF;
+    --sidebar-accent-foreground: #292524;
+    --sidebar-border: #292524;
+    --sidebar-ring: #412AD1;
   }
 }
 
@@ -75,7 +87,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-inter), Inter, "Segoe UI", Roboto, Helvetica, Montserrat, "Times New Roman", sans-serif;
     user-select: none;
     -webkit-user-select: none;
   }
@@ -90,52 +102,74 @@
 
 @layer components {
 
-  /* Glass Card */
+  /* =========================================================
+     Glass Card
+     ========================================================= */
+
   .glass-card {
-    @apply rounded-xl border bg-card/60 backdrop-blur-xl;
-    border-color: hsl(var(--glass-border));
+    @apply rounded-xl border backdrop-blur-xl;
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(41, 37, 36, 0.12);
   }
 
-  /* Soft Glow */
+  /* =========================================================
+     Primary Brand Glow
+     ========================================================= */
+
   .glow-blue {
-    box-shadow: 0 0 10px hsl(217 91% 60% / 0.06), 0 0 30px hsl(217 91% 60% / 0.02);
+    box-shadow:
+      0 0 10px rgba(65, 42, 209, 0.15),
+      0 0 30px rgba(65, 42, 209, 0.08);
   }
 
-  /* Glass Panel */
+  /* =========================================================
+     Glass Panel
+     ========================================================= */
+
   .glass-panel {
-    background: hsl(var(--glass) / 0.55);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--glass-border));
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(41, 37, 36, 0.12);
+    box-shadow: 0 8px 32px rgba(12, 10, 9, 0.06);
   }
 
-  /* Glass Button */
+  /* =========================================================
+     Glass Button
+     ========================================================= */
+
   .glass-button {
-    background: hsl(var(--glass) / 0.4);
+    background: rgba(255, 255, 255, 0.80);
     backdrop-filter: blur(4px);
-    border: 1px solid hsl(var(--glass-border));
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(41, 37, 36, 0.12);
     transition: all 0.3s ease;
   }
 
   .glass-button:hover {
-    background: hsl(var(--glass) / 0.7);
+    background: rgba(255, 255, 255, 0.98);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(12, 10, 9, 0.10);
   }
 
-  /* Card Glow */
+  /* =========================================================
+     Card Glow
+     ========================================================= */
+
   .card-glow {
     @apply glass-panel rounded-3xl p-5;
     transition: all 0.3s ease;
   }
 
   .card-glow:hover {
-    background: hsl(var(--glass) / 0.7);
+    background: rgba(255, 255, 255, 0.98);
     transform: scale(1.01);
   }
 
-  /* Hide Scrollbar */
+  /* =========================================================
+     Hide Scrollbar
+     ========================================================= */
+
   .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -145,7 +179,10 @@
     display: none;
   }
 
-  /* Mobile utilities */
+  /* =========================================================
+     Mobile Utilities
+     ========================================================= */
+
   .mobile-padding {
     @apply px-4 sm:px-6 lg:px-8;
   }
@@ -162,15 +199,22 @@
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Typography hierarchy */
+  /* =========================================================
+     Typography Hierarchy
+     ========================================================= */
+
   .text-display {
     letter-spacing: -0.02em;
     font-weight: 700;
   }
 
+  .text-serif-accent {
+    font-family: "Times New Roman", Times, serif;
+  }
+
   .text-data {
     font-variant-numeric: tabular-nums;
-    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+    font-family: var(--font-inter), Inter, sans-serif;
     opacity: 0.88;
   }
 
@@ -178,12 +222,16 @@
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: hsl(var(--muted-foreground));
+    color: var(--foreground);
+    opacity: 0.7;
     font-weight: 600;
   }
 }
 
-/* Aurora Background */
+/* =========================================================
+   Aurora Background
+   ========================================================= */
+
 .aurora-bg {
   position: fixed;
   top: 0;
@@ -192,29 +240,39 @@
   height: 100vh;
   z-index: -1;
   overflow: hidden;
-  background: hsl(var(--background));
+  background: var(--background);
 }
 
 .orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.6;
+  opacity: 0.25;
 }
 
-/* Disabled select options */
+/* =========================================================
+   Disabled Select Options
+   ========================================================= */
+
 select option:disabled {
-  color: hsl(var(--muted-foreground)) !important;
-  background-color: hsl(var(--secondary)) !important;
+  color: var(--foreground) !important;
+  background-color: var(--background) !important;
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* GlassCard expand overlay */
-.glass-expanded>* {
+/* =========================================================
+   GlassCard Expand Overlay
+   ========================================================= */
+
+.glass-expanded > * {
   height: 100% !important;
   min-height: 0 !important;
 }
+
+/* =========================================================
+   Animations
+   ========================================================= */
 
 @keyframes fadeIn {
   from {
@@ -225,6 +283,7 @@ select option:disabled {
     opacity: 1;
   }
 }
+
 
 @keyframes scaleIn {
   from {
@@ -248,7 +307,10 @@ select option:disabled {
   }
 }
 
-/* Safe-area insets for notched devices */
+/* =========================================================
+   Safe Area Insets
+   ========================================================= */
+
 @supports (padding: env(safe-area-inset-bottom)) {
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);

@@ -30,32 +30,30 @@ export default function Home() {
               {/* Left overlay cards */}
               <div className="absolute bottom-2 left-2 sm:bottom-6 sm:left-6 z-10 max-w-[220px] sm:max-w-[320px] flex flex-col gap-2 sm:gap-3">
                 {/* Agentic Arena Card */}
-                <div className="glass-card p-3 sm:p-6 flex flex-col gap-1.5 sm:gap-3 backdrop-blur-xl border-primary/20 bg-background/30">
+                <div className="glass-card p-3 sm:p-6 flex flex-col gap-1.5 sm:gap-3 backdrop-blur-xl border-[#412AD1]/20 bg-[#FFFFFF]/80">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-1 sm:p-2 rounded-full bg-primary/20 text-primary animate-pulse">
+                    <div className="p-1 sm:p-2 rounded-full bg-[#412AD1]/10 text-[#412AD1] animate-pulse">
                       <Swords className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
                     </div>
-                    <span className="text-[10px] sm:text-sm font-semibold text-foreground tracking-wide">Bittensor Arena</span>
+                    <span className="text-[10px] sm:text-sm font-semibold text-[#292524] tracking-wide">Bittensor Arena</span>
                   </div>
-                  <p className="text-[10px] sm:text-sm text-muted-foreground leading-relaxed">
-                    {/* Multi-model agentic debate platform. Pick a dataset, select LLM models, and watch <span className="text-foreground font-medium">Orthodox</span>, <span className="text-foreground font-medium">Heretic</span>, <span className="text-foreground font-medium">Skeptic</span> &amp; <span className="text-foreground font-medium">Judge</span> agents duke it out live. */}
-                    Discover the Bittensor network. Explore subnet categories, compare incentives and performance, and uncover the best networks in <span className="text-foreground font-medium">Compute</span>, <span className="text-foreground font-medium">AI Agents</span>, <span className="text-foreground font-medium">Trading</span>, <span className="text-foreground font-medium">security</span> & more.
+                  <p className="text-[10px] sm:text-sm text-[#292524]/80 leading-relaxed">
+                    Discover the Bittensor network. Explore subnet categories, compare incentives and performance, and uncover the best networks in <span className="text-[#292524] font-medium">Compute</span>, <span className="text-[#292524] font-medium">AI Agents</span>, <span className="text-[#292524] font-medium">Trading</span>, <span className="text-[#292524] font-medium">security</span> & more.
                   </p>
                 </div>
 
                 {/* Galileo Tribute Card */}
                 <div className="hidden sm:block select-none text-right">
-                  <div className="glass-card p-5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 flex flex-col items-end gap-3 shadow-2xl relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 via-transparent to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                  <div className="glass-card p-5 rounded-2xl bg-[#FFFFFF]/85 backdrop-blur-xl border border-[#292524]/10 flex flex-col items-end gap-3 shadow-lg relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#412AD1]/5 via-transparent to-[#B50BBB]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-                    <p className="text-sm text-slate-300 font-serif leading-relaxed text-right z-10">
-                      {/* Galilaeus pro Copernico stetit. Pressus ab <span className="text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(103,232,249,0.3)]">orthodoxis</span> et <span className="text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(103,232,249,0.3)]">scepticis</span>, voce cessit—non mente. Scientia tamen perseverat. */}
-                      Intelligence belongs to no one. <span className="text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(103,232,249,0.3)]">Markets</span> discover value, <span className="text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(103,232,249,0.3)]">subnets</span> create it, and <span className="text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(103,232,249,0.3)]">TAO</span> rewards it.
+                    <p className="text-sm text-[#292524] font-serif leading-relaxed text-right z-10">
+                      Intelligence belongs to no one. <span className="text-[#412AD1] font-semibold">Markets</span> discover value, <span className="text-[#412AD1] font-semibold">subnets</span> create it, and <span className="text-[#412AD1] font-semibold font-serif italic">TAO</span> rewards it.
                     </p>
 
                     <div className="mt-1 opacity-90 z-10 relative">
-                      <div className="absolute -inset-4 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-xl -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                      <span className="font-sans font-medium text-[13px] sm:text-sm text-cyan-300/90 block tracking-wide">
+                      <div className="absolute -inset-4 bg-gradient-to-r from-transparent via-[#292524]/5 to-transparent blur-xl -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                      <span className="font-sans font-medium text-[13px] sm:text-sm text-[#412AD1] block tracking-wide">
                         Const, core dev @ Rao Foundation
                       </span>
                     </div>

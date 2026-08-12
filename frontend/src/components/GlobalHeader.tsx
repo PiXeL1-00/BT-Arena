@@ -31,12 +31,12 @@ export function GlobalHeader() {
         <>
             <Link
                 href="/methodology"
-                className={`group relative flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm text-white/50 hover:text-cyan-300 hover:border-cyan-500/25 hover:bg-cyan-500/[0.06] transition-all duration-300 ${locked ? disabledClass : ""}`}
+                className={`group relative flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-[#292524]/10 bg-[#FFFFFF]/80 backdrop-blur-sm text-[#292524]/70 hover:text-[#412AD1] hover:border-[#412AD1]/30 hover:bg-[#412AD1]/5 transition-all duration-300 ${locked ? disabledClass : ""}`}
                 aria-disabled={locked}
                 tabIndex={locked ? -1 : undefined}
                 onClick={locked ? (e) => e.preventDefault() : undefined}
             >
-                <Workflow className="w-3 h-3" />
+                <Workflow className="w-3 h-3 text-[#412AD1]" />
                 <span className="tracking-wide">Methodology</span>
             </Link>
         </>
@@ -46,34 +46,34 @@ export function GlobalHeader() {
         <>
             <Link
                 href="/about"
-                className={`group flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm text-white/60 hover:text-cyan-300 hover:border-cyan-500/25 hover:bg-cyan-500/[0.06] transition-all duration-300 ${locked ? disabledClass : ""}`}
+                className={`group flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-xl border border-[#292524]/10 bg-[#FFFFFF]/80 backdrop-blur-sm text-[#292524]/70 hover:text-[#412AD1] hover:border-[#412AD1]/30 hover:bg-[#412AD1]/5 transition-all duration-300 ${locked ? disabledClass : ""}`}
                 aria-disabled={locked}
                 tabIndex={locked ? -1 : undefined}
                 onClick={locked ? (e) => e.preventDefault() : undefined}
             >
-                <Info className="w-3.5 h-3.5" />
+                <Info className="w-3.5 h-3.5 text-[#412AD1]" />
                 <span className="tracking-wide">About</span>
             </Link>
             <Link
                 href="/graphs"
-                className={`group flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm text-white/60 hover:text-cyan-300 hover:border-cyan-500/25 hover:bg-cyan-500/[0.06] transition-all duration-300 ${locked ? disabledClass : ""}`}
+                className={`group flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-xl border border-[#292524]/10 bg-[#FFFFFF]/80 backdrop-blur-sm text-[#292524]/70 hover:text-[#412AD1] hover:border-[#412AD1]/30 hover:bg-[#412AD1]/5 transition-all duration-300 ${locked ? disabledClass : ""}`}
                 aria-disabled={locked}
                 tabIndex={locked ? -1 : undefined}
                 onClick={locked ? (e) => e.preventDefault() : undefined}
             >
-                <BarChart3 className="w-3.5 h-3.5" />
+                <BarChart3 className="w-3.5 h-3.5 text-[#412AD1]" />
                 <span className="tracking-wide">Analytics</span>
             </Link>
             <Link
                 href="/datasets"
-                className={`group flex items-center gap-2 text-sm sm:text-base font-semibold px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-lg shadow-teal-900/30 hover:shadow-teal-600/25 hover:-translate-y-0.5 transition-all duration-300 ${locked ? disabledClass : ""}`}
+                className={`group flex items-center gap-2 text-sm sm:text-base font-semibold px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-[#412AD1] text-[#FFFFFF] shadow-lg shadow-[#412AD1]/20 hover:bg-[#412AD1]/90 hover:-translate-y-0.5 transition-all duration-300 ${locked ? disabledClass : ""}`}
                 aria-disabled={locked}
                 tabIndex={locked ? -1 : undefined}
                 onClick={locked ? (e) => e.preventDefault() : undefined}
             >
                 <Rocket className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 <span className="tracking-wide">Get Started</span>
-                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-70 group-hover:opacity-100 transition-opacity" />
             </Link>
         </>
     );
@@ -86,12 +86,12 @@ export function GlobalHeader() {
                     <div className="flex flex-col items-start gap-1">
                         <Link
                             href="/"
-                            className={`block text-xl sm:text-3xl lg:text-4xl font-extrabold leading-tight text-foreground mb-0 hover:text-primary transition-colors cursor-pointer w-fit tracking-tight ${locked ? disabledClass : ""}`}
+                            className={`block text-xl sm:text-3xl lg:text-4xl font-extrabold leading-tight text-[#292524] mb-0 hover:text-[#412AD1] transition-colors cursor-pointer w-fit tracking-tight ${locked ? disabledClass : ""}`}
                             aria-disabled={locked}
                             tabIndex={locked ? -1 : undefined}
                             onClick={locked ? (e) => e.preventDefault() : undefined}
                         >
-                            Bittensor Arena
+                            Bittensor <span className="font-serif italic font-normal text-[#412AD1]">Arena</span>
                         </Link>
                         {/* Sub-links: hidden on mobile, visible on sm+ */}
                         <div className="hidden sm:flex items-center gap-2">
@@ -106,7 +106,7 @@ export function GlobalHeader() {
 
                     {/* Hamburger button: visible on mobile only */}
                     <button
-                        className="md:hidden ml-auto p-2 rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm text-white/60 hover:text-cyan-300 hover:border-cyan-500/25 transition-all duration-300 tap-target"
+                        className="md:hidden ml-auto p-2 rounded-xl border border-[#292524]/10 bg-[#FFFFFF]/80 backdrop-blur-sm text-[#292524]/70 hover:text-[#412AD1] hover:border-[#412AD1]/30 transition-all duration-300 tap-target"
                         onClick={() => setDrawerOpen(true)}
                         aria-label="Open menu"
                     >
@@ -119,19 +119,19 @@ export function GlobalHeader() {
             {drawerOpen && (
                 <div className="fixed inset-0 z-[100] md:hidden" onClick={closeDrawer}>
                     {/* Backdrop */}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-[fadeIn_200ms_ease-out]" />
+                    <div className="absolute inset-0 bg-[#0C0A09]/40 backdrop-blur-sm animate-[fadeIn_200ms_ease-out]" />
 
                     {/* Drawer Panel */}
                     <div
-                        className="absolute top-0 right-0 h-full w-[280px] max-w-[85vw] bg-[hsl(224_28%_7%/0.97)] backdrop-blur-xl border-l border-white/[0.08] shadow-[−8px_0_32px_rgba(0,0,0,0.5)] flex flex-col animate-[slideInRight_250ms_ease-out]"
+                        className="absolute top-0 right-0 h-full w-[280px] max-w-[85vw] bg-[#FFFFFF] backdrop-blur-xl border-l border-[#292524]/10 shadow-[-8px_0_32px_rgba(12,10,9,0.1)] flex flex-col animate-[slideInRight_250ms_ease-out]"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Drawer Header */}
-                        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/[0.06]">
-                            <span className="text-sm font-semibold text-white/70 tracking-wide">Menu</span>
+                        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-[#292524]/10">
+                            <span className="text-sm font-semibold text-[#292524]/70 tracking-wide">Menu</span>
                             <button
                                 onClick={closeDrawer}
-                                className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-all tap-target"
+                                className="p-2 rounded-lg text-[#292524]/50 hover:text-[#292524] hover:bg-[#292524]/5 transition-all tap-target"
                                 aria-label="Close menu"
                             >
                                 <X className="w-5 h-5" />
@@ -142,35 +142,35 @@ export function GlobalHeader() {
                         <nav className="flex flex-col gap-1 p-4" onClick={closeDrawer}>
                             <Link
                                 href="/methodology"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-cyan-300 hover:bg-white/[0.05] transition-all tap-target"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#292524]/70 hover:text-[#412AD1] hover:bg-[#412AD1]/5 transition-all tap-target"
                             >
-                                <Workflow className="w-4 h-4" />
+                                <Workflow className="w-4 h-4 text-[#412AD1]" />
                                 <span className="text-sm font-medium tracking-wide">Methodology</span>
                             </Link>
                             <Link
                                 href="/about"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-cyan-300 hover:bg-white/[0.05] transition-all tap-target"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#292524]/70 hover:text-[#412AD1] hover:bg-[#412AD1]/5 transition-all tap-target"
                             >
-                                <Info className="w-4 h-4" />
+                                <Info className="w-4 h-4 text-[#412AD1]" />
                                 <span className="text-sm font-medium tracking-wide">About</span>
                             </Link>
                             <Link
                                 href="/graphs"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-cyan-300 hover:bg-white/[0.05] transition-all tap-target"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#292524]/70 hover:text-[#412AD1] hover:bg-[#412AD1]/5 transition-all tap-target"
                             >
-                                <BarChart3 className="w-4 h-4" />
+                                <BarChart3 className="w-4 h-4 text-[#412AD1]" />
                                 <span className="text-sm font-medium tracking-wide">Analytics</span>
                             </Link>
 
-                            <div className="my-2 h-px bg-white/[0.06]" />
+                            <div className="my-2 h-px bg-[#292524]/10" />
 
                             <Link
                                 href="/datasets"
-                                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold shadow-lg shadow-teal-900/30 tap-target"
+                                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#412AD1] text-[#FFFFFF] font-semibold shadow-lg shadow-[#412AD1]/20 tap-target"
                             >
                                 <Rocket className="w-4 h-4" />
                                 <span className="tracking-wide">Get Started</span>
-                                <ArrowUpRight className="w-4 h-4 opacity-60" />
+                                <ArrowUpRight className="w-4 h-4 opacity-70" />
                             </Link>
                         </nav>
                     </div>

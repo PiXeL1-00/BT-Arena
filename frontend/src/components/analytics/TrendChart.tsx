@@ -9,8 +9,7 @@ import type { ModelTrendSeries } from "@/lib/galileoTypes";
 import { TOOLTIP_STYLE } from "@/lib/chartConfig";
 
 const PALETTE = [
-    "#22d3ee", "#fb7185", "#14b8a6", "#4ade80", "#fbbf24",
-    "#60a5fa", "#f472b6", "#2dd4bf", "#fb923c", "#f59e0b",
+    "#412AD1", "#B50BBB", "#29BC41", "#FCC503", "#0C0809", "#292524",
 ];
 
 interface TrendChartProps {
@@ -40,7 +39,7 @@ export default function TrendChart({ series, modelNames }: TrendChartProps) {
 
     if (!chartData.length) {
         return (
-            <div className="flex items-center justify-center h-64 text-gray-500">
+            <div className="flex items-center justify-center h-64 text-[#292524]/60">
                 No trend data available
             </div>
         );
@@ -49,12 +48,12 @@ export default function TrendChart({ series, modelNames }: TrendChartProps) {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 5, right: 10, bottom: 5, left: -10 }}>
-                <CartesianGrid strokeDasharray="3 6" stroke="#1e293b" />
-                <XAxis dataKey="date" stroke="#334155" fontSize={10} tickLine={false} />
-                <YAxis stroke="#334155" fontSize={10} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 6" stroke="rgba(41, 37, 36, 0.15)" />
+                <XAxis dataKey="date" stroke="#292524" fontSize={10} tickLine={false} />
+                <YAxis stroke="#292524" fontSize={10} tickLine={false} axisLine={false} />
                 <Tooltip contentStyle={TOOLTIP_STYLE} />
                 <Legend
-                    wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+                    wrapperStyle={{ fontSize: 11, paddingTop: 8, color: "#292524" }}
                     iconType="plainline"
                 />
                 {series.map((s, i) => (
@@ -70,7 +69,7 @@ export default function TrendChart({ series, modelNames }: TrendChartProps) {
                             r: 5,
                             strokeWidth: 2,
                             stroke: PALETTE[i % PALETTE.length],
-                            fill: "#0f172a",
+                            fill: "#FFFFFF",
                             style: { filter: `drop-shadow(0 0 6px ${PALETTE[i % PALETTE.length]})` },
                         }}
                         connectNulls={true}

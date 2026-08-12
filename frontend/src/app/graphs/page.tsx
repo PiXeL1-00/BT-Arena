@@ -72,12 +72,12 @@ export default function GraphsPage() {
     }, [summaryData]);
 
     return (
-        <div className="min-h-screen text-white pt-16">
+        <div className="min-h-screen pt-16">
             <div className="max-w-7xl mx-auto px-4 pt-4 pb-2 flex items-center justify-end gap-3">
                 <select
                     value={window}
                     onChange={(e) => setWindow(Number(e.target.value))}
-                    className="bg-white/[0.04] border border-white/[0.06] rounded-lg px-3 py-1.5 text-sm text-white/60 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 transition-all"
+                    className="bg-[#FFFFFF] border border-[#292524]/20 rounded-lg px-3 py-1.5 text-sm text-[#292524]/70 focus:outline-none focus:ring-1 focus:ring-[#412AD1]/30 transition-all"
                 >
                     {WINDOW_OPTIONS.map((w) => (
                         <option key={w} value={w}>{w}d window</option>
@@ -87,7 +87,7 @@ export default function GraphsPage() {
 
             <div className="max-w-7xl mx-auto px-4 py-6">
                 <div className="overflow-x-auto hide-scrollbar -mx-4 px-4 mb-6">
-                    <div className="flex gap-0 border-b border-white/[0.06] min-w-max">
+                    <div className="flex gap-0 border-b border-[#292524]/10 min-w-max">
                         {TABS.map((tab) => {
                             const Icon = tab.icon;
                             return (
@@ -95,14 +95,14 @@ export default function GraphsPage() {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`relative px-4 sm:px-5 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === tab.id
-                                        ? "text-cyan-300"
-                                        : "text-white/35 hover:text-white/60"
+                                        ? "text-[#412AD1]"
+                                        : "text-[#292524]/40 hover:text-[#292524]/70"
                                         }`}
                                 >
                                     <Icon className="w-4 h-4" />
                                     {tab.label}
                                     {activeTab === tab.id && (
-                                        <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full" />
+                                        <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-[#412AD1] rounded-full" />
                                     )}
                                 </button>
                             );
@@ -177,7 +177,7 @@ function PerformanceTab({ params, modelNames, summaryData, trendData }: Performa
                         {breakdownData?.items?.length ? (
                             <ScoreBreakdownChart items={breakdownData.items} modelNames={modelNames} />
                         ) : (
-                            <div className="text-gray-500 h-full flex items-center justify-center">No breakdown data</div>
+                            <div className="text-[#292524]/60 h-full flex items-center justify-center">No breakdown data</div>
                         )}
                     </div>
                 </GlassCard>
@@ -186,7 +186,7 @@ function PerformanceTab({ params, modelNames, summaryData, trendData }: Performa
                         {radarData?.entries?.length ? (
                             <RadarChart entries={radarData.entries} modelNames={modelNames} />
                         ) : (
-                            <div className="text-gray-500 h-full flex items-center justify-center">No radar data</div>
+                            <div className="text-[#292524]/60 h-full flex items-center justify-center">No radar data</div>
                         )}
                     </div>
                 </GlassCard>
@@ -214,14 +214,14 @@ function RobustnessTab({ params, modelNames }: TabProps) {
                     {hallucinationData?.series?.length ? (
                         <HallucinationTrendChart series={hallucinationData.series} modelNames={modelNames} />
                     ) : (
-                        <div className="text-gray-500 h-32 flex items-center justify-center">No hallucination data</div>
+                        <div className="text-[#292524]/60 h-32 flex items-center justify-center">No hallucination data</div>
                     )}
                 </GlassCard>
                 <GlassCard expandable title="Confidence vs Correctness">
                     {calibrationData?.points?.length ? (
                         <CalibrationScatter points={calibrationData.points} modelNames={modelNames} />
                     ) : (
-                        <div className="text-gray-500 h-32 flex items-center justify-center">No calibration data</div>
+                        <div className="text-[#292524]/60 h-32 flex items-center justify-center">No calibration data</div>
                     )}
                 </GlassCard>
             </div>
@@ -236,17 +236,17 @@ function RobustnessTab({ params, modelNames }: TabProps) {
                             <div className="space-y-3">
                                 {filtered.map((d, i) => (
                                     <div key={d.llm_id} className="flex items-center gap-3 group/row">
-                                        <span className="text-xs font-mono text-cyan-500/60 w-5">{i + 1}</span>
-                                        <span className="text-sm text-gray-300 w-20 sm:w-32 truncate group-hover/row:text-white transition-colors">
+                                        <span className="text-xs font-mono text-[#412AD1]/60 w-5">{i + 1}</span>
+                                        <span className="text-sm text-[#292524] w-20 sm:w-32 truncate group-hover/row:text-[#412AD1] transition-colors">
                                             {modelNames.get(d.llm_id) ?? d.llm_id.slice(0, 8)}
                                         </span>
-                                        <div className="flex-1 bg-slate-800/60 rounded-full h-2.5 overflow-hidden">
+                                        <div className="flex-1 bg-[#292524]/10 rounded-full h-2.5 overflow-hidden">
                                             <div
-                                                className="h-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-400 rounded-full transition-all shadow-[0_0_8px_rgba(34,211,238,0.3)]"
+                                                className="h-full bg-[#412AD1] rounded-full transition-all"
                                                 style={{ width: `${((d.stddev ?? 0) / maxStddev) * 100}%` }}
                                             />
                                         </div>
-                                        <span className="text-xs text-gray-500 font-mono w-12 text-right">
+                                        <span className="text-xs text-[#292524]/60 font-mono w-12 text-right">
                                             {d.stddev?.toFixed(2) ?? "—"}
                                         </span>
                                     </div>
@@ -255,7 +255,7 @@ function RobustnessTab({ params, modelNames }: TabProps) {
                         );
                     })()
                 ) : (
-                    <div className="text-gray-500 h-32 flex items-center justify-center">No stability data</div>
+                    <div className="text-[#292524]/60 h-32 flex items-center justify-center">No stability data</div>
                 )}
             </GlassCard>
         </div>
@@ -274,23 +274,23 @@ function EffectivenessTab({ params, modelNames }: TabProps) {
                             .sort((a, b) => (b.delta ?? 0) - (a.delta ?? 0))
                             .map((u) => (
                                 <div key={u.llm_id} className="flex items-center gap-4">
-                                    <span className="text-sm text-gray-300 w-40 truncate">
+                                    <span className="text-sm text-[#292524] w-40 truncate">
                                         {modelNames.get(u.llm_id) ?? u.llm_id.slice(0, 8)}
                                     </span>
                                     <div className="flex-1 flex items-center gap-3">
-                                        <span className="text-xs text-gray-500 font-mono">
+                                        <span className="text-xs text-[#292524]/60 font-mono">
                                             Baseline: {u.avg_baseline?.toFixed(2) ?? "—"}
                                         </span>
-                                        <span className="text-lg">→</span>
-                                        <span className="text-xs text-cyan-300 font-mono">
+                                        <span className="text-lg text-[#292524]">→</span>
+                                        <span className="text-xs text-[#412AD1] font-mono">
                                             Galileo: {u.avg_galileo?.toFixed(2) ?? "—"}
                                         </span>
-                                        <span className={`text-sm font-bold ${(u.delta ?? 0) > 0 ? "text-emerald-400" : (u.delta ?? 0) < 0 ? "text-rose-400" : "text-gray-400"
+                                        <span className={`text-sm font-bold ${(u.delta ?? 0) > 0 ? "text-[#29BC41]" : (u.delta ?? 0) < 0 ? "text-[#B50BBB]" : "text-[#292524]/50"
                                             }`}>
                                             {u.delta !== null ? `${u.delta > 0 ? "+" : ""}${u.delta.toFixed(2)}` : "—"}
                                         </span>
                                     </div>
-                                    <span className="text-xs text-gray-500">{u.n_pairs} pairs</span>
+                                    <span className="text-xs text-[#292524]/60">{u.n_pairs} pairs</span>
                                 </div>
                             ))}
                     </div>
@@ -318,44 +318,44 @@ function OpsTab({ params, modelNames }: TabProps) {
                             {paretoData.items
                                 .sort((a, b) => (b.avg_score ?? 0) - (a.avg_score ?? 0))
                                 .map((p, i) => (
-                                    <div key={p.llm_id} className="flex items-center gap-4 py-2.5 border-b border-white/[0.04] hover:bg-white/[0.03] rounded-lg px-2 -mx-2 transition-colors group/row">
-                                        <span className="text-xs font-bold w-6 h-6 flex items-center justify-center rounded-md bg-gradient-to-br from-cyan-500/20 to-teal-500/20 text-cyan-400 border border-cyan-500/20">
+                                    <div key={p.llm_id} className="flex items-center gap-4 py-2.5 border-b border-[#292524]/10 hover:bg-[#412AD1]/5 rounded-lg px-2 -mx-2 transition-colors group/row">
+                                        <span className="text-xs font-bold w-6 h-6 flex items-center justify-center rounded-md bg-[#412AD1]/10 text-[#412AD1] border border-[#412AD1]/20">
                                             {i + 1}
                                         </span>
-                                        <span className="text-sm text-gray-300 w-20 sm:w-36 truncate group-hover/row:text-white transition-colors">
+                                        <span className="text-sm text-[#292524] w-20 sm:w-36 truncate group-hover/row:text-[#412AD1] transition-colors">
                                             {modelNames.get(p.llm_id) ?? p.llm_id.slice(0, 8)}
                                         </span>
                                         <div className="flex-1 grid grid-cols-3 gap-2 sm:gap-4 text-xs font-mono">
                                             <div className="flex flex-col">
-                                                <span className="text-[10px] text-gray-600 uppercase tracking-wider">Score</span>
-                                                <span className="text-cyan-300 drop-shadow-[0_0_4px_rgba(34,211,238,0.4)]">{p.avg_score?.toFixed(2) ?? "—"}</span>
+                                                <span className="text-[10px] text-[#292524]/50 uppercase tracking-wider">Score</span>
+                                                <span className="text-[#412AD1] font-semibold">{p.avg_score?.toFixed(2) ?? "—"}</span>
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className="text-[10px] text-gray-600 uppercase tracking-wider">Latency</span>
-                                                <span className="text-amber-300 drop-shadow-[0_0_4px_rgba(245,158,11,0.4)]">
+                                                <span className="text-[10px] text-[#292524]/50 uppercase tracking-wider">Latency</span>
+                                                <span className="text-[#FCC503] font-semibold">
                                                     {p.avg_latency_ms ? `${Math.round(p.avg_latency_ms)}ms` : "—"}
                                                 </span>
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className="text-[10px] text-gray-600 uppercase tracking-wider">Cost</span>
-                                                <span className="text-emerald-300 drop-shadow-[0_0_4px_rgba(52,211,153,0.4)]">
+                                                <span className="text-[10px] text-[#292524]/50 uppercase tracking-wider">Cost</span>
+                                                <span className="text-[#29BC41] font-semibold">
                                                     {p.avg_cost_usd !== null ? `$${Number(p.avg_cost_usd).toFixed(4)}` : "—"}
                                                 </span>
                                             </div>
                                         </div>
-                                        <span className="text-[10px] text-gray-600 font-mono tabular-nums">{p.n} runs</span>
+                                        <span className="text-[10px] text-[#292524]/50 font-mono tabular-nums">{p.n} runs</span>
                                     </div>
                                 ))}
                         </div>
                     ) : (
-                        <div className="text-gray-500 h-32 flex items-center justify-center">No operations data</div>
+                        <div className="text-[#292524]/60 h-32 flex items-center justify-center">No operations data</div>
                     )}
                 </GlassCard>
                 <GlassCard expandable title="Cost per Passing Answer">
                     {costData?.items?.length ? (
                         <CostPerPassChart items={costData.items} modelNames={modelNames} />
                     ) : (
-                        <div className="text-gray-500 h-32 flex items-center justify-center">No cost data</div>
+                        <div className="text-[#292524]/60 h-32 flex items-center justify-center">No cost data</div>
                     )}
                 </GlassCard>
             </div>

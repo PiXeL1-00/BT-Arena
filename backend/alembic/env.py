@@ -44,9 +44,15 @@ def do_run_migrations(connection) -> None:
 
 async def run_migrations_online() -> None:
     """Run migrations in online mode with async engine."""
+    connect_args = (
+        {"ssl": "require"}
+        if settings.database_require_ssl
+        else {}
+    )
+
     connectable = create_async_engine(
         _migrations_url,
-        connect_args={"ssl": "require"},
+        connect_args=connect_args,
     )
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
