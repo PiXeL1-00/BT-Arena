@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ArrowUpRight, BarChart3, Info, Menu, Rocket, Workflow, X } from "lucide-react";
+import { ArrowUpRight, BarChart3, ExternalLink, Info, Menu, Rocket, Workflow, X } from "lucide-react";
 import { useNavLock } from "@/hooks/useNavLock";
 
 export function GlobalHeader() {
@@ -39,6 +39,16 @@ export function GlobalHeader() {
                 <Workflow className="w-3 h-3 text-[#412AD1]" />
                 <span className="tracking-wide">Methodology</span>
             </Link>
+            <a
+                href="https://taostats.io/subnets/104"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-1 text-[10px] font-normal px-2 py-1 rounded-lg text-[#292524]/45 hover:text-[#412AD1] transition-colors duration-200"
+            >
+                <span className="tracking-wide">Masxai</span>
+                <span className="text-[#412AD1]/60 font-medium">SN104</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-60 transition-opacity" />
+            </a>
         </>
     );
 
@@ -147,6 +157,15 @@ export function GlobalHeader() {
                                 <Workflow className="w-4 h-4 text-[#412AD1]" />
                                 <span className="text-sm font-medium tracking-wide">Methodology</span>
                             </Link>
+                            <a
+                                href="https://taostats.io/subnets/104"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#292524]/45 hover:text-[#412AD1] hover:bg-[#412AD1]/5 transition-all tap-target"
+                            >
+                                <ExternalLink className="w-4 h-4 text-[#412AD1]/50" />
+                                <span className="text-xs font-normal tracking-wide">Masxai <span className="text-[#412AD1] font-medium">SN104</span></span>
+                            </a>
                             <Link
                                 href="/about"
                                 className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#292524]/70 hover:text-[#412AD1] hover:bg-[#412AD1]/5 transition-all tap-target"
