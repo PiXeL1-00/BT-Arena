@@ -38,3 +38,5 @@ openclaw/
 
 .env
 **/.env
+
+.env.local
