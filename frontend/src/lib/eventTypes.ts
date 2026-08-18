@@ -1,10 +1,19 @@
 // SSE Event types
 import type { Verdict } from "./types";
 export type SSEPayload =
+    | CaseStartedPayload
     | AgentMessagePayload
     | CaseScoredPayload
     | MetricsUpdatePayload
     | QuotaExhaustedPayload;
+
+export interface CaseStartedPayload {
+    event_type: 'case_started';
+    case_id: string;
+    topic?: string;
+    claim?: string;
+    pressure_score?: number;
+}
 
 export interface AgentMessagePayload {
     event_type: 'agent_message';
@@ -38,7 +47,7 @@ export interface QuotaExhaustedPayload {
 }
 
 export interface SSEEvent {
-    event_type: 'agent_message' | 'case_scored' | 'metrics_update' | 'quota_exhausted';
+    event_type: 'case_started' | 'agent_message' | 'case_scored' | 'metrics_update' | 'quota_exhausted';
     payload: SSEPayload;
 }
 

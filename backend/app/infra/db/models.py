@@ -84,6 +84,7 @@ class RunRow(Base):
     status: Mapped[str] = mapped_column(String(32), default=RunStatus.PENDING)
     models_json: Mapped[list] = mapped_column(JSON, nullable=False)
     case_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    query: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     scoring_mode: Mapped[str] = mapped_column(
         String(32), default=ScoringMode.DETERMINISTIC.value, server_default=ScoringMode.DETERMINISTIC.value
     )

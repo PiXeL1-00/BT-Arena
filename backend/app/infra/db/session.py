@@ -53,9 +53,12 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
             await session.close()
 
 
+from sqlalchemy import text
+
 async def init_db() -> None:
     # dev convenience -- use alembic in prod
     from .models import Base
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        await conn.execute(text("ALTER TABLE runs ADD COLUMN IF NOT EXISTS query TEXT;"))

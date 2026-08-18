@@ -45,6 +45,7 @@ export function GlobalHeader() {
                 rel="noopener noreferrer"
                 className="group flex items-center gap-1 text-[10px] font-normal px-2 py-1 rounded-lg text-[#292524]/45 hover:text-[#412AD1] transition-colors duration-200"
             >
+                <span className="text-[#29BC41]/60 font-medium">Powered by</span>
                 <span className="tracking-wide">Masxai</span>
                 <span className="text-[#412AD1]/60 font-medium">SN104</span>
                 <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-60 transition-opacity" />

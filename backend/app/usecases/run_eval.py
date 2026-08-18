@@ -59,6 +59,7 @@ class RunEvalUsecase:
         case_id: str,
         models: list[dict[str, str]],
         run_id: Optional[str] = None,
+        query: Optional[str] = None,
     ) -> str:
         if run_id is None:
             run_id = str(uuid.uuid4())
@@ -76,6 +77,7 @@ class RunEvalUsecase:
                 case_id=case_id,
                 models_json=models_json,
                 scoring_mode=scoring_mode,
+                query=query,
             )
 
         await self._repo.update_run_status(run_id, status=RunStatus.RUNNING)
@@ -86,17 +88,37 @@ class RunEvalUsecase:
         })
 
         try:
-            case_row = await self._repo.get_dataset_case(dataset_id, case_id)
-            if case_row is None:
-                raise ValueError(f"Case {case_id} not found in dataset {dataset_id}")
+            case_row = await self._repo.get_dataset_case(dataset_id, case_id) if case_id else None
+            
+            if query:
+                if case_row:
+                    effective_topic = f"{case_row.topic} (Subnet: {case_row.case_id})"
+                    effective_claim = query
+                    effective_evidence = case_row.evidence_json
+                    effective_pressure = case_row.pressure_score
+                    effective_label = case_row.label
+                else:
+                    effective_topic = "Bittensor Query"
+                    effective_claim = query
+                    effective_evidence = []
+                    effective_pressure = 0
+                    effective_label = VerdictEnum.INSUFFICIENT.value
+            else:
+                if case_row is None:
+                    raise ValueError(f"Case {case_id} not found in dataset {dataset_id}")
+                effective_topic = case_row.topic
+                effective_claim = case_row.claim
+                effective_evidence = case_row.evidence_json
+                effective_pressure = case_row.pressure_score
+                effective_label = case_row.label
 
             await self._emit(run_id, EventType.CASE_STARTED, {
-                "case_id": case_row.case_id,
+                "case_id": case_id,
                 "case_index": 0,
                 "total_cases": 1,
-                "topic": case_row.topic,
-                "claim": case_row.claim,
-                "pressure_score": case_row.pressure_score,
+                "topic": effective_topic,
+                "claim": effective_claim,
+                "pressure_score": effective_pressure,
             })
 
             exhausted_providers: set[str] = set()
@@ -110,8 +132,15 @@ class RunEvalUsecase:
                     continue
                 try:
                     await self._run_case(
-                        run_id=run_id, case_row=case_row,
-                        model_cfg=model_cfg, model_key=model_key,
+                        run_id=run_id,
+                        case_id=case_id,
+                        case_row=case_row,
+                        effective_topic=effective_topic,
+                        effective_claim=effective_claim,
+                        effective_evidence=effective_evidence,
+                        effective_label=effective_label,
+                        model_cfg=model_cfg,
+                        model_key=model_key,
                     )
                 except QuotaExhaustedError as qe:
                     exhausted_providers.add(qe.provider)
@@ -158,11 +187,13 @@ class RunEvalUsecase:
         return run_id
 
     async def _run_case(
-        self, *, run_id: str, case_row: Any,
+        self, *, run_id: str, case_id: str, case_row: Any,
+        effective_topic: str, effective_claim: str,
+        effective_evidence: list[dict], effective_label: str,
         model_cfg: dict[str, str], model_key: str,
     ) -> None:
         await self._repo.upsert_case_status(
-            run_id=run_id, case_id=case_row.case_id,
+            run_id=run_id, case_id=case_id,
             model_key=model_key, status=CaseStatus.RUNNING,
             started_at=datetime.now(timezone.utc).replace(tzinfo=None),
         )
@@ -212,19 +243,16 @@ class RunEvalUsecase:
                     "case_id": evt.case_id, "model_key": model_key, "phase": evt.phase,
                 })
 
-            # LABEL ISOLATION: only case_id, claim, topic, and evidence are
-            # passed to the debate controller.  Ground-truth label and
-            # safe_to_answer are used ONLY at scoring time below.
             debate = await controller.run(
-                case_id=case_row.case_id,
-                claim=case_row.claim,
-                topic=case_row.topic,
-                evidence_packets=case_row.evidence_json,
+                case_id=case_id,
+                claim=effective_claim,
+                topic=effective_topic,
+                evidence_packets=effective_evidence,
                 on_message=on_msg,
                 on_phase=on_phase,
             )
 
-            valid_eids = {ep["eid"] for ep in case_row.evidence_json}
+            valid_eids = {ep["eid"] for ep in effective_evidence} if effective_evidence else set()
             try:
                 judge_decision = JudgeDecision(**debate.judge_json)
             except Exception:
@@ -233,17 +261,14 @@ class RunEvalUsecase:
                     evidence_used=[], reasoning=FALLBACK_JUDGE_REASONING,
                 )
 
-            # NOTE: label is only used at scoring time -- the debate controller
-            # never sees it, preserving label isolation.
-            safe_flag: bool = getattr(case_row, "safe_to_answer", True)
+            safe_flag: bool = getattr(case_row, "safe_to_answer", True) if case_row else True
 
-            # --- ML scoring (optional, non-blocking) ---
             ml_scores = None
-            if settings.ml_scoring_enabled:
+            if settings.ml_scoring_enabled and effective_evidence:
                 from app.infra.ml.scorer import compute_ml_scores_async
 
                 evidence_map = {
-                    ep["eid"]: ep["summary"] for ep in case_row.evidence_json
+                    ep["eid"]: ep["summary"] for ep in effective_evidence
                 }
                 ml_scores = await compute_ml_scores_async(
                     judge_decision.reasoning,
@@ -251,9 +276,10 @@ class RunEvalUsecase:
                     evidence_map,
                 )
 
+            effective_verdict = VerdictEnum(effective_label) if effective_label in VerdictEnum._value2member_map_ else VerdictEnum.INSUFFICIENT
             breakdown = compute_case_score(
                 judge_decision,
-                label=VerdictEnum(case_row.label),
+                label=effective_verdict,
                 valid_eids=valid_eids,
                 safe_to_answer=safe_flag if isinstance(safe_flag, bool) else True,
                 ml_scores=ml_scores,

@@ -27,6 +27,7 @@ export default function DatasetsPage() {
     const { data: models = [] } = useModelRegistry();
 
     const [selectedCaseId, setSelectedCaseId] = useState<string>("");
+    const [query, setQuery] = useState<string>("");
     const [selectedModel, setSelectedModel] = useState<string>("");
     const [launching, setLaunching] = useState(false);
     const [error, setError] = useState<string>("");
@@ -52,12 +53,16 @@ export default function DatasetsPage() {
     const availableModels = filterAvailableModels(models);
 
     const handleSelectDataset = useCallback((dsId: string) => {
-        setSelected(dsId);
-        setSelectedCaseId("");
-        setSelectedModel("");
+        if (selected === dsId) {
+            setSelected("");
+            setSelectedCaseId("");
+        } else {
+            setSelected(dsId);
+            setSelectedCaseId("");
+        }
         setHighlightCaseSelector(false);
         setHighlightModelSelector(false);
-    }, []);
+    }, [selected]);
 
 
 
@@ -91,10 +96,10 @@ export default function DatasetsPage() {
         }
     }, [selectedCaseId]);
 
-
+    const canLaunch = Boolean(selectedModel) && (Boolean(query.trim()) || (Boolean(selected) && Boolean(selectedCaseId)));
 
     const handleLaunch = async () => {
-        if (!selected || !selectedCaseId || !selectedModel) return;
+        if (!canLaunch) return;
         setLaunching(true);
         setError("");
         try {
@@ -105,8 +110,9 @@ export default function DatasetsPage() {
                 { provider: m.provider, model_name: m.model_name, api_key_env: m.api_key_env },
             ];
             const resp = await api.createRun({
-                dataset_id: selected,
-                case_id: selectedCaseId,
+                dataset_id: selected || undefined,
+                case_id: selectedCaseId || undefined,
+                query: query.trim() || undefined,
                 models: modelConfigs,
                 mode: "debate",
             });
@@ -153,7 +159,7 @@ export default function DatasetsPage() {
                         Bittensor <span className="hidden sm:inline"><br /></span><span className="font-serif italic text-[#412AD1]">Arena</span>
                     </h1>
                     <p className="text-lg text-[#292524]/70 font-light leading-relaxed backdrop-blur-sm bg-[#FFFFFF]/80 p-4 rounded-xl border border-[#292524]/10">
-                        Select a subnet category to begin. Each category contains competing Bittensor subnets that are evaluated by AI models using a consistent methodology to determine the strongest projects within that domain.
+                        Ask a question about Bittensor to trigger an AI-driven adversarial debate, or select a subnet category to evaluate competing Bittensor subnets.
                     </p>
 
                     {/* Case Selector - With Auto-Scroll and Highlight */}
@@ -166,7 +172,7 @@ export default function DatasetsPage() {
                                     : ''
                                     }`}
                             >
-                                <label className="text-xs font-semibold text-[#292524]/60 uppercase tracking-widest pl-1">Subnet</label>
+                                <label className="text-xs font-semibold text-[#292524]/60 uppercase tracking-widest pl-1">Subnet (Optional)</label>
                                 {casesLoading ? (
                                     <div className="h-12 w-full rounded-xl bg-[#292524]/10 animate-pulse" />
                                 ) : (
@@ -196,7 +202,17 @@ export default function DatasetsPage() {
 
                     {/* Dataset Selection */}
                     <div className="glass-panel rounded-3xl p-6 shadow-lg">
-                        <h2 className="text-xs font-semibold text-[#412AD1] mb-4 tracking-widest uppercase">Subnet Categories</h2>
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xs font-semibold text-[#412AD1] tracking-widest uppercase">Subnet Categories <span className="text-[#292524]/40 font-normal">(Optional)</span></h2>
+                            {selected && (
+                                <button
+                                    onClick={() => { setSelected(""); setSelectedCaseId(""); }}
+                                    className="text-xs text-[#412AD1] hover:underline"
+                                >
+                                    Clear Selection
+                                </button>
+                            )}
+                        </div>
                         {datasetsLoading ? (
                             <div className="flex flex-col items-center justify-center py-16 gap-4">
                                 <div className="relative w-12 h-12">
@@ -229,52 +245,60 @@ export default function DatasetsPage() {
                         )}
                     </div>
 
-                    {/* Model Selector */}
-                    {selected && selectedCaseId && (
-                        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <ModelSelector
-                                models={availableModels}
-                                selectedModel={selectedModel}
-                                onSelectModel={setSelectedModel}
-                                isModelDisabled={isModelDisabled}
-                                getValidationStatus={getValidationStatus}
-                                getDisabledReason={getDisabledReason}
-                                getModelUsageRemaining={getModelUsageRemaining}
-                                validationLoading={validationLoading}
-                                onRefreshValidation={refreshValidation}
-                                keyValidation={keyValidation}
-                                highlighted={highlightModelSelector}
-                                containerRef={modelSelectorRef}
-                            />
+                    {/* Model Selector & Query Box */}
+                    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <ModelSelector
+                            models={availableModels}
+                            selectedModel={selectedModel}
+                            onSelectModel={setSelectedModel}
+                            query={query}
+                            onQueryChange={setQuery}
+                            isModelDisabled={isModelDisabled}
+                            getValidationStatus={getValidationStatus}
+                            getDisabledReason={getDisabledReason}
+                            getModelUsageRemaining={getModelUsageRemaining}
+                            validationLoading={validationLoading}
+                            onRefreshValidation={refreshValidation}
+                            keyValidation={keyValidation}
+                            highlighted={highlightModelSelector}
+                            containerRef={modelSelectorRef}
+                        />
 
-                            {/* Launch Button */}
-                            <div className="pt-4 flex flex-col gap-4">
-                                <button
-                                    onClick={handleLaunch}
-                                    disabled={launching || !selectedModel}
-                                    className="group relative w-full h-14 overflow-hidden rounded-xl bg-[#412AD1] disabled:bg-[#292524]/20 disabled:text-[#292524]/40 transition-all duration-300 shadow-lg hover:shadow-[#412AD1]/25"
-                                >
-                                    <div className="absolute inset-0 bg-white/10 group-hover:translate-x-full transition-transform duration-700 ease-out skew-x-12 -translate-x-[150%]" />
-                                    <span className="relative flex items-center justify-center gap-2 font-medium text-lg tracking-wide text-[#FFFFFF]">
-                                        {launching ? (
-                                            <>
-                                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                                Initiating Sequence...
-                                            </>
-                                        ) : (
-                                            "Launch Analysis"
-                                        )}
-                                    </span>
-                                </button>
+                        {/* Launch Button */}
+                        <div className="pt-2 flex flex-col gap-4">
+                            <button
+                                onClick={handleLaunch}
+                                disabled={launching || !canLaunch}
+                                className="group relative w-full h-14 overflow-hidden rounded-xl bg-[#412AD1] disabled:bg-[#292524]/20 disabled:text-[#292524]/40 transition-all duration-300 shadow-lg hover:shadow-[#412AD1]/25"
+                            >
+                                <div className="absolute inset-0 bg-white/10 group-hover:translate-x-full transition-transform duration-700 ease-out skew-x-12 -translate-x-[150%]" />
+                                <span className="relative flex items-center justify-center gap-2 font-medium text-lg tracking-wide text-[#FFFFFF]">
+                                    {launching ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                            Initiating Sequence...
+                                        </>
+                                    ) : (
+                                        "Launch Analysis"
+                                    )}
+                                </span>
+                            </button>
 
-                                {error && (
-                                    <div className="p-4 rounded-xl bg-[#B50BBB]/10 border border-[#B50BBB]/20 text-[#B50BBB] text-sm text-center animate-in fade-in slide-in-from-top-2">
-                                        {error}
-                                    </div>
-                                )}
-                            </div>
+                            {!canLaunch && (
+                                <p className="text-xs text-center text-[#292524]/50">
+                                    {!selectedModel
+                                        ? "Select an inference provider above to proceed."
+                                        : "Enter a question query above OR select a subnet category & subnet."}
+                                </p>
+                            )}
+
+                            {error && (
+                                <div className="p-4 rounded-xl bg-[#B50BBB]/10 border border-[#B50BBB]/20 text-[#B50BBB] text-sm text-center animate-in fade-in slide-in-from-top-2">
+                                    {error}
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         </div>

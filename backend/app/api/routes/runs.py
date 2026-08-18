@@ -102,13 +102,29 @@ async def _prepare_run(
 ) -> tuple[str, list[dict], Optional[str]]:
     """Shared prep for both POST endpoints: validate dataset + case, enforce
     prod limits, create run row, check cache."""
+    if not body.dataset_id:
+        datasets = await repo.list_datasets()
+        if datasets:
+            body.dataset_id = datasets[0].id
+        else:
+            body.dataset_id = "authority_contradiction_v1"
+
     ds = await repo.get_dataset(body.dataset_id)
     if ds is None:
-        raise HTTPException(404, "Dataset not found")
+        datasets = await repo.list_datasets()
+        if datasets:
+            body.dataset_id = datasets[0].id
+            ds = datasets[0]
+        else:
+            raise HTTPException(404, "Dataset not found")
 
-    case_row = await repo.get_dataset_case(body.dataset_id, body.case_id)
-    if case_row is None:
-        raise HTTPException(404, "Case not found in dataset")
+    if not body.case_id:
+        body.case_id = "custom_query"
+
+    if not body.query:
+        case_row = await repo.get_dataset_case(body.dataset_id, body.case_id)
+        if case_row is None:
+            raise HTTPException(404, "Case not found in dataset")
 
     models = [m.model_dump(mode="json") for m in body.models]
 
@@ -132,6 +148,7 @@ async def _prepare_run(
         dataset_id=body.dataset_id,
         case_id=body.case_id,
         models_json=models_json,
+        query=body.query,
     )
 
     await repo.commit()
@@ -184,6 +201,7 @@ async def create_run(
                             case_id=body.case_id,
                             models=models,
                             run_id=run_id,
+                            query=body.query,
                         )
                         _log.info("Background task done: run_id=%s", run_id)
                 except Exception as exc:
@@ -245,6 +263,7 @@ async def start_run_sync(
                         case_id=body.case_id,
                         models=models,
                         run_id=run_id,
+                        query=body.query,
                     )
             finally:
                 event_bus.cleanup_run(run_id)
@@ -277,6 +296,7 @@ async def get_run(
         "status": run.status,
         "models": run.models_json,
         "case_id": run.case_id,
+        "query": run.query,
         "created_at": run.created_at.isoformat(),
         "finished_at": run.finished_at.isoformat() if run.finished_at else None,
         "total_llm_cost": total_cost,

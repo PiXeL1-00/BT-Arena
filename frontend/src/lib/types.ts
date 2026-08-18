@@ -42,8 +42,9 @@ export interface ModelConfig {
 }
 
 export interface RunRequest {
-  dataset_id: string;
-  case_id: string;
+  dataset_id?: string;
+  case_id?: string;
+  query?: string;
   models: ModelConfig[];
   mode: string;
 }
@@ -52,6 +53,7 @@ export interface RunInfo {
   run_id: string;
   dataset_id: string;
   case_id: string;
+  query?: string;
   status: RunStatus;
   models: { provider: string; model_name: string }[];
   created_at: string;

@@ -165,6 +165,7 @@ class Repository:
         case_id: str,
         models_json: list[dict],
         scoring_mode: Optional[str] = None,
+        query: Optional[str] = None,
     ) -> None:
         from app.config import settings
         
@@ -180,6 +181,7 @@ class Repository:
             models_json=models_json,
             status=RunStatus.PENDING,
             scoring_mode=scoring_mode,
+            query=query,
         )
         self._s.add(row)
         try:

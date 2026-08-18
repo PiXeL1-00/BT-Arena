@@ -168,8 +168,9 @@ class ModelConfig(BaseModel):
 # --- request / response ---
 
 class RunRequest(BaseModel):
-    dataset_id: str
-    case_id: str = Field(min_length=1)
+    dataset_id: Optional[str] = None
+    case_id: Optional[str] = None
+    query: Optional[str] = None
     models: list[ModelConfig]
     mode: str = RunMode.DEBATE
 

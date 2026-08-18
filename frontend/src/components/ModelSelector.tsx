@@ -7,6 +7,8 @@ interface Props {
     models: ModelRegistryEntry[];
     selectedModel: string;
     onSelectModel: (model: string) => void;
+    query: string;
+    onQueryChange: (query: string) => void;
     isModelDisabled: (model: ModelRegistryEntry) => boolean;
     getValidationStatus: (model: ModelRegistryEntry) => KeyValidationStatus | null;
     getDisabledReason?: (model: ModelRegistryEntry) => string | null;
@@ -22,6 +24,8 @@ export function ModelSelector({
     models,
     selectedModel,
     onSelectModel,
+    query,
+    onQueryChange,
     isModelDisabled,
     getValidationStatus,
     getDisabledReason,
@@ -60,6 +64,25 @@ export function ModelSelector({
                 >
                     <RefreshCw className={`w-3 h-3 ${validationLoading ? "animate-spin" : ""}`} />
                 </button>
+            </div>
+
+            {/* Question / Query Textbox */}
+            <div className="mb-5 space-y-2">
+                <label className="text-xs font-semibold text-[#292524]/80 uppercase tracking-wider flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-[#412AD1]">
+                        Bittensor Query / Prompt
+                    </span>
+                    <span className="text-[10px] text-[#292524]/50 font-normal uppercase tracking-normal">
+                        (Optional if Subnet selected)
+                    </span>
+                </label>
+                <textarea
+                    value={query}
+                    onChange={(e) => onQueryChange(e.target.value)}
+                    placeholder="Enter your question or custom query about Bittensor (e.g. 'How does Subnet 1 balance validator emissions against miner latency?')..."
+                    rows={3}
+                    className="w-full bg-[#FFFFFF]/90 border border-[#412AD1]/20 rounded-xl p-3.5 text-sm text-[#292524] placeholder-[#292524]/40 focus:outline-none focus:border-[#412AD1]/50 focus:ring-2 focus:ring-[#412AD1]/20 transition-all resize-none shadow-sm"
+                />
             </div>
 
             <div className="relative">

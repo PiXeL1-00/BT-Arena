@@ -39,6 +39,8 @@ def _sanitize(text: str) -> str:
 
 def format_evidence(evidence_packets: list[dict]) -> str:
     """Render evidence packets as a readable block for prompt inclusion."""
+    if not evidence_packets:
+        return "Evidence Packets: None provided. Rely on your knowledge about Bittensor, subnets, and AI consensus."
     lines = ["Evidence Packets:"]
     for ep in evidence_packets:
         lines.append(
@@ -63,10 +65,15 @@ def case_packet_text(
     if pressure_text:
         parts.append(f"Pressure context: {_sanitize(pressure_text)}")
     parts.append(evidence_text)  # already sanitised in format_evidence
-    parts.append(
-        "RULES: Use ONLY the evidence IDs above. "
-        "Do NOT introduce outside facts. Be concise."
-    )
+    if "None provided" in evidence_text:
+        parts.append(
+            "RULES: Provide detailed, well-reasoned arguments based on your knowledge of Bittensor and decentralized AI networks. Be concise and logically rigorous."
+        )
+    else:
+        parts.append(
+            "RULES: Use ONLY the evidence IDs above. "
+            "Do NOT introduce outside facts. Be concise."
+        )
     return "\n\n".join(parts)
 
 

@@ -38,6 +38,18 @@ export default function RunDashboard() {
 
   const handleEvent = useCallback((event: SSEEvent) => {
     switch (event.event_type) {
+      case "case_started": {
+        const p = event.payload as { case_id: string; topic?: string; claim?: string };
+        if (p.claim || p.topic) {
+          setDatasetInfo((prev) => ({
+            datasetId: prev?.datasetId || run?.dataset_id || "bittensor-arena",
+            caseTopic: p.topic || prev?.caseTopic || "Bittensor Query",
+            claim: p.claim || prev?.claim || "",
+            evidences: prev?.evidences || [],
+          }));
+        }
+        break;
+      }
       case "agent_message": {
         const p = event.payload as import("@/lib/eventTypes").AgentMessagePayload;
         setMessages((prev) => [
@@ -89,7 +101,7 @@ export default function RunDashboard() {
         break;
       }
     }
-  }, []);
+  }, [run?.dataset_id]);
 
   const sseStatus = useSSE(runId ? api.eventsUrl(runId) : null, handleEvent);
 
@@ -125,7 +137,6 @@ export default function RunDashboard() {
     setProgress({ completed: 0, total: 0 });
     setHistoricalMessagesLoaded(false);
   }, [runId]);
-  // ... (skipping lines 81-283 for brevity in this instruction, but tool handles chunks)
 
   // Poll for messages only when SSE is not connected (fallback)
   useEffect(() => {
@@ -163,8 +174,6 @@ export default function RunDashboard() {
       return;
     }
 
-
-
     // If run is completed and we have no messages, load historical data once
     if (run.status === "COMPLETED") {
       const loadHistoricalData = async () => {
@@ -197,15 +206,26 @@ export default function RunDashboard() {
 
   // Fetch dataset and case information when run data is available
   useEffect(() => {
-    if (!run?.dataset_id || !run?.case_id) return;
+    if (!run) return;
 
     const fetchDatasetInfo = async () => {
       try {
-        const dataset: DatasetDetail = await api.getDataset(run.dataset_id);
-        const caseData = dataset.cases.find((c) => c.case_id === run.case_id);
-        if (caseData) {
+        let caseData;
+        if (run.dataset_id) {
+          const dataset: DatasetDetail = await api.getDataset(run.dataset_id);
+          caseData = dataset.cases.find((c) => c.case_id === run.case_id);
+        }
+
+        if (run.query) {
           setDatasetInfo({
-            datasetId: dataset.id,
+            datasetId: run.dataset_id || "bittensor-arena",
+            caseTopic: caseData ? `${caseData.topic} (${run.case_id})` : "Bittensor Query",
+            claim: run.query,
+            evidences: caseData?.evidence_packets ?? [],
+          });
+        } else if (caseData) {
+          setDatasetInfo({
+            datasetId: run.dataset_id,
             caseTopic: caseData.topic,
             claim: caseData.claim,
             evidences: caseData.evidence_packets ?? [],
@@ -217,7 +237,7 @@ export default function RunDashboard() {
     };
 
     fetchDatasetInfo();
-  }, [run?.dataset_id, run?.case_id]);
+  }, [run]);
 
   if (isError || (!runLoading && !run)) {
     return (
