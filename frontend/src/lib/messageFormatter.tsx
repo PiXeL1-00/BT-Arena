@@ -17,23 +17,28 @@ import type {
 export function formatStructuredMessage(
     parsed: ParsedMessage,
     role: string,
-    modelKey: string
+    modelKey: string,
+    modelSelector?: React.ReactNode
 ): JSX.Element {
     const { type, data, isTruncated } = parsed;
 
     // Common header component
     const Header = () => (
-        <div className="flex items-center gap-2 mb-2">
-            <span
-                className={`text-xs font-medium ${ROLE_COLORS[role] ?? "text-[#412AD1]"}`}
-            >
-                {role}
-            </span>
-            <span className="text-xs text-[#292524]/60 font-mono">{modelKey}</span>
-            {isTruncated && (
-                <span className="bg-[#FCC503]/20 text-[#292524] text-xs px-2 py-0.5 rounded-full border border-[#FCC503]/40 font-medium">
-                    ⚠️ Truncated
+        <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
+            <div className="flex items-center gap-2">
+                <span
+                    className={`text-xs font-semibold ${ROLE_COLORS[role] ?? "text-[#412AD1]"}`}
+                >
+                    {role} Agent
                 </span>
+                {isTruncated && (
+                    <span className="bg-[#FCC503]/20 text-[#292524] text-xs px-2 py-0.5 rounded-full border border-[#FCC503]/40 font-medium">
+                        ⚠️ Truncated
+                    </span>
+                )}
+            </div>
+            {modelSelector || (
+                <span className="text-xs text-[#292524]/60 font-mono">{modelKey}</span>
             )}
         </div>
     );

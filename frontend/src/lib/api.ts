@@ -57,6 +57,19 @@ export const api = {
     return res.json();
   },
 
+  async regenerateRun(
+    runId: string,
+    body: { model: import("./types").ModelConfig; from_index: number }
+  ): Promise<{ run_id: string; status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/runs/${runId}/regenerate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+    return res.json();
+  },
+
   async getRun(runId: string): Promise<RunInfo> {
     const data = await fetchJSON<unknown>(`/runs/${runId}`);
     return RunInfoSchema.parseAsync(data);

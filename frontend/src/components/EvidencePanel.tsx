@@ -11,7 +11,7 @@ function EvidenceCard({ ev, idx }: { ev: Evidence; idx: number }) {
     return (
         <div className="relative rounded-xl border border-[#292524]/10 bg-[#FFFFFF] hover:border-[#412AD1]/30 transition-all duration-200 p-4 group shadow-sm">
             <div className="flex items-start gap-3">
-                <div className="shrink-0 w-8 h-8 rounded-lg bg-[#412AD1]/10 border border-[#412AD1]/20 flex items-center justify-center text-[10px] font-bold text-[#412AD1] font-mono">
+                <div className="shrink-0 w-16 h-8 rounded-lg bg-[#412AD1]/10 border border-[#412AD1]/20 flex items-center justify-center text-[10px] font-bold text-[#412AD1] font-mono">
                     {ev.eid}
                 </div>
 

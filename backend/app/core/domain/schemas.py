@@ -63,6 +63,7 @@ class EventType(str, Enum):
     METRICS_UPDATE = "metrics_update"
     QUOTA_EXHAUSTED = "quota_exhausted"
     RUN_FINISHED = "run_finished"
+    MESSAGES_RESET = "messages_reset"
 
 
 class DebateRole(str, Enum):
@@ -178,6 +179,11 @@ class RunRequest(BaseModel):
 class RunResponse(BaseModel):
     run_id: str
     status: RunStatus
+
+
+class RegenerateRequest(BaseModel):
+    model: ModelConfig
+    from_index: int = 0
 
 
 # --- judge output ---

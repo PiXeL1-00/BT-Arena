@@ -5,7 +5,13 @@ export type SSEPayload =
     | AgentMessagePayload
     | CaseScoredPayload
     | MetricsUpdatePayload
-    | QuotaExhaustedPayload;
+    | QuotaExhaustedPayload
+    | MessagesResetPayload;
+
+export interface MessagesResetPayload {
+    event_type: 'messages_reset';
+    from_index: number;
+}
 
 export interface CaseStartedPayload {
     event_type: 'case_started';
@@ -47,7 +53,7 @@ export interface QuotaExhaustedPayload {
 }
 
 export interface SSEEvent {
-    event_type: 'case_started' | 'agent_message' | 'case_scored' | 'metrics_update' | 'quota_exhausted';
+    event_type: 'case_started' | 'agent_message' | 'case_scored' | 'metrics_update' | 'quota_exhausted' | 'messages_reset';
     payload: SSEPayload;
 }
 

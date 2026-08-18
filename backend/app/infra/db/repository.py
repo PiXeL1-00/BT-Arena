@@ -473,6 +473,16 @@ class Repository:
         result = await self._s.execute(stmt)
         return list(result.scalars().all())
 
+    async def delete_run_messages_from_index(self, run_id: str, from_index: int) -> int:
+        all_msgs = await self.get_all_run_messages(run_id)
+        if from_index < len(all_msgs):
+            ids_to_delete = [m.id for m in all_msgs[from_index:]]
+            stmt = delete(RunMessageRow).where(RunMessageRow.id.in_(ids_to_delete))
+            result = await self._s.execute(stmt)
+            await self._s.flush()
+            return result.rowcount  # type: ignore[return-value]
+        return 0
+
     # --- debate usage tracking ---
 
     async def get_debate_usage_today(

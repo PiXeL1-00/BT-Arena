@@ -149,8 +149,9 @@ class RunEvalUsecase:
                 "completed": 1, "total": 1,
             })
 
+            final_status = RunStatus.FAILED if exhausted_providers else RunStatus.COMPLETED
             await self._repo.update_run_status(
-                run_id, status=RunStatus.COMPLETED, finished_at=datetime.now(timezone.utc).replace(tzinfo=None),
+                run_id, status=final_status, finished_at=datetime.now(timezone.utc).replace(tzinfo=None),
             )
             await self._repo.commit()
 

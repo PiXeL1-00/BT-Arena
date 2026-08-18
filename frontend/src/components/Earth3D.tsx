@@ -133,9 +133,10 @@ const Earth3D = () => {
         linesGeometry.setAttribute('position', new THREE.BufferAttribute(edgePositions, 3));
 
         const linesMaterial = new THREE.LineBasicMaterial({
-            color: 0x0C0A09,
+            // color: 0x0C0A09,
+            color: 0x292524,
             transparent: true,
-            opacity: 0.32,
+            opacity: 0.2,  //original-> opacity: 0.32,
             depthWrite: false,
         });
 
@@ -151,9 +152,9 @@ const Earth3D = () => {
 
         const coreNodeMaterial = new THREE.PointsMaterial({
             color: 0x292524,
-            size: 0.05,
+            size: 0.04,  //original size: 0.05
             transparent: true,
-            opacity: 0.7,
+            opacity: 0.6,  //original-> opacity: 0.7
             sizeAttenuation: true,
         });
         const coreNodesMesh = new THREE.Points(coreNodeGeometry, coreNodeMaterial);

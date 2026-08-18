@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.deps import get_session
 from app.config import settings
 from app.core.domain.exceptions import DailyCapExceededError, ModelNotAllowedError
-from app.core.domain.schemas import RunRequest, RunStatus
+from app.core.domain.schemas import RunRequest, RunStatus, RegenerateRequest
 from app.infra.db.repository import Repository
 from app.infra.sse.event_bus import event_bus
 from app.infra.timezone_utils import get_today_in_tz
@@ -275,6 +275,82 @@ async def start_run_sync(
         "status": RunStatus.PENDING.value,
         "message": "Run started in background",
         "total_llm_cost": 0.0,
+    }
+
+
+# --- POST /runs/{run_id}/regenerate ---
+
+@router.post("/{run_id}/regenerate")
+@limiter.limit(settings.rate_limit_runs)
+async def regenerate_run(
+    request: Request,
+    run_id: str,
+    body: RegenerateRequest,
+    background_tasks: BackgroundTasks,
+    session: AsyncSession = Depends(get_session),
+):
+    from app.infra.db.session import async_session_factory
+    from app.core.domain.schemas import EventType
+
+    repo = Repository(session)
+    run = await repo.get_run(run_id)
+    if run is None:
+        raise HTTPException(404, "Run not found")
+
+    model_dict = body.model.model_dump(mode="json")
+    models = [model_dict]
+
+    # prod-mode: atomic allowlist check + usage increment
+    try:
+        await _enforce_and_record_prod_usage(repo, models)
+    except ModelNotAllowedError as exc:
+        raise HTTPException(403, _ERR_MODEL_NOT_ALLOWED.format(
+            exc.model_key, ", ".join(settings.debate_enabled_production_model_keys),
+        )) from exc
+    except DailyCapExceededError as exc:
+        raise HTTPException(429, _ERR_DAILY_CAP_REACHED.format(
+            exc.cap, exc.model_key, settings.app_timezone,
+        )) from exc
+
+    # Delete messages from index onwards
+    await repo.delete_run_messages_from_index(run_id, body.from_index)
+
+    # Reset run status to RUNNING so the UI updates correctly
+    await repo.update_run_status(run_id, status=RunStatus.RUNNING.value)
+
+    # Update models_json for run
+    models_json = [{"provider": m["provider"], "model_name": m["model_name"]} for m in models]
+    run.models_json = models_json
+    await repo.commit()
+
+    # Emit reset event over SSE
+    await event_bus.emit(run_id, EventType.MESSAGES_RESET.value, {"from_index": body.from_index})
+
+    async def _run():
+        async with _run_semaphore:
+            try:
+                async with async_session_factory() as bg_session:
+                    uc = RunEvalUsecase(bg_session, event_bus)
+                    await uc.execute(
+                        dataset_id=run.dataset_id,
+                        case_id=run.case_id,
+                        models=models,
+                        run_id=run_id,
+                        query=run.query,
+                    )
+                    _log.info("Regenerate background task done: run_id=%s", run_id)
+            except Exception as exc:
+                _log.exception("Regenerate background task blew up: run_id=%s error=%s", run_id, exc)
+                raise
+            finally:
+                event_bus.cleanup_run(run_id)
+
+    background_tasks.add_task(_run)
+
+    return {
+        "run_id": run_id,
+        "status": RunStatus.RUNNING.value,
+        "message": f"Regeneration started with {body.model.provider}/{body.model.model_name}",
     }
 
 

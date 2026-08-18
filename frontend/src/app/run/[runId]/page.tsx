@@ -8,7 +8,8 @@ import {
   Target, AlertTriangle, CheckCircle, Clock
 } from "lucide-react";
 import { useSSE } from "@/hooks/useSSE";
-import { useRunDetails } from "@/lib/queries";
+import { useRunDetails, useModelRegistry } from "@/lib/queries";
+import { useKeyValidation } from "@/hooks/useKeyValidation";
 import { api } from "@/lib/api";
 import type { SSEEvent } from "@/lib/eventTypes";
 import { Leaderboard } from "@/components/Leaderboard";
@@ -33,11 +34,51 @@ export default function RunDashboard() {
   const [quotaAlert, setQuotaAlert] = useState<string | null>(null);
   const [datasetInfo, setDatasetInfo] = useState<{ datasetId: string; caseTopic: string; claim: string; evidences: Evidence[] } | null>(null);
   const [historicalMessagesLoaded, setHistoricalMessagesLoaded] = useState(false);
+  const [regeneratingIndex, setRegeneratingIndex] = useState<number | null>(null);
   const { lock, unlock } = useNavLock();
   const hasLockedRef = useRef(false);
 
+  const { data: models = [] } = useModelRegistry();
+  const {
+    isModelDisabled,
+    getModelUsageRemaining,
+    filterAvailableModels,
+    debateConfig,
+  } = useKeyValidation();
+  const availableModels = filterAvailableModels(models);
+
+  const handleModelChange = async (messageIndex: number, modelKey: string) => {
+    if (!runId) return;
+    const targetModel = availableModels.find(
+      (m) => `${m.provider}/${m.model_name}` === modelKey || m.id === modelKey
+    );
+    if (!targetModel) return;
+
+    setRegeneratingIndex(messageIndex);
+    try {
+      await api.regenerateRun(runId, {
+        model: {
+          provider: targetModel.provider,
+          model_name: targetModel.model_name,
+          api_key_env: targetModel.api_key_env,
+        },
+        from_index: messageIndex,
+      });
+      setMessages((prev) => prev.slice(0, messageIndex));
+    } catch (err) {
+      console.error("Failed to regenerate run:", err);
+    } finally {
+      setRegeneratingIndex(null);
+    }
+  };
+
   const handleEvent = useCallback((event: SSEEvent) => {
     switch (event.event_type) {
+      case "messages_reset": {
+        const p = event.payload as import("@/lib/eventTypes").MessagesResetPayload;
+        setMessages((prev) => prev.slice(0, p.from_index));
+        break;
+      }
       case "case_started": {
         const p = event.payload as { case_id: string; topic?: string; claim?: string };
         if (p.claim || p.topic) {
@@ -269,10 +310,16 @@ export default function RunDashboard() {
     );
   }
 
-  const pct =
-    progress.total > 0
-      ? Math.round((progress.completed / progress.total) * 100)
-      : 0;
+  const hasJudgeFinished = messages.some(
+    (m) => m.role === "Judge" && Boolean(m.content && m.content.trim().length > 0)
+  );
+
+  const isQuotaExhausted = Boolean(quotaAlert) || messages.some(
+    (m) => m.role === "system" && m.content.toLowerCase().includes("quota")
+  );
+
+  const showCompleted = hasJudgeFinished;
+  const showQuotaExhausted = !hasJudgeFinished && (isQuotaExhausted || run?.status === "FAILED");
 
   return (
     <div className="relative min-h-screen w-full bg-background overflow-hidden flex flex-col">
@@ -326,16 +373,33 @@ export default function RunDashboard() {
               )}
 
               <div className="flex flex-col items-end gap-2 ml-auto">
-                <div className={`px-4 py-1.5 rounded-full border ${run?.status === "COMPLETED"
+                {/* Status Badge */}
+                <div className={`px-4 py-1.5 rounded-full border ${showCompleted
                   ? "bg-[#29BC41]/10 border-[#29BC41]/30 text-[#29BC41]"
-                  : run?.status === "FAILED"
+                  : showQuotaExhausted
                     ? "bg-[#B50BBB]/10 border-[#B50BBB]/30 text-[#B50BBB]"
-                    : "bg-[#FCC503]/10 border-[#FCC503]/30 text-[#292524] animate-pulse"
+                    : run?.status === "RUNNING"
+                      ? "bg-[#412AD1]/10 border-[#412AD1]/30 text-[#412AD1] animate-pulse"
+                      : "bg-[#FCC503]/10 border-[#FCC503]/30 text-[#292524] animate-pulse"
                   } text-sm font-medium flex items-center gap-2`}>
-                  {run?.status === "COMPLETED" && <CheckCircle className="w-4 h-4" />}
-                  {run?.status === "FAILED" && <AlertTriangle className="w-4 h-4" />}
-                  {run?.status !== "COMPLETED" && run?.status !== "FAILED" && <Activity className="w-4 h-4" />}
-                  {run?.status || "PENDING"}
+                  {showCompleted && <CheckCircle className="w-4 h-4" />}
+                  {showQuotaExhausted && <AlertTriangle className="w-4 h-4" />}
+                  {!showCompleted && !showQuotaExhausted && (run?.status === "RUNNING" || run?.status === "PENDING") && (
+                    <Activity className="w-4 h-4 animate-pulse" />
+                  )}
+                  {showCompleted ? "Debate Complete"
+                    : showQuotaExhausted ? "Quota Exhausted"
+                    : run?.status === "RUNNING" ? "Debating..."
+                    : "Initializing..."}
+                </div>
+
+                {/* One-sentence reason */}
+                <div className="text-[10px] text-[#292524]/55 text-right max-w-[200px] leading-relaxed">
+                  {showCompleted && "The Judge has delivered the final verdict."}
+                  {showQuotaExhausted && (quotaAlert || "The debate ended because model tokens/quota were exhausted before the Judge could finish.")}
+                  {!showCompleted && !showQuotaExhausted && run?.status === "RUNNING" && "Agents are actively debating the claim in real-time."}
+                  {!showCompleted && !showQuotaExhausted && run?.status === "PENDING" && "Debate is being initialized, agents will appear shortly."}
+                  {!run?.status && "Connecting to debate session..."}
                 </div>
 
                 {progress.total > 0 && (
@@ -396,7 +460,17 @@ export default function RunDashboard() {
         {/* Main Content Grid */}
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
           <div className="lg:col-span-2 space-y-6">
-            <LiveTranscript messages={messages} sseStatus={sseStatus} debugMode={run?.debug_mode ?? summary?.debug_mode ?? false} />
+            <LiveTranscript
+              messages={messages}
+              sseStatus={sseStatus}
+              debugMode={run?.debug_mode ?? summary?.debug_mode ?? false}
+              models={availableModels}
+              onModelChange={handleModelChange}
+              isModelDisabled={isModelDisabled}
+              getModelUsageRemaining={getModelUsageRemaining}
+              regeneratingIndex={regeneratingIndex}
+              debateConfig={debateConfig ?? null}
+            />
           </div>
 
           <div className="space-y-6">
