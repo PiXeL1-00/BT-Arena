@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Linkedin, Github, Globe, Mail, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "About Const AI — Bittensor Arena",
+    title: "About Bittensor Arena",
     description:
         "Discover the Bittensor ecosystem. Explore decentralized AI subnets across models, compute, media, DeSci, and more.",
 };
@@ -53,7 +53,7 @@ export default function AboutPage() {
 
                         <p>
                             Rather than one model trying to solve every problem, Bittensor enables an
-                            ecosystem of specialized networks focused on different domains—from language
+                            ecosystem of specialized networks focused on different domains: from language
                             models and compute marketplaces to scientific research and media generation.
                         </p>
 
@@ -63,8 +63,8 @@ export default function AboutPage() {
                         </p>
                     </section>
 
-                    {/* Bittensor Images */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Bittensor Images removed temporarily */}
+                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-[#292524]/10">
                             <Image
                                 src="/bt_tao.webp"
@@ -88,8 +88,8 @@ export default function AboutPage() {
                             <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#0C0A09]/70 to-transparent p-4">
                                 <p className="text-sm text-[#FFFFFF] font-medium">Bittensor Network</p>
                             </div>
-                        </div>
-                    </div>
+                        </div> 
+                    </div> */}
 
                     {/* The Modern Problem */}
                     <SectionCard>
@@ -178,7 +178,7 @@ export default function AboutPage() {
                                         <span className="mt-1.5 h-2 w-2 rounded-full bg-[#412AD1] shrink-0" />
                                         <span>
                                             <span className="font-semibold text-[#292524]">{label}</span>
-                                            <span className="text-[#292524]/70"> — {desc}</span>
+                                            <span className="text-[#292524]/70">: {desc}</span>
                                         </span>
                                     </li>
                                 ))}
@@ -186,7 +186,51 @@ export default function AboutPage() {
                         </div>
                     </SectionCard>
 
-                    {/* What Const AI Does */}
+                    { /*Add your OWN query, and watch the debate */ }
+                    <SectionCard>
+                        <h2 className="text-xl sm:text-2xl font-bold text-[#292524]">
+                            Start Your Own Debate
+                        </h2>
+
+                        <div className="space-y-3 text-[#292524]/70 leading-relaxed">
+                            <p>
+                                Go beyond predefined subnet categories and start a debate around any topic
+                                you want. Ask your own query directly in the textbox, and let the agents
+                                analyze it, debate different perspectives, and work toward a shared conclusion.
+                            </p>
+
+                            <ul className="space-y-3">
+                                {[
+                                    {
+                                        label: "Choose a Topic",
+                                        desc: "Select from the available subnet categories, enter your own custom query, or combine both."
+                                    },
+                                    {
+                                        label: "Select an Inference Provider",
+                                        desc: "Choose the LLM model or inference provider you want the agents to use for the debate."
+                                    },
+                                    {
+                                        label: "Watch the Debate",
+                                        desc: "See the agents discuss your topic, challenge different perspectives, and reason through the available information."
+                                    },
+                                    {
+                                        label: "Get the Final Conclusion",
+                                        desc: "A judge agent evaluates the debate and delivers the final conclusion reached by the agents."
+                                    },
+                                ].map(({ label, desc }) => (
+                                    <li key={label} className="flex items-start gap-3">
+                                        <span className="mt-1.5 h-2 w-2 rounded-full bg-[#412AD1] shrink-0" />
+                                        <span>
+                                            <span className="font-semibold text-[#292524]">{label}</span>
+                                            <span className="text-[#292524]/70">: {desc}</span>
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </SectionCard>
+
+                    {/* What Bittensor Arena Does */}
                     <SectionCard>
                         <h2 className="text-xl sm:text-2xl font-bold text-[#292524]">
                             What You'll Find Here
